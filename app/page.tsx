@@ -1955,8 +1955,7 @@ function Contact() {
 					</p>
 				</div>
 
-				<div
-					style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+				<div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 32 }}>
 					{/* Contact info */}
 					<div
 						className="reveal-left"
@@ -2062,7 +2061,7 @@ function Contact() {
 					</div>
 
 					{/* Form */}
-					<div className="reveal glass" style={{ padding: "32px 36px" }}>
+					{/* <div className="reveal glass" style={{ padding: "32px 36px" }}>
 						<h3
 							className="syne"
 							style={{
@@ -2145,7 +2144,7 @@ function Contact() {
 								Send Message <ArrowUpRight size={14} />
 							</a>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</section>
