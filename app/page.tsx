@@ -813,11 +813,7 @@ function Hero() {
 							</a>
 							<a
 								href="https://docs.google.com/document/d/1i7CJPFIWh5ntpQiJrJ6s_Kxo4LKjnmMX/edit?usp=sharing&ouid=112511912242432371380&rtpof=true&sd=true"
-								className="btn-ghost"
-								onClick={(e) => {
-									e.preventDefault();
-									scrollTo("experience");
-								}}>
+								className="btn-ghost">
 								Resume <ArrowUpRight size={14} />
 							</a>
 						</div>
