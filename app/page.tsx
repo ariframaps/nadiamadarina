@@ -1612,7 +1612,7 @@ function Education() {
 				<div
 					style={{
 						display: "grid",
-						gridTemplateColumns: "1fr 1fr",
+						gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
 						gap: 24,
 						alignItems: "start",
 					}}>
@@ -2173,7 +2173,7 @@ function Footer() {
 			<p style={{ fontSize: 13, color: "var(--text-muted)" }}>
 				© 2025{" "}
 				<span style={{ color: "var(--text)", fontWeight: 500 }}>
-					Nadia Madarina Sa&apos;id
+					Nadia Madarina Said
 				</span>
 			</p>
 			<p style={{ fontSize: 12, color: "var(--text-muted)" }}>
