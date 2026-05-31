@@ -314,6 +314,27 @@ body {
 @media (min-width: 769px) {
   .hide-desktop { display: none !important; }
 }
+
+.hero-grid {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 48px;
+	align-items: center;
+}
+
+@media (max-width: 768px) {
+	.hero-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.hero-content {
+		order: 2;
+	}
+
+	.hero-image {
+		order: 1;
+	}
+}
 `;
 
 // ─── Data ─────────────────────────────────────────────────────────────────
@@ -717,15 +738,9 @@ function Hero() {
 					position: "relative",
 					zIndex: 1,
 				}}>
-				<div
-					style={{
-						display: "grid",
-						gridTemplateColumns: "1fr auto",
-						gap: 48,
-						alignItems: "center",
-					}}>
+				<div className="hero-grid">
 					{/* Text */}
-					<div>
+					<div className="hero-content">
 						<div
 							style={{
 								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.1s both",
@@ -856,7 +871,7 @@ function Hero() {
 
 					{/* Photo  hide on small screens */}
 					<div
-						className="hide-mobile"
+						className="hero-image"
 						style={{
 							animation: "fadeIn 1.2s cubic-bezier(.22,1,.36,1) 0.1s both",
 							position: "relative",
