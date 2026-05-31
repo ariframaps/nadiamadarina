@@ -883,7 +883,8 @@ function Hero() {
 								inset: -20,
 								borderRadius: "50%",
 								border: "1px dashed rgba(124,111,255,0.6)",
-								animation: "spin-slow 20s linear infinite",
+								boxShadow: "0 0 12px rgba(124,111,255,0.25)",
+								animation: "spin-slow 17s linear infinite",
 							}}
 						/>
 						<div
