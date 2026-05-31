@@ -882,7 +882,7 @@ function Hero() {
 								position: "absolute",
 								inset: -20,
 								borderRadius: "50%",
-								border: "1px dashed rgba(124,111,255,0.25)",
+								border: "1px dashed rgba(124,111,255,0.6)",
 								animation: "spin-slow 20s linear infinite",
 							}}
 						/>
