@@ -975,7 +975,7 @@ function Hero() {
 			</div>
 
 			{/* Scroll cue */}
-			<div
+			{/* <div
 				style={{
 					position: "absolute",
 					bottom: 28,
@@ -1003,7 +1003,7 @@ function Hero() {
 						animation: "float 2s ease-in-out infinite",
 					}}
 				/>
-			</div>
+			</div> */}
 		</section>
 	);
 }
@@ -1031,6 +1031,7 @@ function Marquee() {
 				padding: "16px 0",
 				overflow: "hidden",
 				background: "rgba(255,255,255,0.015)",
+				marginTop: "16px",
 			}}>
 			<div className="marquee-track">
 				{doubled.map((item, i) => (
