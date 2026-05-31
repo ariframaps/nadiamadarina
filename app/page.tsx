@@ -10,6 +10,10 @@ import {
 	Menu,
 	X,
 	ChevronDown,
+	Shield,
+	TrendingUp,
+	FileText,
+	Globe,
 } from "lucide-react";
 
 // ─── Styles ────────────────────────────────────────────────────────────────
@@ -43,15 +47,12 @@ body {
   min-height: 100vh;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
-/* Heading font */
 .syne { font-family: 'Syne', sans-serif; }
 
-/* Blob backgrounds */
 .blob {
   position: absolute;
   border-radius: 50%;
@@ -60,7 +61,6 @@ body {
   z-index: 0;
 }
 
-/* Glass card */
 .glass {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -74,7 +74,6 @@ body {
   background: var(--surface-hover);
 }
 
-/* Pill badge */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -89,7 +88,6 @@ body {
   white-space: nowrap;
 }
 
-/* Accent gradient text */
 .grad {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   -webkit-background-clip: text;
@@ -97,7 +95,6 @@ body {
   background-clip: text;
 }
 
-/* Buttons */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -135,7 +132,6 @@ body {
 }
 .btn-ghost:hover { border-color: var(--accent); background: rgba(124,111,255,0.08); transform: translateY(-2px); }
 
-/* Reveal animations */
 @keyframes revealUp {
   from { opacity: 0; transform: translateY(40px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -170,10 +166,8 @@ body {
 .reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
 .reveal-left.in { opacity: 1; transform: none; }
 
-/* Section */
 .section { padding: 100px 0; position: relative; overflow: hidden; }
 
-/* Section label */
 .section-label {
   display: inline-flex;
   align-items: center;
@@ -194,7 +188,6 @@ body {
   border-radius: 1px;
 }
 
-/* Skill tag */
 .stag {
   padding: 8px 16px;
   border-radius: 10px;
@@ -212,7 +205,6 @@ body {
   background: rgba(124,111,255,0.1);
 }
 
-/* Cert row */
 .cert-item {
   display: flex;
   align-items: center;
@@ -229,7 +221,6 @@ body {
   transform: translateX(6px);
 }
 
-/* Contact input */
 .inp {
   width: 100%;
   background: var(--surface);
@@ -245,7 +236,6 @@ body {
 .inp::placeholder { color: var(--text-muted); }
 .inp:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,111,255,0.15); }
 
-/* Marquee */
 .marquee-wrap { overflow: hidden; }
 .marquee-track {
   display: flex;
@@ -254,7 +244,6 @@ body {
 }
 .marquee-track:hover { animation-play-state: paused; }
 
-/* Nav mobile menu */
 .mobile-menu {
   position: fixed;
   inset: 0;
@@ -268,7 +257,6 @@ body {
   gap: 12px;
 }
 
-/* Timeline */
 .tl-dot {
   width: 12px;
   height: 12px;
@@ -286,7 +274,6 @@ body {
   min-height: 40px;
 }
 
-/* Stat card */
 .stat-card {
   padding: 28px;
   border-radius: 20px;
@@ -306,7 +293,6 @@ body {
 }
 .stat-card:hover { transform: translateY(-4px); border-color: rgba(124,111,255,0.3); }
 
-/* Responsive helpers */
 @media (max-width: 768px) {
   .section { padding: 72px 0; }
   .hide-mobile { display: none !important; }
@@ -326,124 +312,261 @@ body {
 	.hero-grid {
 		grid-template-columns: 1fr;
 	}
+	.hero-content { order: 2; }
+	.hero-image { order: 1; }
+}
 
-	.hero-content {
-		order: 2;
-	}
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,11,20,0.85);
+  backdrop-filter: blur(12px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.2s ease both;
+}
+.modal-box {
+  background: #0D1120;
+  border: 1px solid rgba(124,111,255,0.25);
+  border-radius: 24px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 36px;
+  position: relative;
+  animation: revealUp 0.35s cubic-bezier(.22,1,.36,1) both;
+}
 
-	.hero-image {
-		order: 1;
-	}
+/* Skill group card */
+.skill-group {
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 28px;
+  transition: border-color 0.3s;
+}
+.skill-group:hover { border-color: rgba(124,111,255,0.25); }
+
+/* Cert highlight */
+.cert-highlight {
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+  margin-bottom: 8px;
 }
 `;
 
 // ─── Data ─────────────────────────────────────────────────────────────────
 const EXPERIENCES = [
 	{
-		role: "Tax Consulting Staff",
+		role: "Junior Tax Consultant — Tax Dispute",
 		company: "MUC Consulting",
-		period: "Mar 2025 – Nov 2025",
-		type: "Full-time",
+		period: "May 2025 – Nov 2025 · 7 months",
+		type: "Contract",
+		location: "Surabaya, East Java · On-site",
 		color: "#7C6FFF",
+		summary: "Handled tax dispute cases and compliance work at one of Indonesia's leading independent tax consulting firms, serving corporate clients across multiple industries.",
+		highlight: "Frontline exposure to real tax dispute proceedings and VAT compliance",
+		tags: ["Tax Law", "VAT", "Tax Dispute", "Corporate Tax"],
 		points: [
-			"Supported tax consulting activities and administrative processes within professional consulting environments",
-			"Handled client documentation, ensuring completeness of supporting documents for consulting engagements",
-			"Coordinated with clients and internal teams on documentation requirements and operational needs",
-			"Conducted document checking, data validation, and administrative reviews for accuracy and compliance",
+			"Analyzed tax dispute cases involving VAT and corporate income tax, reviewing legal arguments and supporting client positions with relevant tax law provisions.",
+			"Prepared and reviewed client documentation packages for tax authority submissions, ensuring accuracy of fiscal reconciliation and compliance with DGT requirements.",
+			"Conducted in-depth review of tax assessments (SKP) and identified grounds for objection, contributing to dispute resolution strategies.",
+			"Coordinated directly with clients to gather evidentiary documents, explain procedural timelines, and manage expectations throughout the dispute process.",
+			"Applied knowledge of Coretax system and current tax regulations to validate client reporting positions.",
+		],
+		achievements: [
+			{ label: "Domain", value: "Tax Dispute & VAT" },
+			{ label: "Firm Tier", value: "Top Independent Tax Firm (MUC)" },
+			{ label: "Setting", value: "Corporate Consulting" },
 		],
 	},
 	{
-		role: "Tax Consulting Intern",
-		company: "Tax Consulting Firm",
-		period: "Mar 2026 – Jun 2026",
-		type: "Internship",
+		role: "Internal Audit Intern",
+		company: "Inspektorat Kota Surabaya",
+		period: "Oct 2022 – Dec 2022 · 3 months",
+		type: "Internship (MBKM)",
+		location: "Surabaya, East Java · On-site",
 		color: "#C084FC",
+		summary: "Participated in government internal audit functions under Indonesia's MBKM programme, gaining direct exposure to audit methodology, document review, and public sector compliance.",
+		highlight: "Formal audit training in a regulated government environment",
+		tags: ["Internal Audit", "Document Review", "Compliance", "Public Sector"],
 		points: [
-			"Supported operational and administrative activities within tax consulting environments",
-			"Assisted in handling client requests, documentation processes, and administrative requirements",
-			"Participated in preparing and organizing supporting documents for client engagements",
-			"Coordinated with team members to support project completion within deadlines",
+			"Supported audit examination procedures by reviewing financial documents, verifying data completeness, and cross-checking figures against source records.",
+			"Prepared working papers and audit documentation in accordance with internal audit standards used by the city inspectorate.",
+			"Identified discrepancies in administrative records and escalated findings through proper internal channels.",
+			"Gained hands-on understanding of risk-based audit approaches and control assessment frameworks used in government settings.",
+		],
+		achievements: [
+			{ label: "Programme", value: "MBKM (Kemendikbud)" },
+			{ label: "Focus", value: "Audit & Internal Control" },
+			{ label: "Sector", value: "Government / Public" },
 		],
 	},
 	{
-		role: "Administrative Intern",
-		company: "Prosecutor Office (Kejaksaan)",
-		period: "Government Institution",
-		type: "Internship",
+		role: "Merchandise & Finance Coordinator",
+		company: "SCOLAH – UNAIR Mengajar",
+		period: "Apr 2022 – Feb 2023 · 11 months",
+		type: "Volunteer Leadership",
+		location: "Surabaya, East Java",
 		color: "#F0C96A",
+		summary: "Led merchandise operations and managed financial tracking for a university volunteer teaching programme. Recognized as Best of the Month (July 2022).",
+		highlight: "Awarded Best of the Month — demonstrated initiative and reliability",
+		tags: ["Financial Tracking", "Team Leadership", "Operations", "Fundraising"],
 		points: [
-			"Supported administrative processes and documentation within government institutions",
-			"Assisted with document management, filing processes, and operational support",
-			"Maintained organized administrative records and supported daily operational activities",
+			"Managed end-to-end merchandise operations including procurement, inventory tracking, and sales reconciliation.",
+			"Maintained financial records and produced periodic reports on revenue and expenditure for programme leadership.",
+			"Coordinated with cross-functional teams on logistics, communications, and event execution.",
+			"Recognized as Best of the Month (July 2022) for outstanding contributions to the Finance & Resources department.",
+		],
+		achievements: [
+			{ label: "Award", value: "Best of the Month · July 2022" },
+			{ label: "Role Type", value: "Finance & Operations Lead" },
 		],
 	},
 ];
 
 const SKILLS_GROUPS = [
 	{
-		label: "Tax & Accounting",
+		label: "Tax Expertise",
+		icon: "🏛️",
 		color: "#7C6FFF",
+		description: "Core tax knowledge applied in professional consulting and certification contexts.",
 		tags: [
-			"Tax Administration",
-			"Tax Documentation",
-			"Tax Planning",
-			"Transfer Pricing",
-			"Financial Compliance",
-			"VAT/GST",
-			"Regulatory Filing",
-			"Client Documentation",
+			"Tax Law & Regulations",
+			"Tax Dispute Handling",
+			"VAT / PPN Compliance",
+			"Corporate Income Tax",
+			"Tax Planning & Optimization",
+			"Fiscal Reconciliation",
+			"Transfer Pricing (OECD Framework)",
+			"Coretax System",
+			"Tax Assessment Review (SKP)",
+			"Brevet AB Certified",
 		],
 	},
 	{
-		label: "Technical",
+		label: "Audit & Compliance",
+		icon: "🔍",
 		color: "#C084FC",
+		description: "Practical audit skills gained through government internship and KPMG simulation.",
+		tags: [
+			"Internal Audit",
+			"Document Review & Verification",
+			"Working Paper Preparation",
+			"Data Validation",
+			"Risk-Based Audit Approach",
+			"Regulatory Compliance",
+			"KPMG Audit Simulation",
+		],
+	},
+	{
+		label: "Technical & Analytical",
+		icon: "📊",
+		color: "#F0C96A",
+		description: "Tools and methods used to process, analyze, and present financial and tax data.",
 		tags: [
 			"Microsoft Excel (Advanced)",
+			"Pivot Tables & VLOOKUP",
+			"Visual Basic for Applications (VBA)",
+			"Data Processing & Reporting",
 			"Microsoft Office Suite",
-			"Data Processing",
-			"Report Writing",
-			"Documentation Systems",
-			"Canva",
+			"Financial Modeling Basics",
+			"Canva (Presentation Design)",
 		],
 	},
 	{
-		label: "Professional",
-		color: "#F0C96A",
+		label: "Professional & Communication",
+		icon: "💬",
+		color: "#4ade80",
+		description: "Soft skills that enable effective client work, teamwork, and written communication.",
 		tags: [
+			"Client Documentation",
 			"Analytical Thinking",
 			"Attention to Detail",
-			"Client Coordination",
+			"Report Writing",
 			"Team Collaboration",
-			"Problem Solving",
 			"Time Management",
 			"Public Speaking",
-			"Fast Learning",
+			"English (C2 Proficient)",
 		],
 	},
 ];
 
 const CERTS = [
-	{ name: "Brevet AB", cat: "Tax", icon: "🏛️" },
-	{ name: "Tax Officer Training", cat: "Tax", icon: "📋" },
-	{ name: "Tax Planning  Corporate Tax Saving", cat: "Tax", icon: "💼" },
-	{ name: "Pajak 102: Tax Planning", cat: "Tax", icon: "📊" },
 	{
-		name: "Transfer Pricing eLearning  World Bank Group",
-		cat: "International",
-		icon: "🌐",
+		name: "Brevet AB",
+		cat: "Core Tax",
+		icon: "🏛️",
+		relevance: "The Brevet AB is Indonesia's benchmark tax practitioner certification — covering Income Tax, VAT, and international taxation. Holding this signals you're qualified to handle end-to-end tax compliance and advisory work.",
+		highlight: true,
 	},
-	{ name: "KPMG Audit & Assurance Job Simulation", cat: "Audit", icon: "🏦" },
-	{ name: "Airlangga Microsoft Bootcamp", cat: "Technology", icon: "💻" },
+	{
+		name: "Tax Officer Training",
+		cat: "Core Tax",
+		icon: "📋",
+		relevance: "Covers Coretax system operations, fiscal reconciliation procedures, and compliance workflows used directly in DGT-aligned consulting work.",
+		highlight: true,
+	},
+	{
+		name: "Tax Planning: Cara Menghemat Pajak Perusahaan",
+		cat: "Core Tax",
+		icon: "💼",
+		relevance: "Practical training on corporate tax saving strategies, tax structuring, and planning approaches used in advisory engagements.",
+		highlight: false,
+	},
+	{
+		name: "Pajak 102: Tax Planning",
+		cat: "Core Tax",
+		icon: "📊",
+		relevance: "Covers tax accounting treatment, income tax planning, and optimization techniques relevant to corporate advisory.",
+		highlight: false,
+	},
+	{
+		name: "Transfer Pricing eLearning — World Bank Group",
+		cat: "International Tax",
+		icon: "🌐",
+		relevance: "World Bank OECD-framework training on transfer pricing principles, documentation requirements, and international tax compliance. Differentiates candidates in multinational-facing roles.",
+		highlight: true,
+	},
+	{
+		name: "KPMG Audit & Assurance Job Simulation",
+		cat: "Audit",
+		icon: "🏦",
+		relevance: "Hands-on simulation of audit workflows at Big Four level — demonstrates familiarity with professional audit standards and client engagement processes.",
+		highlight: false,
+	},
 	{
 		name: "Intensive 2-Week Microsoft Excel Bootcamp",
-		cat: "Technology",
+		cat: "Technical",
 		icon: "📈",
+		relevance: "Advanced Excel skills: VBA, Pivot Tables, data validation, and financial modeling — directly applicable to tax data processing and compliance reporting.",
+		highlight: false,
 	},
-	{ name: "C1 Advanced English Certificate", cat: "Language", icon: "🇬🇧" },
 	{
-		name: "EF SET English Certificate  C2 Proficient",
+		name: "Airlangga Microsoft Bootcamp",
+		cat: "Technical",
+		icon: "💻",
+		relevance: "Comprehensive Office suite training including Excel (LOOKUP functions), Word, and PowerPoint for professional document production.",
+		highlight: false,
+	},
+	{
+		name: "C1 Advanced English Certificate",
+		cat: "Language",
+		icon: "🇬🇧",
+		relevance: "Formally assessed C1 level — suitable for client correspondence, international tax research, and multinational consulting environments.",
+		highlight: false,
+	},
+	{
+		name: "EF SET English Certificate — C2 Proficient",
 		cat: "Language",
 		icon: "✨",
+		relevance: "Top-tier English proficiency. Enables direct engagement with international tax resources, OECD guidelines, and English-language client communication.",
+		highlight: true,
 	},
 ];
 
@@ -520,7 +643,6 @@ function Navbar() {
 						alignItems: "center",
 						justifyContent: "space-between",
 					}}>
-					{/* Logo */}
 					<button
 						onClick={() => go("home")}
 						style={{
@@ -563,7 +685,6 @@ function Navbar() {
 						</span>
 					</button>
 
-					{/* Desktop links */}
 					<div className="hide-mobile" style={{ display: "flex", gap: 4 }}>
 						{NAV_LINKS.map((l) => (
 							<button
@@ -585,18 +706,14 @@ function Navbar() {
 								}}
 								onMouseOver={(e) => {
 									if (active !== l) {
-										(e.currentTarget as HTMLButtonElement).style.color =
-											"var(--text)";
-										(e.currentTarget as HTMLButtonElement).style.borderColor =
-											"var(--border)";
+										(e.currentTarget as HTMLButtonElement).style.color = "var(--text)";
+										(e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
 									}
 								}}
 								onMouseOut={(e) => {
 									if (active !== l) {
-										(e.currentTarget as HTMLButtonElement).style.color =
-											"var(--text-muted)";
-										(e.currentTarget as HTMLButtonElement).style.borderColor =
-											"transparent";
+										(e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)";
+										(e.currentTarget as HTMLButtonElement).style.borderColor = "transparent";
 									}
 								}}>
 								{l}
@@ -611,7 +728,6 @@ function Navbar() {
 							style={{ padding: "9px 20px", fontSize: 13 }}>
 							Hire Me <ArrowUpRight size={13} />
 						</a>
-						{/* Mobile hamburger */}
 						<button
 							className="hide-desktop"
 							onClick={() => setMenuOpen(true)}
@@ -631,7 +747,6 @@ function Navbar() {
 				</div>
 			</nav>
 
-			{/* Mobile menu overlay */}
 			{menuOpen && (
 				<div className="mobile-menu">
 					<button
@@ -694,14 +809,12 @@ function Hero() {
 				overflow: "hidden",
 				paddingTop: 80,
 			}}>
-			{/* Blobs */}
 			<div
 				className="blob"
 				style={{
 					width: 600,
 					height: 600,
-					background:
-						"radial-gradient(circle,rgba(124,111,255,0.18) 0%,transparent 70%)",
+					background: "radial-gradient(circle,rgba(124,111,255,0.18) 0%,transparent 70%)",
 					top: "-10%",
 					right: "-5%",
 				}}
@@ -711,8 +824,7 @@ function Hero() {
 				style={{
 					width: 400,
 					height: 400,
-					background:
-						"radial-gradient(circle,rgba(192,132,252,0.14) 0%,transparent 70%)",
+					background: "radial-gradient(circle,rgba(192,132,252,0.14) 0%,transparent 70%)",
 					bottom: "5%",
 					left: "-5%",
 				}}
@@ -722,8 +834,7 @@ function Hero() {
 				style={{
 					width: 300,
 					height: 300,
-					background:
-						"radial-gradient(circle,rgba(240,201,106,0.08) 0%,transparent 70%)",
+					background: "radial-gradient(circle,rgba(240,201,106,0.08) 0%,transparent 70%)",
 					top: "40%",
 					left: "30%",
 				}}
@@ -741,10 +852,7 @@ function Hero() {
 				<div className="hero-grid">
 					{/* Text */}
 					<div className="hero-content">
-						<div
-							style={{
-								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.1s both",
-							}}>
+						<div style={{ animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.1s both" }}>
 							<span
 								className="pill"
 								style={{
@@ -768,10 +876,24 @@ function Hero() {
 							</span>
 						</div>
 
+						{/* VALUE-FIRST positioning line */}
+						<p
+							style={{
+								fontSize: "clamp(13px,1.2vw,15px)",
+								fontWeight: 600,
+								letterSpacing: "0.14em",
+								textTransform: "uppercase",
+								color: "var(--accent)",
+								marginBottom: 14,
+								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.15s both",
+							}}>
+							Tax Consultant · Brevet AB · C2 English
+						</p>
+
 						<h1
 							className="syne"
 							style={{
-								fontSize: "clamp(44px,7vw,96px)",
+								fontSize: "clamp(40px,6.5vw,88px)",
 								fontWeight: 800,
 								lineHeight: 1.0,
 								letterSpacing: "-0.03em",
@@ -785,19 +907,21 @@ function Hero() {
 							Said
 						</h1>
 
+						{/* IDENTITY STATEMENT — what she actually does */}
 						<p
 							style={{
 								fontSize: 16,
-								lineHeight: 1.8,
+								lineHeight: 1.85,
 								color: "var(--text-sub)",
-								maxWidth: 460,
+								maxWidth: 480,
 								marginBottom: 40,
 								fontWeight: 300,
 								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.35s both",
 							}}>
-							Accounting graduate from Universitas Airlangga specialising in tax
-							consulting, compliance documentation, and client relations. Brevet
-							AB certified, C2 English proficient.
+							Accounting graduate from Universitas Airlangga with hands-on experience in{" "}
+							<span style={{ color: "var(--text)", fontWeight: 500 }}>tax dispute handling</span> and{" "}
+							<span style={{ color: "var(--text)", fontWeight: 500 }}>VAT compliance</span> at MUC Consulting.
+							Brevet AB certified. C2-level English. Ready to contribute from day one.
 						</p>
 
 						<div
@@ -811,19 +935,13 @@ function Hero() {
 							<a
 								href="#contact"
 								className="btn-primary"
-								onClick={(e) => {
-									e.preventDefault();
-									scrollTo("contact");
-								}}>
+								onClick={(e) => { e.preventDefault(); scrollTo("contact"); }}>
 								Get in Touch <ArrowUpRight size={14} />
 							</a>
 							<a
 								href="#experience"
 								className="btn-ghost"
-								onClick={(e) => {
-									e.preventDefault();
-									scrollTo("experience");
-								}}>
+								onClick={(e) => { e.preventDefault(); scrollTo("experience"); }}>
 								View Experience
 							</a>
 							<a
@@ -843,7 +961,8 @@ function Hero() {
 							{[
 								{ icon: <MapPin size={13} />, text: "Sidoarjo, Indonesia" },
 								{ icon: "🎓", text: "Airlangga '24" },
-								{ icon: "✦", text: "Brevet AB" },
+								{ icon: "✦", text: "Brevet AB Certified" },
+								{ icon: "🌐", text: "World Bank Transfer Pricing" },
 							].map(({ icon, text }) => (
 								<div
 									key={text}
@@ -855,12 +974,7 @@ function Hero() {
 										color: "var(--text-muted)",
 										fontWeight: 400,
 									}}>
-									<span
-										style={{
-											color: "var(--accent)",
-											display: "flex",
-											alignItems: "center",
-										}}>
+									<span style={{ color: "var(--accent)", display: "flex", alignItems: "center" }}>
 										{icon}
 									</span>
 									{text}
@@ -869,14 +983,13 @@ function Hero() {
 						</div>
 					</div>
 
-					{/* Photo  hide on small screens */}
+					{/* Photo */}
 					<div
 						className="hero-image"
 						style={{
 							animation: "fadeIn 1.2s cubic-bezier(.22,1,.36,1) 0.1s both",
 							position: "relative",
 						}}>
-						{/* Spinning ring */}
 						<div
 							style={{
 								position: "absolute",
@@ -892,8 +1005,7 @@ function Hero() {
 								position: "absolute",
 								inset: -8,
 								borderRadius: "38px",
-								background:
-									"linear-gradient(135deg,rgba(124,111,255,0.3),rgba(192,132,252,0.2),transparent)",
+								background: "linear-gradient(135deg,rgba(124,111,255,0.3),rgba(192,132,252,0.2),transparent)",
 								filter: "blur(2px)",
 							}}
 						/>
@@ -905,8 +1017,7 @@ function Hero() {
 								borderRadius: 32,
 								overflow: "hidden",
 								border: "1px solid rgba(255,255,255,0.1)",
-								boxShadow:
-									"0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,111,255,0.2)",
+								boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,111,255,0.2)",
 							}}>
 							<Image
 								src="/nadia.webp"
@@ -919,12 +1030,10 @@ function Hero() {
 								style={{
 									position: "absolute",
 									inset: 0,
-									background:
-										"linear-gradient(to top, rgba(8,11,20,0.6) 0%, transparent 50%)",
+									background: "linear-gradient(to top, rgba(8,11,20,0.6) 0%, transparent 50%)",
 								}}
 							/>
 						</div>
-						{/* Float badge */}
 						<div
 							className="glass"
 							style={{
@@ -934,18 +1043,10 @@ function Hero() {
 								padding: "12px 18px",
 								borderRadius: 14,
 							}}>
-							<div
-								style={{
-									fontSize: 11,
-									color: "var(--text-muted)",
-									marginBottom: 2,
-									letterSpacing: "0.06em",
-								}}>
+							<div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 2, letterSpacing: "0.06em" }}>
 								English
 							</div>
-							<div
-								className="syne"
-								style={{ fontSize: 18, fontWeight: 800, color: "var(--gold)" }}>
+							<div className="syne" style={{ fontSize: 18, fontWeight: 800, color: "var(--gold)" }}>
 								C2
 							</div>
 						</div>
@@ -962,64 +1063,24 @@ function Hero() {
 						animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.65s both",
 					}}>
 					{[
-						{ n: "2+", l: "Years Experience" },
-						{ n: "10+", l: "Certifications" },
-						{ n: "C2", l: "English Proficiency" },
-					].map(({ n, l }) => (
+						{ n: "MUC", l: "Consulting Experience", sub: "Top Independent Tax Firm" },
+						{ n: "10+", l: "Certifications", sub: "Brevet AB · World Bank · KPMG" },
+						{ n: "C2", l: "English Proficiency", sub: "EF SET Certified" },
+					].map(({ n, l, sub }) => (
 						<div key={l} className="stat-card">
-							<div
-								className="syne grad"
-								style={{
-									fontSize: "clamp(28px,4vw,44px)",
-									fontWeight: 800,
-									lineHeight: 1,
-								}}>
+							<div className="syne grad" style={{ fontSize: "clamp(24px,3.5vw,38px)", fontWeight: 800, lineHeight: 1 }}>
 								{n}
 							</div>
-							<div
-								style={{
-									fontSize: 12,
-									color: "var(--text-muted)",
-									marginTop: 6,
-									fontWeight: 400,
-								}}>
+							<div style={{ fontSize: 13, color: "var(--text)", marginTop: 6, fontWeight: 600 }}>
 								{l}
+							</div>
+							<div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 3 }}>
+								{sub}
 							</div>
 						</div>
 					))}
 				</div>
 			</div>
-
-			{/* Scroll cue */}
-			{/* <div
-				style={{
-					position: "absolute",
-					bottom: 28,
-					left: "50%",
-					transform: "translateX(-50%)",
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-					gap: 6,
-					animation: "fadeIn 1s ease 1.2s both",
-				}}>
-				<span
-					style={{
-						fontSize: 10,
-						letterSpacing: "0.15em",
-						textTransform: "uppercase",
-						color: "var(--text-muted)",
-					}}>
-					Scroll
-				</span>
-				<ChevronDown
-					size={14}
-					style={{
-						color: "var(--accent)",
-						animation: "float 2s ease-in-out infinite",
-					}}
-				/>
-			</div> */}
 		</section>
 	);
 }
@@ -1027,16 +1088,18 @@ function Hero() {
 // ─── Marquee ──────────────────────────────────────────────────────────────
 function Marquee() {
 	const items = [
-		"Tax Consulting",
+		"Tax Dispute",
 		"Brevet AB",
-		"Compliance",
+		"VAT Compliance",
 		"Transfer Pricing",
 		"KPMG Simulation",
 		"C2 English",
 		"Universitas Airlangga",
 		"Excel Advanced",
-		"World Bank",
-		"Documentation",
+		"World Bank OECD",
+		"Internal Audit",
+		"Coretax System",
+		"Corporate Tax",
 	];
 	const doubled = [...items, ...items];
 	return (
@@ -1077,16 +1140,12 @@ function Marquee() {
 // ─── About ────────────────────────────────────────────────────────────────
 function About() {
 	return (
-		<section
-			id="about"
-			className="section"
-			style={{ background: "var(--bg2)" }}>
+		<section id="about" className="section" style={{ background: "var(--bg2)" }}>
 			<div
 				style={{
 					position: "absolute",
 					inset: 0,
-					backgroundImage:
-						"radial-gradient(circle at 80% 50%, rgba(124,111,255,0.06) 0%, transparent 60%)",
+					backgroundImage: "radial-gradient(circle at 80% 50%, rgba(124,111,255,0.06) 0%, transparent 60%)",
 					pointerEvents: "none",
 				}}
 			/>
@@ -1115,11 +1174,14 @@ function About() {
 								letterSpacing: "-0.02em",
 								marginBottom: 24,
 							}}>
-							Detail-oriented
+							Precise, professional,
 							<br />
-							professional building
-							<br />a career in <span className="grad">taxation</span>
+							and fluent in
+							<br />
+							<span className="grad">Indonesian tax law</span>
 						</h2>
+
+						{/* NARRATIVE — not CV paragraphs */}
 						<p
 							style={{
 								fontSize: 15,
@@ -1127,11 +1189,16 @@ function About() {
 								color: "var(--text-sub)",
 								marginBottom: 20,
 							}}>
-							I&apos;m an accounting graduate from Universitas Airlangga with a
-							strong foundation in tax consulting and financial compliance. My
-							work at MUC Consulting gave me hands-on exposure to complex tax
-							operations, client documentation workflows, and regulatory
-							compliance.
+							Tax is a discipline where the details determine outcomes. At MUC Consulting — one of Indonesia's most respected independent tax firms — I worked directly on tax dispute cases, reviewing SKP assessments, validating client documentation, and supporting the arguments that go before the tax authority.
+						</p>
+						<p
+							style={{
+								fontSize: 15,
+								lineHeight: 1.9,
+								color: "var(--text-sub)",
+								marginBottom: 20,
+							}}>
+							My foundation spans both compliance and advisory: Brevet AB certified, trained in OECD transfer pricing through the World Bank, and experienced in government audit through the Surabaya Inspectorate. I carry both the technical knowledge and the professional discipline that consulting work demands.
 						</p>
 						<p
 							style={{
@@ -1140,18 +1207,18 @@ function About() {
 								color: "var(--text-sub)",
 								marginBottom: 36,
 							}}>
-							I hold a Brevet AB certification, completed World Bank Group
-							transfer pricing training, and maintain C2 English proficiency
-							positioning me for both domestic and international consulting
-							roles.
+							C2 English means I can read OECD guidelines, communicate with international clients, and produce professional reports without language being a barrier — a genuine differentiator in cross-border tax work.
 						</p>
+
+						{/* Credibility tags */}
 						<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
 							{[
-								"Tax Consulting",
-								"Documentation",
-								"Client Relations",
-								"Data Validation",
-								"Compliance",
+								"Tax Dispute",
+								"VAT Compliance",
+								"Transfer Pricing",
+								"Internal Audit",
+								"Brevet AB",
+								"C2 English",
 							].map((t) => (
 								<span
 									key={t}
@@ -1167,36 +1234,33 @@ function About() {
 						</div>
 					</div>
 
+					{/* Info cards */}
 					<div
 						className="reveal"
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: 16,
-						}}>
+						style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
 						{[
 							{
-								label: "Education",
-								value: "Universitas Airlangga",
-								sub: "Bachelor of Accounting",
+								label: "Experience",
+								value: "MUC Consulting",
+								sub: "Junior Tax Consultant · Tax Dispute",
 								color: "#7C6FFF",
 							},
 							{
 								label: "Certification",
 								value: "Brevet AB",
-								sub: "Tax Certification",
+								sub: "Indonesia's Tax Practitioner Standard",
 								color: "#C084FC",
 							},
 							{
 								label: "Language",
 								value: "C2 Proficient",
-								sub: "EF SET Certified",
+								sub: "EF SET · English & Indonesian Native",
 								color: "#F0C96A",
 							},
 							{
-								label: "Location",
-								value: "Sidoarjo",
-								sub: "East Java, Indonesia",
+								label: "Education",
+								value: "Univ. Airlangga",
+								sub: "Bachelor of Accounting · 2020–2024",
 								color: "#7C6FFF",
 							},
 						].map(({ label, value, sub, color }) => (
@@ -1214,19 +1278,39 @@ function About() {
 								</div>
 								<div
 									className="syne"
-									style={{
-										fontSize: 16,
-										fontWeight: 700,
-										color: "var(--text)",
-										marginBottom: 4,
-									}}>
+									style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", marginBottom: 4 }}>
 									{value}
 								</div>
-								<div style={{ fontSize: 12, color: "var(--text-muted)" }}>
+								<div style={{ fontSize: 12, color: "var(--text-muted)", lineHeight: 1.5 }}>
 									{sub}
 								</div>
 							</div>
 						))}
+
+						{/* Credibility bar — spans full width */}
+						<div
+							className="glass"
+							style={{
+								gridColumn: "1 / -1",
+								padding: "20px 24px",
+								borderColor: "rgba(240,201,106,0.2)",
+								background: "rgba(240,201,106,0.04)",
+							}}>
+							<div
+								style={{
+									fontSize: 10,
+									fontWeight: 700,
+									letterSpacing: "0.12em",
+									textTransform: "uppercase",
+									color: "var(--gold)",
+									marginBottom: 12,
+								}}>
+								✦ Why It Matters
+							</div>
+							<p style={{ fontSize: 13, color: "var(--text-sub)", lineHeight: 1.7 }}>
+								Brevet AB + real consulting experience + World Bank transfer pricing training = a candidate who is production-ready, not just theoretically trained.
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -1234,59 +1318,194 @@ function About() {
 	);
 }
 
+// ─── Experience Modal ──────────────────────────────────────────────────────
+function ExperienceModal({ exp, onClose }: { exp: typeof EXPERIENCES[0]; onClose: () => void }) {
+	useEffect(() => {
+		const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+		document.addEventListener("keydown", handler);
+		return () => document.removeEventListener("keydown", handler);
+	}, [onClose]);
+
+	return (
+		<div className="modal-overlay" onClick={onClose}>
+			<div className="modal-box" onClick={(e) => e.stopPropagation()}>
+				<button
+					onClick={onClose}
+					style={{
+						position: "absolute",
+						top: 20,
+						right: 20,
+						background: "var(--surface)",
+						border: "1px solid var(--border)",
+						borderRadius: 8,
+						padding: 8,
+						cursor: "pointer",
+						color: "var(--text)",
+						display: "flex",
+					}}>
+					<X size={16} />
+				</button>
+
+				{/* Header */}
+				<div style={{ marginBottom: 24 }}>
+					<div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+						<span
+							className="pill"
+							style={{
+								borderColor: `${exp.color}50`,
+								background: `${exp.color}15`,
+								color: exp.color,
+								fontSize: 10,
+							}}>
+							{exp.type}
+						</span>
+						<span style={{ fontSize: 12, color: "var(--text-muted)", alignSelf: "center" }}>
+							{exp.period}
+						</span>
+						<span style={{ fontSize: 12, color: "var(--text-muted)", alignSelf: "center" }}>
+							· {exp.location}
+						</span>
+					</div>
+					<h3 className="syne" style={{ fontSize: 22, fontWeight: 800, color: "var(--text)", marginBottom: 4 }}>
+						{exp.role}
+					</h3>
+					<p style={{ fontSize: 15, color: exp.color, fontWeight: 600 }}>{exp.company}</p>
+				</div>
+
+				{/* Highlight banner */}
+				<div
+					style={{
+						background: `${exp.color}12`,
+						border: `1px solid ${exp.color}30`,
+						borderRadius: 12,
+						padding: "14px 18px",
+						marginBottom: 24,
+						fontSize: 13,
+						color: "var(--text-sub)",
+						lineHeight: 1.6,
+					}}>
+					<span style={{ color: exp.color, fontWeight: 600 }}>Key focus: </span>
+					{exp.highlight}
+				</div>
+
+				{/* Summary */}
+				<p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-sub)", marginBottom: 24 }}>
+					{exp.summary}
+				</p>
+
+				{/* Responsibilities */}
+				<div style={{ marginBottom: 24 }}>
+					<div
+						style={{
+							fontSize: 11,
+							fontWeight: 700,
+							letterSpacing: "0.1em",
+							textTransform: "uppercase",
+							color: "var(--text-muted)",
+							marginBottom: 14,
+						}}>
+						Responsibilities & Contributions
+					</div>
+					<ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+						{exp.points.map((pt, j) => (
+							<li
+								key={j}
+								style={{
+									display: "flex",
+									gap: 12,
+									fontSize: 14,
+									lineHeight: 1.7,
+									color: "var(--text-sub)",
+								}}>
+								<span style={{ color: exp.color, flexShrink: 0, marginTop: 3, fontWeight: 700 }}>→</span>
+								{pt}
+							</li>
+						))}
+					</ul>
+				</div>
+
+				{/* Metrics */}
+				{exp.achievements.length > 0 && (
+					<div
+						style={{
+							display: "flex",
+							flexWrap: "wrap",
+							gap: 12,
+							paddingTop: 20,
+							borderTop: "1px solid var(--border)",
+						}}>
+						{exp.achievements.map(({ label, value }) => (
+							<div
+								key={label}
+								style={{
+									flex: "1 1 140px",
+									background: "var(--surface)",
+									border: "1px solid var(--border)",
+									borderRadius: 10,
+									padding: "12px 16px",
+								}}>
+								<div style={{ fontSize: 10, color: "var(--text-muted)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
+									{label}
+								</div>
+								<div className="syne" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)" }}>
+									{value}
+								</div>
+							</div>
+						))}
+					</div>
+				)}
+
+				{/* Tags */}
+				<div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 20 }}>
+					{exp.tags.map((tag) => (
+						<span key={tag} className="stag" style={{ fontSize: 12, borderColor: `${exp.color}25` }}>
+							{tag}
+						</span>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
 // ─── Experience ───────────────────────────────────────────────────────────
 function Experience() {
 	const [open, setOpen] = useState<number | null>(0);
+	const [modal, setModal] = useState<number | null>(null);
 
 	return (
-		<section
-			id="experience"
-			className="section"
-			style={{ background: "var(--bg)" }}>
+		<section id="experience" className="section" style={{ background: "var(--bg)" }}>
+			{modal !== null && (
+				<ExperienceModal exp={EXPERIENCES[modal]} onClose={() => setModal(null)} />
+			)}
 			<div
 				style={{
 					position: "absolute",
 					inset: 0,
-					backgroundImage:
-						"radial-gradient(circle at 20% 50%, rgba(192,132,252,0.06) 0%, transparent 60%)",
+					backgroundImage: "radial-gradient(circle at 20% 50%, rgba(192,132,252,0.06) 0%, transparent 60%)",
 					pointerEvents: "none",
 				}}
 			/>
-			<div
-				style={{
-					maxWidth: 1160,
-					margin: "0 auto",
-					padding: "0 24px",
-					position: "relative",
-				}}>
-				<div className="reveal" style={{ marginBottom: 56 }}>
+			<div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", position: "relative" }}>
+				<div className="reveal" style={{ marginBottom: 16 }}>
 					<div className="section-label">Career Path</div>
 					<h2
 						className="syne"
-						style={{
-							fontSize: "clamp(28px,3.5vw,48px)",
-							fontWeight: 800,
-							letterSpacing: "-0.02em",
-						}}>
+						style={{ fontSize: "clamp(28px,3.5vw,48px)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12 }}>
 						Professional <span className="grad">Experience</span>
 					</h2>
+					{/* Section intro */}
+					<p style={{ fontSize: 14, color: "var(--text-muted)", maxWidth: 560, lineHeight: 1.7, marginBottom: 48 }}>
+						Each role has built a distinct layer of capability — from frontline tax dispute work at a national consulting firm, to audit practice in government, to finance leadership in a university programme. Click any role to see full details.
+					</p>
 				</div>
 
 				<div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
 					{EXPERIENCES.map((exp, i) => (
-						<div
-							key={i}
-							className="reveal"
-							style={{ transitionDelay: `${i * 0.1}s` }}>
+						<div key={i} className="reveal" style={{ transitionDelay: `${i * 0.1}s` }}>
 							<div style={{ display: "flex", gap: 24 }}>
 								{/* Timeline */}
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "column",
-										alignItems: "center",
-										paddingTop: 4,
-									}}>
+								<div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 4 }}>
 									<div
 										className="tl-dot"
 										style={{
@@ -1297,9 +1516,7 @@ function Experience() {
 									{i < EXPERIENCES.length - 1 && (
 										<div
 											className="tl-line"
-											style={{
-												background: `linear-gradient(to bottom, ${exp.color}60, transparent)`,
-											}}
+											style={{ background: `linear-gradient(to bottom, ${exp.color}60, transparent)` }}
 										/>
 									)}
 								</div>
@@ -1312,101 +1529,63 @@ function Experience() {
 										marginBottom: 20,
 										padding: "24px 28px",
 										cursor: "pointer",
-										borderColor:
-											open === i ? `${exp.color}40` : "var(--border)",
-										background:
-											open === i ? `rgba(124,111,255,0.06)` : "var(--surface)",
+										borderColor: open === i ? `${exp.color}40` : "var(--border)",
+										background: open === i ? `rgba(124,111,255,0.05)` : "var(--surface)",
 									}}
 									onClick={() => setOpen(open === i ? null : i)}>
-									<div
-										style={{
-											display: "flex",
-											justifyContent: "space-between",
-											alignItems: "flex-start",
-											gap: 12,
-										}}>
+									<div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
 										<div style={{ flex: 1 }}>
-											<div
-												style={{
-													display: "flex",
-													flexWrap: "wrap",
-													gap: 8,
-													marginBottom: 10,
-												}}>
+											<div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 10 }}>
 												<span
 													className="pill"
-													style={{
-														borderColor: `${exp.color}50`,
-														background: `${exp.color}15`,
-														color: exp.color,
-														fontSize: 10,
-													}}>
+													style={{ borderColor: `${exp.color}50`, background: `${exp.color}15`, color: exp.color, fontSize: 10 }}>
 													{exp.type}
 												</span>
-												<span
-													style={{
-														fontSize: 12,
-														color: "var(--text-muted)",
-														alignSelf: "center",
-													}}>
+												<span style={{ fontSize: 12, color: "var(--text-muted)", alignSelf: "center" }}>
 													{exp.period}
 												</span>
 											</div>
-											<h3
-												className="syne"
-												style={{
-													fontSize: 18,
-													fontWeight: 700,
-													color: "var(--text)",
-													marginBottom: 4,
-												}}>
+											<h3 className="syne" style={{ fontSize: 18, fontWeight: 700, color: "var(--text)", marginBottom: 4 }}>
 												{exp.role}
 											</h3>
-											<p
-												style={{
-													fontSize: 14,
-													color: exp.color,
-													fontWeight: 500,
-												}}>
+											<p style={{ fontSize: 14, color: exp.color, fontWeight: 600, marginBottom: 8 }}>
 												{exp.company}
 											</p>
+											{/* Highlight tagline */}
+											<p style={{ fontSize: 13, color: "var(--text-muted)", fontStyle: "italic" }}>
+												{exp.highlight}
+											</p>
 										</div>
-										<div
-											style={{
-												width: 32,
-												height: 32,
-												borderRadius: 8,
-												background: "var(--surface)",
-												border: "1px solid var(--border)",
-												display: "flex",
-												alignItems: "center",
-												justifyContent: "center",
-												transition: "transform 0.3s",
-												transform: open === i ? "rotate(180deg)" : "none",
-												flexShrink: 0,
-											}}>
-											<ChevronDown
-												size={14}
-												style={{ color: "var(--text-muted)" }}
-											/>
+										<div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
+											{/* Expand toggle */}
+											<div
+												style={{
+													width: 32,
+													height: 32,
+													borderRadius: 8,
+													background: "var(--surface)",
+													border: "1px solid var(--border)",
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+													transition: "transform 0.3s",
+													transform: open === i ? "rotate(180deg)" : "none",
+												}}>
+												<ChevronDown size={14} style={{ color: "var(--text-muted)" }} />
+											</div>
 										</div>
 									</div>
 
+									{/* Expanded preview */}
 									{open === i && (
-										<div
-											style={{
-												marginTop: 20,
-												paddingTop: 20,
-												borderTop: `1px solid ${exp.color}20`,
-											}}>
-											<ul
-												style={{
-													listStyle: "none",
-													display: "flex",
-													flexDirection: "column",
-													gap: 10,
-												}}>
-												{exp.points.map((pt, j) => (
+										<div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${exp.color}20` }}>
+											{/* Summary */}
+											<p style={{ fontSize: 14, lineHeight: 1.75, color: "var(--text-sub)", marginBottom: 16 }}>
+												{exp.summary}
+											</p>
+											{/* Top 2 points */}
+											<ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+												{exp.points.slice(0, 2).map((pt, j) => (
 													<li
 														key={j}
 														style={{
@@ -1417,18 +1596,31 @@ function Experience() {
 															color: "var(--text-sub)",
 															animation: `revealUp 0.4s cubic-bezier(.22,1,.36,1) ${j * 0.06}s both`,
 														}}>
-														<span
-															style={{
-																color: exp.color,
-																flexShrink: 0,
-																marginTop: 3,
-															}}>
-															→
-														</span>
+														<span style={{ color: exp.color, flexShrink: 0, marginTop: 3 }}>→</span>
 														{pt}
 													</li>
 												))}
 											</ul>
+											{/* View full details button */}
+											<button
+												onClick={(e) => { e.stopPropagation(); setModal(i); }}
+												style={{
+													background: `${exp.color}15`,
+													border: `1px solid ${exp.color}40`,
+													borderRadius: 8,
+													padding: "8px 16px",
+													cursor: "pointer",
+													fontSize: 12,
+													fontWeight: 600,
+													color: exp.color,
+													display: "flex",
+													alignItems: "center",
+													gap: 6,
+													fontFamily: "'Syne', sans-serif",
+													letterSpacing: "0.04em",
+												}}>
+												View Full Details <ArrowUpRight size={12} />
+											</button>
 										</div>
 									)}
 								</div>
@@ -1446,48 +1638,30 @@ function Skills() {
 	const [activeTab, setActiveTab] = useState(0);
 
 	return (
-		<section
-			id="skills"
-			className="section"
-			style={{ background: "var(--bg2)" }}>
+		<section id="skills" className="section" style={{ background: "var(--bg2)" }}>
 			<div
 				style={{
 					position: "absolute",
 					inset: 0,
-					backgroundImage:
-						"radial-gradient(circle at 70% 30%, rgba(124,111,255,0.07) 0%, transparent 60%)",
+					backgroundImage: "radial-gradient(circle at 70% 30%, rgba(124,111,255,0.07) 0%, transparent 60%)",
 					pointerEvents: "none",
 				}}
 			/>
-			<div
-				style={{
-					maxWidth: 1160,
-					margin: "0 auto",
-					padding: "0 24px",
-					position: "relative",
-				}}>
-				<div className="reveal" style={{ marginBottom: 48 }}>
+			<div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", position: "relative" }}>
+				<div className="reveal" style={{ marginBottom: 16 }}>
 					<div className="section-label">Capabilities</div>
 					<h2
 						className="syne"
-						style={{
-							fontSize: "clamp(28px,3.5vw,48px)",
-							fontWeight: 800,
-							letterSpacing: "-0.02em",
-						}}>
+						style={{ fontSize: "clamp(28px,3.5vw,48px)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12 }}>
 						Skills &amp; <span className="grad">Expertise</span>
 					</h2>
+					<p style={{ fontSize: 14, color: "var(--text-muted)", maxWidth: 540, lineHeight: 1.7, marginBottom: 36 }}>
+						Organized by function — not just listed alphabetically. Each group represents a working capability, not a keyword.
+					</p>
 				</div>
 
 				{/* Tab switcher */}
-				<div
-					className="reveal"
-					style={{
-						display: "flex",
-						gap: 8,
-						marginBottom: 36,
-						flexWrap: "wrap",
-					}}>
+				<div className="reveal" style={{ display: "flex", gap: 8, marginBottom: 32, flexWrap: "wrap" }}>
 					{SKILLS_GROUPS.map((g, i) => (
 						<button
 							key={g.label}
@@ -1504,83 +1678,62 @@ function Skills() {
 								borderColor: activeTab === i ? g.color : "var(--border)",
 								background: activeTab === i ? `${g.color}18` : "transparent",
 								color: activeTab === i ? g.color : "var(--text-muted)",
+								display: "flex",
+								alignItems: "center",
+								gap: 8,
 							}}>
+							<span>{g.icon}</span>
 							{g.label}
 						</button>
 					))}
 				</div>
 
-				{/* Tags grid */}
-				<div
-					className="reveal"
-					style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-					{SKILLS_GROUPS[activeTab].tags.map((tag, i) => (
-						<span
-							key={tag}
-							className="stag"
-							style={{
-								animation: `revealUp 0.35s cubic-bezier(.22,1,.36,1) ${i * 0.05}s both`,
-								borderColor: `${SKILLS_GROUPS[activeTab].color}30`,
-							}}>
-							{tag}
-						</span>
-					))}
+				{/* Active group */}
+				<div className="reveal skill-group" style={{ borderColor: `${SKILLS_GROUPS[activeTab].color}25` }}>
+					<p style={{ fontSize: 14, color: "var(--text-muted)", marginBottom: 20, lineHeight: 1.65 }}>
+						{SKILLS_GROUPS[activeTab].description}
+					</p>
+					<div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+						{SKILLS_GROUPS[activeTab].tags.map((tag, i) => (
+							<span
+								key={tag}
+								className="stag"
+								style={{
+									animation: `revealUp 0.35s cubic-bezier(.22,1,.36,1) ${i * 0.04}s both`,
+									borderColor: `${SKILLS_GROUPS[activeTab].color}30`,
+								}}>
+								{tag}
+							</span>
+						))}
+					</div>
 				</div>
 
 				{/* Languages */}
 				<div
 					className="reveal"
 					style={{
-						marginTop: 48,
+						marginTop: 32,
 						display: "grid",
 						gridTemplateColumns: "repeat(auto-fit, minmax(260px,1fr))",
 						gap: 16,
 					}}>
 					{[
-						{
-							lang: "Bahasa Indonesia",
-							level: "Native",
-							flag: "🇮🇩",
-							color: "#7C6FFF",
-						},
-						{
-							lang: "English",
-							level: "C2 Proficient",
-							flag: "🇬🇧",
-							color: "#F0C96A",
-						},
-					].map(({ lang, level, flag, color }) => (
+						{ lang: "Bahasa Indonesia", level: "Native Speaker", flag: "🇮🇩", color: "#7C6FFF", note: "Professional & everyday fluency" },
+						{ lang: "English", level: "C2 Proficient", flag: "🇬🇧", color: "#F0C96A", note: "EF SET certified · OECD-level reading" },
+					].map(({ lang, level, flag, color, note }) => (
 						<div
 							key={lang}
 							className="glass"
-							style={{
-								padding: "20px 24px",
-								display: "flex",
-								alignItems: "center",
-								gap: 16,
-							}}>
+							style={{ padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
 							<span style={{ fontSize: 28 }}>{flag}</span>
 							<div>
-								<div
-									className="syne"
-									style={{
-										fontSize: 16,
-										fontWeight: 700,
-										color: "var(--text)",
-										marginBottom: 3,
-									}}>
+								<div className="syne" style={{ fontSize: 16, fontWeight: 700, color: "var(--text)", marginBottom: 2 }}>
 									{lang}
 								</div>
-								<div
-									style={{
-										fontSize: 12,
-										color: color,
-										fontWeight: 600,
-										letterSpacing: "0.06em",
-										textTransform: "uppercase",
-									}}>
+								<div style={{ fontSize: 12, color: color, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 3 }}>
 									{level}
 								</div>
+								<div style={{ fontSize: 11, color: "var(--text-muted)" }}>{note}</div>
 							</div>
 						</div>
 					))}
@@ -1593,55 +1746,26 @@ function Skills() {
 // ─── Education ────────────────────────────────────────────────────────────
 function Education() {
 	return (
-		<section
-			id="education"
-			className="section"
-			style={{ background: "var(--bg)" }}>
+		<section id="education" className="section" style={{ background: "var(--bg)" }}>
 			<div
 				style={{
 					position: "absolute",
 					inset: 0,
-					backgroundImage:
-						"radial-gradient(circle at 30% 70%, rgba(240,201,106,0.05) 0%, transparent 60%)",
+					backgroundImage: "radial-gradient(circle at 30% 70%, rgba(240,201,106,0.05) 0%, transparent 60%)",
 					pointerEvents: "none",
 				}}
 			/>
-			<div
-				style={{
-					maxWidth: 1160,
-					margin: "0 auto",
-					padding: "0 24px",
-					position: "relative",
-				}}>
+			<div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", position: "relative" }}>
 				<div className="reveal" style={{ marginBottom: 48 }}>
 					<div className="section-label">Academic</div>
-					<h2
-						className="syne"
-						style={{
-							fontSize: "clamp(28px,3.5vw,48px)",
-							fontWeight: 800,
-							letterSpacing: "-0.02em",
-						}}>
+					<h2 className="syne" style={{ fontSize: "clamp(28px,3.5vw,48px)", fontWeight: 800, letterSpacing: "-0.02em" }}>
 						<span className="grad">Education</span>
 					</h2>
 				</div>
 
-				<div
-					style={{
-						display: "grid",
-						gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-						gap: 24,
-						alignItems: "start",
-					}}>
-					{/* Main card */}
+				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24, alignItems: "start" }}>
 					<div className="reveal glass" style={{ padding: "36px" }}>
-						<div
-							style={{
-								display: "flex",
-								gap: 16,
-								alignItems: "flex-start",
-								marginBottom: 24,
-							}}>
+						<div style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 24 }}>
 							<div
 								style={{
 									width: 52,
@@ -1669,133 +1793,53 @@ function Education() {
 									}}>
 									2020 – 2024
 								</span>
-								<h3
-									className="syne"
-									style={{
-										fontSize: 22,
-										fontWeight: 800,
-										color: "var(--text)",
-										lineHeight: 1.2,
-									}}>
+								<h3 className="syne" style={{ fontSize: 22, fontWeight: 800, color: "var(--text)", lineHeight: 1.2 }}>
 									Bachelor of
 									<br />
 									Accounting
 								</h3>
 							</div>
 						</div>
-						<p
-							style={{
-								fontSize: 16,
-								color: "var(--accent)",
-								fontWeight: 600,
-								marginBottom: 16,
-							}}>
+						<p style={{ fontSize: 16, color: "var(--accent)", fontWeight: 600, marginBottom: 16 }}>
 							Universitas Airlangga
 						</p>
-						<p
-							style={{
-								fontSize: 14,
-								lineHeight: 1.85,
-								color: "var(--text-sub)",
-								marginBottom: 24,
-							}}>
-							Comprehensive accounting education from one of Indonesia&apos;s
-							leading universities. Built strong foundations in taxation,
-							financial analysis, auditing, and business reporting.
+						<p style={{ fontSize: 14, lineHeight: 1.85, color: "var(--text-sub)", marginBottom: 24 }}>
+							Graduated from one of Indonesia's top-ranked universities with a concentration in taxation and financial reporting. Built technical grounding in tax law, cost accounting, financial analysis, and audit methodology — directly applicable to consulting practice.
 						</p>
 						<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-							{[
-								"Taxation",
-								"Financial Analysis",
-								"Auditing",
-								"Business Reporting",
-								"Cost Accounting",
-							].map((t) => (
-								<span key={t} className="stag" style={{ fontSize: 12 }}>
-									{t}
-								</span>
+							{["Taxation", "Financial Analysis", "Auditing", "Cost Accounting", "Business Reporting"].map((t) => (
+								<span key={t} className="stag" style={{ fontSize: 12 }}>{t}</span>
 							))}
 						</div>
 					</div>
 
-					{/* Achievement */}
-					<div
-						className="reveal"
-						style={{
-							transitionDelay: "0.1s",
-							display: "flex",
-							flexDirection: "column",
-							gap: 16,
-						}}>
+					<div className="reveal" style={{ transitionDelay: "0.1s", display: "flex", flexDirection: "column", gap: 16 }}>
 						<div
 							className="glass"
-							style={{
-								padding: "28px",
-								borderColor: "rgba(240,201,106,0.2)",
-								background: "rgba(240,201,106,0.05)",
-							}}>
-							<div
-								style={{
-									fontSize: 10,
-									fontWeight: 700,
-									letterSpacing: "0.12em",
-									textTransform: "uppercase",
-									color: "var(--gold)",
-									marginBottom: 12,
-								}}>
+							style={{ padding: "28px", borderColor: "rgba(240,201,106,0.2)", background: "rgba(240,201,106,0.05)" }}>
+							<div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 12 }}>
 								🏆 Achievement
 							</div>
-							<h4
-								className="syne"
-								style={{
-									fontSize: 17,
-									fontWeight: 700,
-									color: "var(--text)",
-									marginBottom: 8,
-								}}>
-								1st Place Lomba Konten Medsos
+							<h4 className="syne" style={{ fontSize: 17, fontWeight: 700, color: "var(--text)", marginBottom: 6 }}>
+								1st Place — Lomba Konten Medsos
 							</h4>
-							<p
-								style={{
-									fontSize: 13,
-									color: "var(--text-muted)",
-									lineHeight: 1.6,
-								}}>
-								APA Fest 2021 · Ikatan Akuntan Indonesia · November 2021
+							<p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.65 }}>
+								APA Fest 2021 · Ikatan Akuntan Indonesia · November 2021. Competing against accounting students nationally on financial content communication.
 							</p>
 						</div>
 
 						<div className="glass" style={{ padding: "28px" }}>
-							<div
-								style={{
-									fontSize: 10,
-									fontWeight: 700,
-									letterSpacing: "0.12em",
-									textTransform: "uppercase",
-									color: "var(--accent)",
-									marginBottom: 16,
-								}}>
-								Key Highlights
+							<div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 16 }}>
+								Academic Highlights
 							</div>
 							{[
-								"Strong foundation in tax law & compliance",
-								"Hands-on case studies & project learning",
-								"Active member of accounting student body",
+								"Tax law curriculum aligned with DGT professional standards",
+								"Hands-on case method learning in corporate tax scenarios",
+								"Active contributor to Himpunan Mahasiswa Akuntansi (HMA UNAIR)",
+								"Completed MBKM government internship programme during study",
 							].map((h, i) => (
-								<div
-									key={i}
-									style={{
-										display: "flex",
-										gap: 10,
-										fontSize: 14,
-										color: "var(--text-sub)",
-										marginBottom: 10,
-										lineHeight: 1.6,
-									}}>
-									<span style={{ color: "var(--accent)", flexShrink: 0 }}>
-										✓
-									</span>{" "}
-									{h}
+								<div key={i} style={{ display: "flex", gap: 10, fontSize: 14, color: "var(--text-sub)", marginBottom: 10, lineHeight: 1.6 }}>
+									<span style={{ color: "var(--accent)", flexShrink: 0 }}>✓</span> {h}
 								</div>
 							))}
 						</div>
@@ -1806,53 +1850,114 @@ function Education() {
 	);
 }
 
-// ─── Certifications ───────────────────────────────────────────────────────
-function Certifications() {
-	const cats = [
-		"All",
-		"Tax",
-		"International",
-		"Audit",
-		"Technology",
-		"Language",
-	];
-	const [active, setActive] = useState("All");
-	const filtered =
-		active === "All" ? CERTS : CERTS.filter((c) => c.cat === active);
+// ─── Cert Detail Modal ─────────────────────────────────────────────────────
+function CertModal({ cert, onClose }: { cert: typeof CERTS[0]; onClose: () => void }) {
+	useEffect(() => {
+		const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+		document.addEventListener("keydown", handler);
+		return () => document.removeEventListener("keydown", handler);
+	}, [onClose]);
 
 	return (
-		<section
-			id="certifications"
-			className="section"
-			style={{ background: "var(--bg2)" }}>
+		<div className="modal-overlay" onClick={onClose}>
+			<div className="modal-box" style={{ maxWidth: 480 }} onClick={(e) => e.stopPropagation()}>
+				<button
+					onClick={onClose}
+					style={{
+						position: "absolute", top: 20, right: 20,
+						background: "var(--surface)", border: "1px solid var(--border)",
+						borderRadius: 8, padding: 8, cursor: "pointer", color: "var(--text)", display: "flex",
+					}}>
+					<X size={16} />
+				</button>
+				<div style={{ fontSize: 36, marginBottom: 16 }}>{cert.icon}</div>
+				<div style={{ marginBottom: 8 }}>
+					<span className="pill" style={{ borderColor: "rgba(124,111,255,0.3)", background: "rgba(124,111,255,0.08)", color: "var(--accent)", fontSize: 10 }}>
+						{cert.cat}
+					</span>
+				</div>
+				<h3 className="syne" style={{ fontSize: 20, fontWeight: 800, color: "var(--text)", marginBottom: 16, lineHeight: 1.3 }}>
+					{cert.name}
+				</h3>
+				<div style={{ background: "rgba(124,111,255,0.06)", border: "1px solid rgba(124,111,255,0.15)", borderRadius: 12, padding: "16px 18px" }}>
+					<div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 8 }}>
+						Why This Matters
+					</div>
+					<p style={{ fontSize: 14, lineHeight: 1.75, color: "var(--text-sub)" }}>
+						{cert.relevance}
+					</p>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+// ─── Certifications ───────────────────────────────────────────────────────
+function Certifications() {
+	const cats = ["All", "Core Tax", "International Tax", "Audit", "Technical", "Language"];
+	const [active, setActive] = useState("All");
+	const [selectedCert, setSelectedCert] = useState<typeof CERTS[0] | null>(null);
+	const filtered = active === "All" ? CERTS : CERTS.filter((c) => c.cat === active);
+
+	return (
+		<section id="certifications" className="section" style={{ background: "var(--bg2)" }}>
+			{selectedCert && <CertModal cert={selectedCert} onClose={() => setSelectedCert(null)} />}
 			<div
 				style={{
 					position: "absolute",
 					inset: 0,
-					backgroundImage:
-						"radial-gradient(circle at 60% 20%, rgba(124,111,255,0.07) 0%, transparent 60%)",
+					backgroundImage: "radial-gradient(circle at 60% 20%, rgba(124,111,255,0.07) 0%, transparent 60%)",
 					pointerEvents: "none",
 				}}
 			/>
-			<div
-				style={{
-					maxWidth: 1160,
-					margin: "0 auto",
-					padding: "0 24px",
-					position: "relative",
-				}}>
-				<div className="reveal" style={{ marginBottom: 40 }}>
+			<div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", position: "relative" }}>
+				<div className="reveal" style={{ marginBottom: 12 }}>
 					<div className="section-label">Credentials</div>
 					<h2
 						className="syne"
-						style={{
-							fontSize: "clamp(28px,3.5vw,48px)",
-							fontWeight: 800,
-							letterSpacing: "-0.02em",
-							marginBottom: 28,
-						}}>
+						style={{ fontSize: "clamp(28px,3.5vw,48px)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 }}>
 						Certifications &amp; <span className="grad">Training</span>
 					</h2>
+					{/* WHY CERTS MATTER — new section intro */}
+					<p style={{ fontSize: 14, lineHeight: 1.75, color: "var(--text-sub)", maxWidth: 640, marginBottom: 12 }}>
+						In tax consulting, credentials aren't optional — they're the signal that you've done the work to understand the rules. These certifications span Indonesia's national tax standard (Brevet AB), international frameworks (OECD/World Bank), audit methodology (KPMG), and technical tools. Click any certification to see why it matters.
+					</p>
+					{/* Highlight row */}
+					<div
+						style={{
+							display: "flex",
+							flexWrap: "wrap",
+							gap: 10,
+							marginBottom: 28,
+							paddingBottom: 24,
+							borderBottom: "1px solid var(--border)",
+						}}>
+						{[
+							{ label: "Brevet AB", note: "National tax practitioner standard", icon: "🏛️" },
+							{ label: "World Bank Transfer Pricing", note: "OECD-aligned international training", icon: "🌐" },
+							{ label: "KPMG Audit Simulation", note: "Big Four audit methodology", icon: "🏦" },
+							{ label: "C2 English (EF SET)", note: "Top-tier language proficiency", icon: "✨" },
+						].map(({ label, note, icon }) => (
+							<div
+								key={label}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									gap: 10,
+									background: "rgba(124,111,255,0.07)",
+									border: "1px solid rgba(124,111,255,0.2)",
+									borderRadius: 10,
+									padding: "10px 16px",
+								}}>
+								<span style={{ fontSize: 16 }}>{icon}</span>
+								<div>
+									<div className="syne" style={{ fontSize: 12, fontWeight: 700, color: "var(--text)" }}>{label}</div>
+									<div style={{ fontSize: 11, color: "var(--text-muted)" }}>{note}</div>
+								</div>
+							</div>
+						))}
+					</div>
+
 					<div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
 						{cats.map((c) => (
 							<button
@@ -1869,8 +1974,7 @@ function Certifications() {
 									transition: "all 0.2s",
 									letterSpacing: "0.04em",
 									borderColor: active === c ? "var(--accent)" : "var(--border)",
-									background:
-										active === c ? "rgba(124,111,255,0.15)" : "transparent",
+									background: active === c ? "rgba(124,111,255,0.15)" : "transparent",
 									color: active === c ? "var(--accent)" : "var(--text-muted)",
 								}}>
 								{c}
@@ -1879,43 +1983,37 @@ function Certifications() {
 					</div>
 				</div>
 
-				<div
-					style={{
-						display: "grid",
-						gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))",
-						gap: 12,
-					}}>
+				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: 12 }}>
 					{filtered.map((cert, i) => (
 						<div
 							key={`${active}-${cert.name}`}
 							className="cert-item"
+							onClick={() => setSelectedCert(cert)}
 							style={{
 								animation: `revealUp .5s cubic-bezier(.22,1,.36,1) ${(i % 6) * 0.06}s both`,
+								cursor: "pointer",
+								borderColor: cert.highlight ? "rgba(124,111,255,0.3)" : "var(--border)",
+								background: cert.highlight ? "rgba(124,111,255,0.05)" : "var(--surface)",
 							}}>
 							<span style={{ fontSize: 22, flexShrink: 0 }}>{cert.icon}</span>
 							<div style={{ flex: 1 }}>
-								<div
-									style={{
-										fontSize: 14,
-										fontWeight: 500,
-										color: "var(--text)",
-										marginBottom: 4,
-										lineHeight: 1.4,
-									}}>
+								<div style={{ fontSize: 14, fontWeight: 500, color: "var(--text)", marginBottom: 3, lineHeight: 1.4 }}>
 									{cert.name}
 								</div>
+								{cert.highlight && (
+									<div style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600, letterSpacing: "0.04em" }}>
+										Key credential ·
+									</div>
+								)}
 							</div>
-							<span
-								className="pill"
-								style={{
-									borderColor: "rgba(124,111,255,0.3)",
-									background: "rgba(124,111,255,0.08)",
-									color: "var(--accent)",
-									fontSize: 10,
-									flexShrink: 0,
-								}}>
-								{cert.cat}
-							</span>
+							<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, flexShrink: 0 }}>
+								<span
+									className="pill"
+									style={{ borderColor: "rgba(124,111,255,0.3)", background: "rgba(124,111,255,0.08)", color: "var(--accent)", fontSize: 10 }}>
+									{cert.cat}
+								</span>
+								<span style={{ fontSize: 10, color: "var(--text-muted)" }}>tap for details</span>
+							</div>
 						</div>
 					))}
 				</div>
@@ -1927,61 +2025,34 @@ function Certifications() {
 // ─── Contact ──────────────────────────────────────────────────────────────
 function Contact() {
 	return (
-		<section
-			id="contact"
-			className="section"
-			style={{ background: "var(--bg)" }}>
+		<section id="contact" className="section" style={{ background: "var(--bg)" }}>
 			<div
 				style={{
 					position: "absolute",
 					inset: 0,
-					backgroundImage:
-						"radial-gradient(circle at 50% 50%, rgba(124,111,255,0.1) 0%, transparent 65%)",
+					backgroundImage: "radial-gradient(circle at 50% 50%, rgba(124,111,255,0.1) 0%, transparent 65%)",
 					pointerEvents: "none",
 				}}
 			/>
-			<div
-				style={{
-					maxWidth: 1160,
-					margin: "0 auto",
-					padding: "0 24px",
-					position: "relative",
-				}}>
-				<div
-					style={{ textAlign: "center", marginBottom: 64 }}
-					className="reveal">
+			<div style={{ maxWidth: 1160, margin: "0 auto", padding: "0 24px", position: "relative" }}>
+				<div style={{ textAlign: "center", marginBottom: 64 }} className="reveal">
 					<div className="section-label" style={{ justifyContent: "center" }}>
 						Contact
 					</div>
 					<h2
 						className="syne"
-						style={{
-							fontSize: "clamp(28px,3.5vw,56px)",
-							fontWeight: 800,
-							letterSpacing: "-0.02em",
-							marginBottom: 16,
-						}}>
-						Let&apos;s build something
+						style={{ fontSize: "clamp(28px,3.5vw,56px)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 }}>
+						Looking for a detail-oriented
 						<br />
-						<span className="grad">great together</span>
+						<span className="grad">tax professional?</span>
 					</h2>
-					<p
-						style={{
-							fontSize: 15,
-							color: "var(--text-sub)",
-							maxWidth: 420,
-							margin: "0 auto",
-						}}>
-						Actively seeking opportunities in taxation, accounting, and
-						consulting. Full-time or internship I&apos;d love to connect.
+					<p style={{ fontSize: 15, color: "var(--text-sub)", maxWidth: 460, margin: "0 auto", lineHeight: 1.75 }}>
+						I'm actively seeking Tax Staff, Tax Consultant, and Tax Associate roles — full-time or internship. Let's talk about how I can contribute to your team.
 					</p>
 				</div>
 
 				<div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 32 }}>
-					{/* Contact info */}
-					<div
-						className="reveal-left"
-						style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+					<div className="reveal-left" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 						{[
 							{
 								icon: <Mail size={16} />,
@@ -1991,7 +2062,7 @@ function Contact() {
 							},
 							{
 								icon: <Phone size={16} />,
-								label: "Phone",
+								label: "Phone / WhatsApp",
 								value: "+62 888-3052-061",
 								href: "tel:+628883052061",
 							},
@@ -2004,44 +2075,25 @@ function Contact() {
 							{
 								icon: <MapPin size={16} />,
 								label: "Location",
-								value: "Sidoarjo, East Java, Indonesia",
+								value: "Sidoarjo, East Java — open to Surabaya & remote",
 								href: null,
 							},
 						].map(({ icon, label, value, href }) => (
 							<div
 								key={label}
 								className="glass"
-								style={{
-									padding: "20px 24px",
-									display: "flex",
-									alignItems: "center",
-									gap: 16,
-								}}>
+								style={{ padding: "20px 24px", display: "flex", alignItems: "center", gap: 16 }}>
 								<div
 									style={{
-										width: 40,
-										height: 40,
-										borderRadius: 10,
-										background: "rgba(124,111,255,0.12)",
-										border: "1px solid rgba(124,111,255,0.2)",
-										display: "flex",
-										alignItems: "center",
-										justifyContent: "center",
-										color: "var(--accent)",
-										flexShrink: 0,
+										width: 40, height: 40, borderRadius: 10,
+										background: "rgba(124,111,255,0.12)", border: "1px solid rgba(124,111,255,0.2)",
+										display: "flex", alignItems: "center", justifyContent: "center",
+										color: "var(--accent)", flexShrink: 0,
 									}}>
 									{icon}
 								</div>
 								<div>
-									<div
-										style={{
-											fontSize: 11,
-											fontWeight: 600,
-											letterSpacing: "0.1em",
-											textTransform: "uppercase",
-											color: "var(--text-muted)",
-											marginBottom: 3,
-										}}>
+									<div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 3 }}>
 										{label}
 									</div>
 									{href ? (
@@ -2049,124 +2101,18 @@ function Contact() {
 											href={href}
 											target={href.startsWith("http") ? "_blank" : undefined}
 											rel="noopener noreferrer"
-											style={{
-												fontSize: 14,
-												color: "var(--text)",
-												textDecoration: "none",
-												fontWeight: 400,
-												display: "flex",
-												alignItems: "center",
-												gap: 4,
-											}}
-											onMouseOver={(e) =>
-												(e.currentTarget.style.color = "var(--accent)")
-											}
-											onMouseOut={(e) =>
-												(e.currentTarget.style.color = "var(--text)")
-											}>
-											{value}{" "}
-											{href.startsWith("http") && <ArrowUpRight size={12} />}
+											style={{ fontSize: 14, color: "var(--text)", textDecoration: "none", fontWeight: 400, display: "flex", alignItems: "center", gap: 4 }}
+											onMouseOver={(e) => (e.currentTarget.style.color = "var(--accent)")}
+											onMouseOut={(e) => (e.currentTarget.style.color = "var(--text)")}>
+											{value} {href.startsWith("http") && <ArrowUpRight size={12} />}
 										</a>
 									) : (
-										<span
-											style={{
-												fontSize: 14,
-												color: "var(--text)",
-												fontWeight: 400,
-											}}>
-											{value}
-										</span>
+										<span style={{ fontSize: 14, color: "var(--text)", fontWeight: 400 }}>{value}</span>
 									)}
 								</div>
 							</div>
 						))}
 					</div>
-
-					{/* Form */}
-					{/* <div className="reveal glass" style={{ padding: "32px 36px" }}>
-						<h3
-							className="syne"
-							style={{
-								fontSize: 18,
-								fontWeight: 700,
-								marginBottom: 24,
-								color: "var(--text)",
-							}}>
-							Send a Message
-						</h3>
-						<div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-							{[
-								{
-									id: "name",
-									label: "Full Name",
-									type: "text",
-									placeholder: "Your name",
-								},
-								{
-									id: "email",
-									label: "Email",
-									type: "email",
-									placeholder: "your@email.com",
-								},
-								{
-									id: "company",
-									label: "Company",
-									type: "text",
-									placeholder: "Where you work",
-								},
-							].map(({ id, label, type, placeholder }) => (
-								<div key={id}>
-									<label
-										htmlFor={id}
-										style={{
-											display: "block",
-											fontSize: 11,
-											fontWeight: 600,
-											letterSpacing: "0.1em",
-											textTransform: "uppercase",
-											color: "var(--text-muted)",
-											marginBottom: 8,
-										}}>
-										{label}
-									</label>
-									<input
-										type={type}
-										id={id}
-										placeholder={placeholder}
-										className="inp"
-									/>
-								</div>
-							))}
-							<div>
-								<label
-									htmlFor="msg"
-									style={{
-										display: "block",
-										fontSize: 11,
-										fontWeight: 600,
-										letterSpacing: "0.1em",
-										textTransform: "uppercase",
-										color: "var(--text-muted)",
-										marginBottom: 8,
-									}}>
-									Message
-								</label>
-								<textarea
-									id="msg"
-									rows={3}
-									placeholder="Tell me about the opportunity..."
-									className="inp"
-									style={{ resize: "none" }}
-								/>
-							</div>
-							<a
-								href="mailto:nadiamadarinasaid@gmail.com"
-								className="btn-primary"
-								style={{ justifyContent: "center", marginTop: 4 }}>
-								Send Message <ArrowUpRight size={14} />
-							</a>
-						</div>
-					</div> */}
 				</div>
 			</div>
 		</section>
@@ -2189,12 +2135,10 @@ function Footer() {
 			}}>
 			<p style={{ fontSize: 13, color: "var(--text-muted)" }}>
 				© 2025{" "}
-				<span style={{ color: "var(--text)", fontWeight: 500 }}>
-					Nadia Madarina Said
-				</span>
+				<span style={{ color: "var(--text)", fontWeight: 500 }}>Nadia Madarina Said</span>
 			</p>
 			<p style={{ fontSize: 12, color: "var(--text-muted)" }}>
-				Sidoarjo, Indonesia · Tax Consultant
+				Sidoarjo, Indonesia · Junior Tax Consultant · Brevet AB
 			</p>
 		</footer>
 	);
