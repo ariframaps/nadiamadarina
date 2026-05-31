@@ -767,7 +767,7 @@ function Hero() {
 							<br />
 							<span className="grad">Madarina</span>
 							<br />
-							Sa&apos;id
+							Said
 						</h1>
 
 						<p
