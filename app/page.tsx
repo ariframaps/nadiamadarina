@@ -940,7 +940,7 @@ function Hero() {
 				<div
 					style={{
 						display: "grid",
-						gridTemplateColumns: "repeat(3,1fr)",
+						gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
 						gap: 16,
 						marginTop: 64,
 						animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.65s both",
