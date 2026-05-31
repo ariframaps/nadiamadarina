@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
 	title: "Nadia Madarina Said — Tax Consultant & Accounting Professional",
 	description:
-		"Portfolio of Nadia Madarina Said — Accounting graduate with expertise in tax consulting, documentation, and client coordination. Based in Sidoarjo, Indonesia.",
+		"Portfolio of Nadia Madarina Said | Accounting graduate with expertise in tax consulting, documentation, and client coordination. Based in Sidoarjo, Indonesia.",
 	keywords: [
 		"tax consultant",
 		"accounting",
@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 		"Nadia Madarina",
 	],
 	openGraph: {
-		title: "Nadia Madarina Said — Tax Consultant",
-		description:
-			"Accounting professional with hands-on experience in tax consulting environments.",
+		title: "Nadia Madarina Said | Tax",
+		description: "Accounting Graduate with Tax Consulting Experience",
 		type: "website",
+		images: ["/og-image.webp"],
 	},
 };
 
