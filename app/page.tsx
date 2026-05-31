@@ -894,7 +894,7 @@ function Hero() {
 							}}>
 							<Image
 								src="/nadia.webp"
-								alt="Nadia Madarina Sa'id"
+								alt="Nadia Madarina Said"
 								fill
 								style={{ objectFit: "cover" }}
 								priority
