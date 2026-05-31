@@ -404,10 +404,10 @@ const SKILLS_GROUPS = [
 const CERTS = [
 	{ name: "Brevet AB", cat: "Tax", icon: "🏛️" },
 	{ name: "Tax Officer Training", cat: "Tax", icon: "📋" },
-	{ name: "Tax Planning — Corporate Tax Saving", cat: "Tax", icon: "💼" },
+	{ name: "Tax Planning  Corporate Tax Saving", cat: "Tax", icon: "💼" },
 	{ name: "Pajak 102: Tax Planning", cat: "Tax", icon: "📊" },
 	{
-		name: "Transfer Pricing eLearning — World Bank Group",
+		name: "Transfer Pricing eLearning  World Bank Group",
 		cat: "International",
 		icon: "🌐",
 	},
@@ -420,7 +420,7 @@ const CERTS = [
 	},
 	{ name: "C1 Advanced English Certificate", cat: "Language", icon: "🇬🇧" },
 	{
-		name: "EF SET English Certificate — C2 Proficient",
+		name: "EF SET English Certificate  C2 Proficient",
 		cat: "Language",
 		icon: "✨",
 	},
@@ -780,9 +780,9 @@ function Hero() {
 								fontWeight: 300,
 								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.35s both",
 							}}>
-							Accounting graduate from Universitas Airlangga — specialising in
-							tax consulting, compliance documentation, and client relations.
-							Brevet AB certified, C2 English proficient.
+							Accounting graduate from Universitas Airlangga specialising in tax
+							consulting, compliance documentation, and client relations. Brevet
+							AB certified, C2 English proficient.
 						</p>
 
 						<div
@@ -849,7 +849,7 @@ function Hero() {
 						</div>
 					</div>
 
-					{/* Photo — hide on small screens */}
+					{/* Photo  hide on small screens */}
 					<div
 						className="hide-mobile"
 						style={{
@@ -1119,7 +1119,7 @@ function About() {
 								marginBottom: 36,
 							}}>
 							I hold a Brevet AB certification, completed World Bank Group
-							transfer pricing training, and maintain C2 English proficiency —
+							transfer pricing training, and maintain C2 English proficiency
 							positioning me for both domestic and international consulting
 							roles.
 						</p>
@@ -1731,7 +1731,7 @@ function Education() {
 									color: "var(--text)",
 									marginBottom: 8,
 								}}>
-								1st Place — Lomba Konten Medsos
+								1st Place Lomba Konten Medsos
 							</h4>
 							<p
 								style={{
@@ -1865,9 +1865,11 @@ function Certifications() {
 					}}>
 					{filtered.map((cert, i) => (
 						<div
-							key={cert.name}
-							className="cert-item reveal"
-							style={{ transitionDelay: `${(i % 6) * 0.06}s` }}>
+							key={`${active}-${cert.name}`}
+							className="cert-item"
+							style={{
+								animation: `revealUp .5s cubic-bezier(.22,1,.36,1) ${(i % 6) * 0.06}s both`,
+							}}>
 							<span style={{ fontSize: 22, flexShrink: 0 }}>{cert.icon}</span>
 							<div style={{ flex: 1 }}>
 								<div
@@ -1949,7 +1951,7 @@ function Contact() {
 							margin: "0 auto",
 						}}>
 						Actively seeking opportunities in taxation, accounting, and
-						consulting. Full-time or internship — I&apos;d love to connect.
+						consulting. Full-time or internship I&apos;d love to connect.
 					</p>
 				</div>
 
