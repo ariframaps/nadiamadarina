@@ -1,29 +1,334 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import {
 	Mail,
 	Phone,
 	MapPin,
 	ArrowUpRight,
-	ChevronDown,
 	ExternalLink,
+	Menu,
+	X,
+	ChevronDown,
 } from "lucide-react";
 
-// ─── Data ──────────────────────────────────────────────────────────────────
+// ─── Styles ────────────────────────────────────────────────────────────────
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #080B14;
+  --bg2: #0D1120;
+  --surface: rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.18);
+  --text: #F0F2FF;
+  --text-muted: rgba(240,242,255,0.45);
+  --text-sub: rgba(240,242,255,0.65);
+  --accent: #7C6FFF;
+  --accent2: #C084FC;
+  --glow: rgba(124,111,255,0.35);
+  --gold: #F0C96A;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+/* Heading font */
+.syne { font-family: 'Syne', sans-serif; }
+
+/* Blob backgrounds */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glass card */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.glass:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+}
+
+/* Pill badge */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* Accent gradient text */
+.grad {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 28px rgba(124,111,255,0.35);
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 40px rgba(124,111,255,0.5); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.btn-ghost:hover { border-color: var(--accent); background: rgba(124,111,255,0.08); transform: translateY(-2px); }
+
+/* Reveal animations */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes revealLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+.reveal-left.in { opacity: 1; transform: none; }
+
+/* Section */
+.section { padding: 100px 0; position: relative; overflow: hidden; }
+
+/* Section label */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(to right, var(--accent), var(--accent2));
+  border-radius: 1px;
+}
+
+/* Skill tag */
+.stag {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
+  transition: all 0.2s;
+  display: inline-block;
+}
+.stag:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: rgba(124,111,255,0.1);
+}
+
+/* Cert row */
+.cert-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all 0.25s;
+}
+.cert-item:hover {
+  border-color: rgba(124,111,255,0.4);
+  background: rgba(124,111,255,0.06);
+  transform: translateX(6px);
+}
+
+/* Contact input */
+.inp {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inp::placeholder { color: var(--text-muted); }
+.inp:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,111,255,0.15); }
+
+/* Marquee */
+.marquee-wrap { overflow: hidden; }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* Nav mobile menu */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,11,20,0.97);
+  backdrop-filter: blur(24px);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Timeline */
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  flex-shrink: 0;
+  margin-top: 6px;
+  box-shadow: 0 0 12px var(--glow);
+}
+.tl-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  margin: 8px 0 0 5.5px;
+  min-height: 40px;
+}
+
+/* Stat card */
+.stat-card {
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: transform 0.3s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(124,111,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.stat-card:hover { transform: translateY(-4px); border-color: rgba(124,111,255,0.3); }
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+  .section { padding: 72px 0; }
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}
+`;
+
+// ─── Data ─────────────────────────────────────────────────────────────────
 const EXPERIENCES = [
 	{
 		role: "Tax Consulting Staff",
 		company: "MUC Consulting",
 		period: "Mar 2025 – Nov 2025",
 		type: "Full-time",
-		index: "01",
+		color: "#7C6FFF",
 		points: [
 			"Supported tax consulting activities and administrative processes within professional consulting environments",
 			"Handled client documentation, ensuring completeness of supporting documents for consulting engagements",
 			"Coordinated with clients and internal teams on documentation requirements and operational needs",
 			"Conducted document checking, data validation, and administrative reviews for accuracy and compliance",
-			"Utilized Microsoft Excel for data processing, documentation management, and reporting activities",
 		],
 	},
 	{
@@ -31,12 +336,11 @@ const EXPERIENCES = [
 		company: "Tax Consulting Firm",
 		period: "Mar 2026 – Jun 2026",
 		type: "Internship",
-		index: "02",
+		color: "#C084FC",
 		points: [
 			"Supported operational and administrative activities within tax consulting environments",
 			"Assisted in handling client requests, documentation processes, and administrative requirements",
 			"Participated in preparing and organizing supporting documents for client engagements",
-			"Supported data processing, documentation management, and validation processes",
 			"Coordinated with team members to support project completion within deadlines",
 		],
 	},
@@ -45,7 +349,7 @@ const EXPERIENCES = [
 		company: "Prosecutor Office (Kejaksaan)",
 		period: "Government Institution",
 		type: "Internship",
-		index: "03",
+		color: "#F0C96A",
 		points: [
 			"Supported administrative processes and documentation within government institutions",
 			"Assisted with document management, filing processes, and operational support",
@@ -54,243 +358,83 @@ const EXPERIENCES = [
 	},
 ];
 
-const SKILLS = {
-	"Tax & Compliance": [
-		"Tax Administration",
-		"Tax Documentation",
-		"Tax Planning",
-		"Transfer Pricing",
-		"Financial Compliance",
-		"Client Documentation",
-		"Regulatory Filing",
-		"VAT/GST Handling",
-	],
-	"Technical Tools": [
-		"Microsoft Excel",
-		"Microsoft Word",
-		"Microsoft PowerPoint",
-		"Data Processing",
-		"Report Writing",
-		"Canva",
-		"Documentation Systems",
-	],
-	Professional: [
-		"Analytical Thinking",
-		"Attention to Detail",
-		"Client Coordination",
-		"Team Collaboration",
-		"Problem Solving",
-		"Time Management",
-		"Public Speaking",
-		"Fast Learning",
-	],
-};
-
-const CERTIFICATIONS = [
-	{ name: "Brevet AB", category: "Tax", year: "—" },
-	{ name: "Tax Officer Training", category: "Tax", year: "—" },
-	{ name: "Tax Planning — Corporate Tax Saving", category: "Tax", year: "—" },
-	{ name: "Pajak 102: Tax Planning", category: "Tax", year: "—" },
+const SKILLS_GROUPS = [
 	{
-		name: "Transfer Pricing eLearning",
-		org: "World Bank Group",
-		category: "International",
-		year: "—",
+		label: "Tax & Accounting",
+		color: "#7C6FFF",
+		tags: [
+			"Tax Administration",
+			"Tax Documentation",
+			"Tax Planning",
+			"Transfer Pricing",
+			"Financial Compliance",
+			"VAT/GST",
+			"Regulatory Filing",
+			"Client Documentation",
+		],
 	},
 	{
-		name: "KPMG Audit & Assurance Job Simulation",
-		category: "Audit",
-		year: "—",
+		label: "Technical",
+		color: "#C084FC",
+		tags: [
+			"Microsoft Excel (Advanced)",
+			"Microsoft Office Suite",
+			"Data Processing",
+			"Report Writing",
+			"Documentation Systems",
+			"Canva",
+		],
 	},
-	{ name: "Airlangga Microsoft Bootcamp", category: "Technology", year: "—" },
 	{
-		name: "Intensive 2-Week Microsoft Excel Bootcamp",
-		category: "Technology",
-		year: "—",
-	},
-	{ name: "C1 Advanced English Certificate", category: "Language", year: "—" },
-	{
-		name: "EF SET English Certificate — C2 Proficient",
-		category: "Language",
-		year: "—",
+		label: "Professional",
+		color: "#F0C96A",
+		tags: [
+			"Analytical Thinking",
+			"Attention to Detail",
+			"Client Coordination",
+			"Team Collaboration",
+			"Problem Solving",
+			"Time Management",
+			"Public Speaking",
+			"Fast Learning",
+		],
 	},
 ];
 
-// ─── Styles injected globally ──────────────────────────────────────────────
-const GLOBAL_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Mulish:wght@300;400;500;600&display=swap');
+const CERTS = [
+	{ name: "Brevet AB", cat: "Tax", icon: "🏛️" },
+	{ name: "Tax Officer Training", cat: "Tax", icon: "📋" },
+	{ name: "Tax Planning — Corporate Tax Saving", cat: "Tax", icon: "💼" },
+	{ name: "Pajak 102: Tax Planning", cat: "Tax", icon: "📊" },
+	{
+		name: "Transfer Pricing eLearning — World Bank Group",
+		cat: "International",
+		icon: "🌐",
+	},
+	{ name: "KPMG Audit & Assurance Job Simulation", cat: "Audit", icon: "🏦" },
+	{ name: "Airlangga Microsoft Bootcamp", cat: "Technology", icon: "💻" },
+	{
+		name: "Intensive 2-Week Microsoft Excel Bootcamp",
+		cat: "Technology",
+		icon: "📈",
+	},
+	{ name: "C1 Advanced English Certificate", cat: "Language", icon: "🇬🇧" },
+	{
+		name: "EF SET English Certificate — C2 Proficient",
+		cat: "Language",
+		icon: "✨",
+	},
+];
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --ink: #0D0D0D;
-    --paper: #F5F0E8;
-    --paper-mid: #EDE7D9;
-    --gold: #B8955A;
-    --gold-light: #D4AF7A;
-    --muted: #7A6F63;
-    --white: #FAFAF8;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Mulish', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    overflow-x: hidden;
-  }
-
-  .display { font-family: 'Playfair Display', serif; }
-  .gold { color: var(--gold); }
-  .muted { color: var(--muted); }
-
-  /* Reveal animations */
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
-  }
-  .reveal.in { opacity: 1; transform: none; }
-
-  .reveal-left {
-    opacity: 0;
-    transform: translateX(-32px);
-    transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
-  }
-  .reveal-left.in { opacity: 1; transform: none; }
-
-  /* Hero animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.94); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-  .anim-up { animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) both; }
-  .anim-in { animation: fadeIn 1s ease both; }
-  .anim-scale { animation: scaleIn 1.2s cubic-bezier(0.22,1,0.36,1) both; }
-
-  /* Grain overlay */
-  .grain::after {
-    content: '';
-    position: fixed;
-    inset: -200%;
-    width: 400%;
-    height: 400%;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* Nav underline */
-  .nav-item {
-    position: relative;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--muted);
-    transition: color 0.2s;
-    padding-bottom: 2px;
-  }
-  .nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--gold);
-    transition: width 0.3s cubic-bezier(0.22,1,0.36,1);
-  }
-  .nav-item:hover { color: var(--ink); }
-  .nav-item:hover::after, .nav-item.active::after { width: 100%; }
-  .nav-item.active { color: var(--ink); }
-
-  /* Experience accordion */
-  .exp-row {
-    border-top: 1px solid rgba(13,13,13,0.1);
-    transition: background 0.25s;
-    cursor: pointer;
-  }
-  .exp-row:last-child { border-bottom: 1px solid rgba(13,13,13,0.1); }
-  .exp-row:hover { background: rgba(184,149,90,0.04); }
-  .exp-row.open { background: rgba(184,149,90,0.06); }
-
-  /* Skill tag */
-  .skill-tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 14px;
-    border: 1px solid rgba(13,13,13,0.15);
-    border-radius: 2px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--ink);
-    background: transparent;
-    transition: all 0.2s;
-    letter-spacing: 0.01em;
-  }
-  .skill-tag:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: rgba(184,149,90,0.06);
-  }
-
-  /* Cert row */
-  .cert-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(13,13,13,0.08);
-    transition: padding-left 0.25s;
-  }
-  .cert-row:hover { padding-left: 8px; }
-
-  /* Contact input */
-  .field {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(247,244,239,0.2);
-    padding: 12px 0;
-    font-size: 14px;
-    font-family: 'Mulish', sans-serif;
-    color: var(--paper);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .field::placeholder { color: rgba(247,244,239,0.3); }
-  .field:focus { border-color: var(--gold); }
-
-  /* Marquee */
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  .marquee-inner {
-    display: flex;
-    width: max-content;
-    animation: marquee 28s linear infinite;
-  }
-  .marquee-inner:hover { animation-play-state: paused; }
-
-  /* Photo parallax container */
-  .photo-frame {
-    position: relative;
-    overflow: hidden;
-  }
-`;
+const NAV_LINKS = [
+	"home",
+	"about",
+	"experience",
+	"skills",
+	"education",
+	"certifications",
+	"contact",
+];
 
 // ─── Hook: Reveal ─────────────────────────────────────────────────────────
 function useReveal() {
@@ -300,7 +444,7 @@ function useReveal() {
 				entries.forEach((e) => {
 					if (e.isIntersecting) e.target.classList.add("in");
 				}),
-			{ threshold: 0.08, rootMargin: "0px 0px -60px 0px" },
+			{ threshold: 0.08, rootMargin: "0px 0px -50px 0px" },
 		);
 		document
 			.querySelectorAll(".reveal, .reveal-left")
@@ -309,374 +453,551 @@ function useReveal() {
 	}, []);
 }
 
-// ─── Navbar ──────────────────────────────────────────────────────────────
+function scrollTo(id: string) {
+	document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
+// ─── Navbar ───────────────────────────────────────────────────────────────
 function Navbar() {
 	const [scrolled, setScrolled] = useState(false);
 	const [active, setActive] = useState("home");
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	useEffect(() => {
-		const onScroll = () => setScrolled(window.scrollY > 60);
+		const onScroll = () => setScrolled(window.scrollY > 50);
 		window.addEventListener("scroll", onScroll);
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
-	const nav = (id: string) => {
+	const go = (id: string) => {
 		setActive(id);
-		document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+		setMenuOpen(false);
+		scrollTo(id);
 	};
 
-	const links = [
-		"home",
-		"about",
-		"experience",
-		"skills",
-		"education",
-		"certifications",
-		"contact",
-	];
-
 	return (
-		<header
-			style={{
-				position: "fixed",
-				top: 0,
-				left: 0,
-				right: 0,
-				zIndex: 100,
-				padding: scrolled ? "14px 0" : "24px 0",
-				background: scrolled ? "rgba(245,240,232,0.92)" : "transparent",
-				backdropFilter: scrolled ? "blur(16px)" : "none",
-				borderBottom: scrolled ? "1px solid rgba(13,13,13,0.08)" : "none",
-				transition: "all 0.5s cubic-bezier(0.22,1,0.36,1)",
-			}}>
-			<div
+		<>
+			<nav
 				style={{
-					maxWidth: 1200,
-					margin: "0 auto",
-					padding: "0 32px",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "space-between",
+					position: "fixed",
+					top: 0,
+					left: 0,
+					right: 0,
+					zIndex: 100,
+					padding: scrolled ? "12px 0" : "20px 0",
+					background: scrolled ? "rgba(8,11,20,0.85)" : "transparent",
+					backdropFilter: scrolled ? "blur(20px)" : "none",
+					borderBottom: scrolled ? "1px solid var(--border)" : "none",
+					transition: "all 0.4s cubic-bezier(.22,1,.36,1)",
 				}}>
-				<button
-					onClick={() => nav("home")}
-					className="display"
+				<div
 					style={{
-						fontSize: 18,
-						fontWeight: 500,
-						letterSpacing: "0.04em",
-						color: "var(--ink)",
-						background: "none",
-						border: "none",
-						cursor: "pointer",
+						maxWidth: 1160,
+						margin: "0 auto",
+						padding: "0 24px",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "space-between",
 					}}>
-					NMS
-				</button>
+					{/* Logo */}
+					<button
+						onClick={() => go("home")}
+						style={{
+							background: "none",
+							border: "none",
+							cursor: "pointer",
+							display: "flex",
+							alignItems: "center",
+							gap: 10,
+						}}>
+						<div
+							style={{
+								width: 32,
+								height: 32,
+								borderRadius: 8,
+								background: "linear-gradient(135deg,#7C6FFF,#C084FC)",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+							}}>
+							<span
+								style={{
+									fontFamily: "'Syne',sans-serif",
+									fontSize: 13,
+									fontWeight: 800,
+									color: "#fff",
+								}}>
+								N
+							</span>
+						</div>
+						<span
+							className="syne"
+							style={{
+								fontSize: 16,
+								fontWeight: 700,
+								color: "var(--text)",
+								letterSpacing: "-0.01em",
+							}}>
+							Nadia<span className="grad">MS</span>
+						</span>
+					</button>
 
-				<nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
-					{links.map((l) => (
+					{/* Desktop links */}
+					<div className="hide-mobile" style={{ display: "flex", gap: 4 }}>
+						{NAV_LINKS.map((l) => (
+							<button
+								key={l}
+								onClick={() => go(l)}
+								style={{
+									background: active === l ? "rgba(124,111,255,0.12)" : "none",
+									border: "1px solid",
+									borderColor:
+										active === l ? "rgba(124,111,255,0.3)" : "transparent",
+									borderRadius: 8,
+									cursor: "pointer",
+									padding: "6px 14px",
+									fontSize: 13,
+									fontWeight: 500,
+									color: active === l ? "var(--accent)" : "var(--text-muted)",
+									transition: "all 0.2s",
+									textTransform: "capitalize",
+								}}
+								onMouseOver={(e) => {
+									if (active !== l) {
+										(e.currentTarget as HTMLButtonElement).style.color =
+											"var(--text)";
+										(e.currentTarget as HTMLButtonElement).style.borderColor =
+											"var(--border)";
+									}
+								}}
+								onMouseOut={(e) => {
+									if (active !== l) {
+										(e.currentTarget as HTMLButtonElement).style.color =
+											"var(--text-muted)";
+										(e.currentTarget as HTMLButtonElement).style.borderColor =
+											"transparent";
+									}
+								}}>
+								{l}
+							</button>
+						))}
+					</div>
+
+					<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+						<a
+							href="mailto:nadiamadarinasaid@gmail.com"
+							className="btn-primary hide-mobile"
+							style={{ padding: "9px 20px", fontSize: 13 }}>
+							Hire Me <ArrowUpRight size={13} />
+						</a>
+						{/* Mobile hamburger */}
+						<button
+							className="hide-desktop"
+							onClick={() => setMenuOpen(true)}
+							style={{
+								background: "var(--surface)",
+								border: "1px solid var(--border)",
+								borderRadius: 8,
+								padding: 8,
+								cursor: "pointer",
+								color: "var(--text)",
+								display: "flex",
+								alignItems: "center",
+							}}>
+							<Menu size={18} />
+						</button>
+					</div>
+				</div>
+			</nav>
+
+			{/* Mobile menu overlay */}
+			{menuOpen && (
+				<div className="mobile-menu">
+					<button
+						onClick={() => setMenuOpen(false)}
+						style={{
+							position: "absolute",
+							top: 24,
+							right: 24,
+							background: "var(--surface)",
+							border: "1px solid var(--border)",
+							borderRadius: 8,
+							padding: 8,
+							cursor: "pointer",
+							color: "var(--text)",
+							display: "flex",
+						}}>
+						<X size={18} />
+					</button>
+					{NAV_LINKS.map((l, i) => (
 						<button
 							key={l}
-							onClick={() => nav(l)}
-							className={`nav-item ${active === l ? "active" : ""}`}
-							style={{ background: "none", border: "none", cursor: "pointer" }}>
+							onClick={() => go(l)}
+							style={{
+								background: "none",
+								border: "none",
+								cursor: "pointer",
+								fontFamily: "'Syne',sans-serif",
+								fontSize: 28,
+								fontWeight: 700,
+								color: active === l ? "var(--accent)" : "var(--text-sub)",
+								textTransform: "capitalize",
+								padding: "8px 0",
+								animation: `revealUp 0.4s cubic-bezier(.22,1,.36,1) ${i * 0.06}s both`,
+							}}>
 							{l}
 						</button>
 					))}
-				</nav>
-
-				<a
-					href="mailto:nadiamadarinasaid@gmail.com"
-					style={{
-						fontSize: 11,
-						letterSpacing: "0.12em",
-						textTransform: "uppercase",
-						fontWeight: 600,
-						color: "var(--ink)",
-						textDecoration: "none",
-						display: "flex",
-						alignItems: "center",
-						gap: 6,
-						borderBottom: "1px solid var(--ink)",
-						paddingBottom: 2,
-					}}>
-					Hire Me <ArrowUpRight size={12} />
-				</a>
-			</div>
-		</header>
+					<a
+						href="mailto:nadiamadarinasaid@gmail.com"
+						className="btn-primary"
+						style={{ marginTop: 24 }}>
+						Hire Me <ArrowUpRight size={14} />
+					</a>
+				</div>
+			)}
+		</>
 	);
 }
 
-// ─── Hero ────────────────────────────────────────────────────────────────
+// ─── Hero ─────────────────────────────────────────────────────────────────
 function Hero() {
 	return (
 		<section
 			id="home"
 			style={{
 				minHeight: "100svh",
-				background: "var(--paper)",
-				display: "grid",
-				gridTemplateColumns: "1fr 1fr",
-				overflow: "hidden",
+				display: "flex",
+				alignItems: "center",
 				position: "relative",
+				overflow: "hidden",
+				paddingTop: 80,
 			}}>
-			{/* Left panel */}
+			{/* Blobs */}
+			<div
+				className="blob"
+				style={{
+					width: 600,
+					height: 600,
+					background:
+						"radial-gradient(circle,rgba(124,111,255,0.18) 0%,transparent 70%)",
+					top: "-10%",
+					right: "-5%",
+				}}
+			/>
+			<div
+				className="blob"
+				style={{
+					width: 400,
+					height: 400,
+					background:
+						"radial-gradient(circle,rgba(192,132,252,0.14) 0%,transparent 70%)",
+					bottom: "5%",
+					left: "-5%",
+				}}
+			/>
+			<div
+				className="blob"
+				style={{
+					width: 300,
+					height: 300,
+					background:
+						"radial-gradient(circle,rgba(240,201,106,0.08) 0%,transparent 70%)",
+					top: "40%",
+					left: "30%",
+				}}
+			/>
+
 			<div
 				style={{
-					display: "flex",
-					flexDirection: "column",
-					justifyContent: "flex-end",
-					padding: "160px 56px 80px",
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					width: "100%",
 					position: "relative",
+					zIndex: 1,
 				}}>
-				{/* Vertical rule */}
 				<div
 					style={{
-						position: "absolute",
-						top: 0,
-						right: 0,
-						bottom: 0,
-						width: 1,
-						background: "rgba(13,13,13,0.08)",
-					}}
-				/>
-
-				<div className="anim-up" style={{ animationDelay: "0.1s" }}>
-					<p
-						style={{
-							fontSize: 11,
-							letterSpacing: "0.2em",
-							textTransform: "uppercase",
-							color: "var(--gold)",
-							fontWeight: 600,
-							marginBottom: 32,
-						}}>
-						Tax Consultant · Accounting
-					</p>
-				</div>
-
-				<h1
-					className="display anim-up"
-					style={{
-						fontSize: "clamp(52px,6vw,88px)",
-						lineHeight: 1.0,
-						letterSpacing: "-0.02em",
-						animationDelay: "0.2s",
-					}}>
-					Nadia
-					<br />
-					Madarina
-					<br />
-					<em style={{ color: "var(--gold)", fontStyle: "italic" }}>
-						Sa&apos;id
-					</em>
-				</h1>
-
-				<div
-					className="anim-up"
-					style={{ animationDelay: "0.35s", marginTop: 40 }}>
-					<p
-						style={{
-							fontSize: 14,
-							lineHeight: 1.8,
-							color: "var(--muted)",
-							maxWidth: 380,
-						}}>
-						Accounting graduate from Universitas Airlangga. Hands-on experience
-						in tax consulting, compliance documentation, and client relations —
-						backed by Brevet AB certification and C2 English proficiency.
-					</p>
-				</div>
-
-				<div
-					className="anim-up"
-					style={{
-						animationDelay: "0.48s",
-						marginTop: 48,
-						display: "flex",
-						gap: 20,
+						display: "grid",
+						gridTemplateColumns: "1fr auto",
+						gap: 48,
 						alignItems: "center",
 					}}>
-					<a
-						href="#contact"
-						onClick={(e) => {
-							e.preventDefault();
-							document
-								.getElementById("contact")
-								?.scrollIntoView({ behavior: "smooth" });
-						}}
+					{/* Text */}
+					<div>
+						<div
+							style={{
+								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.1s both",
+							}}>
+							<span
+								className="pill"
+								style={{
+									borderColor: "rgba(124,111,255,0.35)",
+									background: "rgba(124,111,255,0.1)",
+									color: "var(--accent)",
+									marginBottom: 28,
+									display: "inline-flex",
+								}}>
+								<span
+									style={{
+										width: 6,
+										height: 6,
+										borderRadius: "50%",
+										background: "#4ade80",
+										animation: "pulse-ring 1.5s ease-out infinite",
+										display: "inline-block",
+									}}
+								/>
+								Open to Opportunities
+							</span>
+						</div>
+
+						<h1
+							className="syne"
+							style={{
+								fontSize: "clamp(44px,7vw,96px)",
+								fontWeight: 800,
+								lineHeight: 1.0,
+								letterSpacing: "-0.03em",
+								marginBottom: 24,
+								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.2s both",
+							}}>
+							Nadia
+							<br />
+							<span className="grad">Madarina</span>
+							<br />
+							Sa&apos;id
+						</h1>
+
+						<p
+							style={{
+								fontSize: 16,
+								lineHeight: 1.8,
+								color: "var(--text-sub)",
+								maxWidth: 460,
+								marginBottom: 40,
+								fontWeight: 300,
+								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.35s both",
+							}}>
+							Accounting graduate from Universitas Airlangga — specialising in
+							tax consulting, compliance documentation, and client relations.
+							Brevet AB certified, C2 English proficient.
+						</p>
+
+						<div
+							style={{
+								display: "flex",
+								flexWrap: "wrap",
+								gap: 12,
+								marginBottom: 52,
+								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.45s both",
+							}}>
+							<a
+								href="#contact"
+								className="btn-primary"
+								onClick={(e) => {
+									e.preventDefault();
+									scrollTo("contact");
+								}}>
+								Get in Touch <ArrowUpRight size={14} />
+							</a>
+							<a
+								href="#experience"
+								className="btn-ghost"
+								onClick={(e) => {
+									e.preventDefault();
+									scrollTo("experience");
+								}}>
+								View Experience
+							</a>
+						</div>
+
+						<div
+							style={{
+								display: "flex",
+								flexWrap: "wrap",
+								gap: 24,
+								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.55s both",
+							}}>
+							{[
+								{ icon: <MapPin size={13} />, text: "Sidoarjo, Indonesia" },
+								{ icon: "🎓", text: "Airlangga '24" },
+								{ icon: "✦", text: "Brevet AB" },
+							].map(({ icon, text }) => (
+								<div
+									key={text}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										gap: 6,
+										fontSize: 13,
+										color: "var(--text-muted)",
+										fontWeight: 400,
+									}}>
+									<span
+										style={{
+											color: "var(--accent)",
+											display: "flex",
+											alignItems: "center",
+										}}>
+										{icon}
+									</span>
+									{text}
+								</div>
+							))}
+						</div>
+					</div>
+
+					{/* Photo — hide on small screens */}
+					<div
+						className="hide-mobile"
 						style={{
-							display: "inline-flex",
-							alignItems: "center",
-							gap: 8,
-							padding: "14px 28px",
-							background: "var(--ink)",
-							color: "var(--paper)",
-							fontSize: 12,
-							letterSpacing: "0.1em",
-							textTransform: "uppercase",
-							fontWeight: 600,
-							textDecoration: "none",
-							transition: "opacity 0.2s",
-						}}
-						onMouseOver={(e) => (e.currentTarget.style.opacity = "0.8")}
-						onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}>
-						Get in Touch <ArrowUpRight size={12} />
-					</a>
-					<a
-						href="#experience"
-						onClick={(e) => {
-							e.preventDefault();
-							document
-								.getElementById("experience")
-								?.scrollIntoView({ behavior: "smooth" });
-						}}
-						style={{
-							fontSize: 12,
-							letterSpacing: "0.1em",
-							textTransform: "uppercase",
-							fontWeight: 600,
-							color: "var(--muted)",
-							textDecoration: "none",
-							borderBottom: "1px solid currentColor",
-							paddingBottom: 2,
+							animation: "fadeIn 1.2s cubic-bezier(.22,1,.36,1) 0.1s both",
+							position: "relative",
 						}}>
-						View Work
-					</a>
+						{/* Spinning ring */}
+						<div
+							style={{
+								position: "absolute",
+								inset: -20,
+								borderRadius: "50%",
+								border: "1px dashed rgba(124,111,255,0.25)",
+								animation: "spin-slow 20s linear infinite",
+							}}
+						/>
+						<div
+							style={{
+								position: "absolute",
+								inset: -8,
+								borderRadius: "38px",
+								background:
+									"linear-gradient(135deg,rgba(124,111,255,0.3),rgba(192,132,252,0.2),transparent)",
+								filter: "blur(2px)",
+							}}
+						/>
+						<div
+							style={{
+								position: "relative",
+								width: 320,
+								height: 400,
+								borderRadius: 32,
+								overflow: "hidden",
+								border: "1px solid rgba(255,255,255,0.1)",
+								boxShadow:
+									"0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,111,255,0.2)",
+							}}>
+							<Image
+								src="/nadia.webp"
+								alt="Nadia Madarina Sa'id"
+								fill
+								style={{ objectFit: "cover" }}
+								priority
+							/>
+							<div
+								style={{
+									position: "absolute",
+									inset: 0,
+									background:
+										"linear-gradient(to top, rgba(8,11,20,0.6) 0%, transparent 50%)",
+								}}
+							/>
+						</div>
+						{/* Float badge */}
+						<div
+							className="glass"
+							style={{
+								position: "absolute",
+								bottom: -16,
+								right: -16,
+								padding: "12px 18px",
+								borderRadius: 14,
+							}}>
+							<div
+								style={{
+									fontSize: 11,
+									color: "var(--text-muted)",
+									marginBottom: 2,
+									letterSpacing: "0.06em",
+								}}>
+								English
+							</div>
+							<div
+								className="syne"
+								style={{ fontSize: 18, fontWeight: 800, color: "var(--gold)" }}>
+								C2
+							</div>
+						</div>
+					</div>
 				</div>
 
-				{/* Scroll indicator */}
+				{/* Stat row */}
 				<div
-					className="anim-in"
 					style={{
-						animationDelay: "1.2s",
-						marginTop: 80,
-						display: "flex",
-						alignItems: "center",
-						gap: 12,
+						display: "grid",
+						gridTemplateColumns: "repeat(3,1fr)",
+						gap: 16,
+						marginTop: 64,
+						animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.65s both",
 					}}>
-					<div style={{ width: 32, height: 1, background: "var(--ink)" }} />
-					<span
-						style={{
-							fontSize: 10,
-							letterSpacing: "0.2em",
-							textTransform: "uppercase",
-							color: "var(--muted)",
-						}}>
-						Scroll
-					</span>
-					<ChevronDown
-						size={12}
-						style={{
-							color: "var(--muted)",
-							animation: "fadeUp 1s ease infinite alternate",
-						}}
-					/>
+					{[
+						{ n: "2+", l: "Years Experience" },
+						{ n: "10+", l: "Certifications" },
+						{ n: "C2", l: "English Proficiency" },
+					].map(({ n, l }) => (
+						<div key={l} className="stat-card">
+							<div
+								className="syne grad"
+								style={{
+									fontSize: "clamp(28px,4vw,44px)",
+									fontWeight: 800,
+									lineHeight: 1,
+								}}>
+								{n}
+							</div>
+							<div
+								style={{
+									fontSize: 12,
+									color: "var(--text-muted)",
+									marginTop: 6,
+									fontWeight: 400,
+								}}>
+								{l}
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 
-			{/* Right panel — photo */}
-			<div
-				className="photo-frame anim-scale"
-				style={{
-					animationDelay: "0.05s",
-					position: "relative",
-					background: "var(--ink)",
-				}}>
-				<Image
-					src="/nadia.webp"
-					alt="Nadia Madarina Sa'id"
-					fill
-					className="object-cover"
-					style={{ opacity: 0.85, filter: "contrast(1.05) saturate(0.9)" }}
-					priority
-				/>
-				{/* Gradient overlay */}
-				<div
-					style={{
-						position: "absolute",
-						inset: 0,
-						background:
-							"linear-gradient(to right, rgba(13,13,13,0.35) 0%, transparent 40%, transparent 60%, rgba(13,13,13,0.2) 100%)",
-					}}
-				/>
-				{/* Bottom caption */}
-				<div
-					style={{
-						position: "absolute",
-						bottom: 40,
-						right: 40,
-						textAlign: "right",
-					}}>
-					<div
-						style={{
-							fontSize: 10,
-							letterSpacing: "0.2em",
-							textTransform: "uppercase",
-							color: "rgba(245,240,232,0.5)",
-							marginBottom: 4,
-						}}>
-						Based in
-					</div>
-					<div style={{ fontSize: 14, fontWeight: 600, color: "var(--paper)" }}>
-						Sidoarjo, Indonesia
-					</div>
-				</div>
-				{/* Top accent */}
-				<div style={{ position: "absolute", top: 40, right: 40 }}>
-					<div
-						style={{
-							fontSize: 10,
-							letterSpacing: "0.2em",
-							textTransform: "uppercase",
-							color: "var(--gold-light)",
-							marginBottom: 4,
-						}}>
-						Universitas Airlangga
-					</div>
-					<div style={{ fontSize: 12, color: "rgba(245,240,232,0.6)" }}>
-						Class of 2024
-					</div>
-				</div>
-			</div>
-
-			{/* Index numbers decorative */}
+			{/* Scroll cue */}
 			<div
 				style={{
 					position: "absolute",
-					bottom: 80,
-					left: 56,
+					bottom: 28,
+					left: "50%",
+					transform: "translateX(-50%)",
 					display: "flex",
-					gap: 32,
+					flexDirection: "column",
+					alignItems: "center",
+					gap: 6,
+					animation: "fadeIn 1s ease 1.2s both",
 				}}>
-				{[
-					{ n: "2+", l: "Yrs Exp." },
-					{ n: "10+", l: "Certs" },
-					{ n: "C2", l: "English" },
-				].map(({ n, l }) => (
-					<div key={l} className="anim-up" style={{ animationDelay: "0.7s" }}>
-						<div
-							className="display"
-							style={{
-								fontSize: 28,
-								fontWeight: 700,
-								color: "var(--ink)",
-								lineHeight: 1,
-							}}>
-							{n}
-						</div>
-						<div
-							style={{
-								fontSize: 10,
-								letterSpacing: "0.15em",
-								textTransform: "uppercase",
-								color: "var(--muted)",
-								marginTop: 4,
-							}}>
-							{l}
-						</div>
-					</div>
-				))}
+				<span
+					style={{
+						fontSize: 10,
+						letterSpacing: "0.15em",
+						textTransform: "uppercase",
+						color: "var(--text-muted)",
+					}}>
+					Scroll
+				</span>
+				<ChevronDown
+					size={14}
+					style={{
+						color: "var(--accent)",
+						animation: "float 2s ease-in-out infinite",
+					}}
+				/>
 			</div>
 		</section>
 	);
@@ -691,38 +1012,39 @@ function Marquee() {
 		"Transfer Pricing",
 		"KPMG Simulation",
 		"C2 English",
-		"Airlangga '24",
-		"Documentation",
+		"Universitas Airlangga",
 		"Excel Advanced",
 		"World Bank",
+		"Documentation",
 	];
 	const doubled = [...items, ...items];
 	return (
 		<div
 			style={{
-				background: "var(--ink)",
-				padding: "18px 0",
+				borderTop: "1px solid var(--border)",
+				borderBottom: "1px solid var(--border)",
+				padding: "16px 0",
 				overflow: "hidden",
-				borderTop: "1px solid rgba(245,240,232,0.06)",
-				borderBottom: "1px solid rgba(245,240,232,0.06)",
+				background: "rgba(255,255,255,0.015)",
 			}}>
-			<div className="marquee-inner">
+			<div className="marquee-track">
 				{doubled.map((item, i) => (
 					<span
 						key={i}
 						style={{
 							display: "inline-flex",
 							alignItems: "center",
-							gap: 24,
-							padding: "0 24px",
-							fontSize: 11,
-							letterSpacing: "0.18em",
+							gap: 20,
+							padding: "0 20px",
+							fontSize: 12,
+							fontWeight: 600,
+							letterSpacing: "0.1em",
 							textTransform: "uppercase",
-							color: i % 5 === 2 ? "var(--gold)" : "rgba(245,240,232,0.35)",
-							fontWeight: 500,
+							color: i % 4 === 1 ? "var(--accent)" : "var(--text-muted)",
 							whiteSpace: "nowrap",
+							fontFamily: "'Syne',sans-serif",
 						}}>
-						{item} <span style={{ opacity: 0.3 }}>·</span>
+						{item} <span style={{ opacity: 0.25, fontSize: 8 }}>◆</span>
 					</span>
 				))}
 			</div>
@@ -735,113 +1057,154 @@ function About() {
 	return (
 		<section
 			id="about"
-			style={{ background: "var(--white)", padding: "120px 0" }}>
-			<div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
+			className="section"
+			style={{ background: "var(--bg2)" }}>
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage:
+						"radial-gradient(circle at 80% 50%, rgba(124,111,255,0.06) 0%, transparent 60%)",
+					pointerEvents: "none",
+				}}
+			/>
+			<div
+				style={{
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					position: "relative",
+				}}>
 				<div
 					style={{
 						display: "grid",
-						gridTemplateColumns: "1fr 2fr",
-						gap: 80,
-						alignItems: "start",
+						gridTemplateColumns: "1fr 1fr",
+						gap: 64,
+						alignItems: "center",
 					}}>
 					<div className="reveal-left">
-						<div
-							style={{
-								width: 40,
-								height: 1,
-								background: "var(--gold)",
-								marginBottom: 24,
-							}}
-						/>
-						<p
-							style={{
-								fontSize: 11,
-								letterSpacing: "0.2em",
-								textTransform: "uppercase",
-								color: "var(--gold)",
-								fontWeight: 600,
-								marginBottom: 16,
-							}}>
-							About
-						</p>
+						<div className="section-label">Who I Am</div>
 						<h2
-							className="display"
+							className="syne"
 							style={{
-								fontSize: "clamp(32px,3.5vw,52px)",
+								fontSize: "clamp(28px,3.5vw,48px)",
+								fontWeight: 800,
 								lineHeight: 1.15,
-								color: "var(--ink)",
+								letterSpacing: "-0.02em",
+								marginBottom: 24,
 							}}>
 							Detail-oriented
 							<br />
-							professional
+							professional building
+							<br />a career in <span className="grad">taxation</span>
 						</h2>
-					</div>
-
-					<div className="reveal" style={{ paddingTop: 8 }}>
 						<p
 							style={{
-								fontSize: 16,
+								fontSize: 15,
 								lineHeight: 1.9,
-								color: "var(--muted)",
-								marginBottom: 28,
+								color: "var(--text-sub)",
+								marginBottom: 20,
 							}}>
 							I&apos;m an accounting graduate from Universitas Airlangga with a
 							strong foundation in tax consulting and financial compliance. My
-							career at MUC Consulting gave me hands-on exposure to complex tax
+							work at MUC Consulting gave me hands-on exposure to complex tax
 							operations, client documentation workflows, and regulatory
-							compliance processes.
+							compliance.
 						</p>
 						<p
 							style={{
-								fontSize: 16,
+								fontSize: 15,
 								lineHeight: 1.9,
-								color: "var(--muted)",
-								marginBottom: 48,
+								color: "var(--text-sub)",
+								marginBottom: 36,
 							}}>
 							I hold a Brevet AB certification, completed World Bank Group
 							transfer pricing training, and maintain C2 English proficiency —
-							positioning me to work in both domestic and international
-							consulting contexts. I thrive in environments that demand
-							precision, structured thinking, and clear communication.
+							positioning me for both domestic and international consulting
+							roles.
 						</p>
-
-						<div
-							style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(3,1fr)",
-								gap: 1,
-								background: "rgba(13,13,13,0.08)",
-							}}>
+						<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
 							{[
-								{ label: "Education", value: "Universitas Airlangga" },
-								{ label: "Degree", value: "Bachelor of Accounting" },
-								{ label: "Location", value: "Sidoarjo, Indonesia" },
-							].map(({ label, value }) => (
-								<div
-									key={label}
-									style={{ background: "var(--white)", padding: "24px 28px" }}>
-									<div
-										style={{
-											fontSize: 10,
-											letterSpacing: "0.18em",
-											textTransform: "uppercase",
-											color: "var(--gold)",
-											fontWeight: 600,
-											marginBottom: 8,
-										}}>
-										{label}
-									</div>
-									<div
-										style={{
-											fontSize: 14,
-											fontWeight: 500,
-											color: "var(--ink)",
-										}}>
-										{value}
-									</div>
-								</div>
+								"Tax Consulting",
+								"Documentation",
+								"Client Relations",
+								"Data Validation",
+								"Compliance",
+							].map((t) => (
+								<span
+									key={t}
+									className="pill"
+									style={{
+										borderColor: "rgba(124,111,255,0.3)",
+										background: "rgba(124,111,255,0.08)",
+										color: "var(--accent)",
+									}}>
+									{t}
+								</span>
 							))}
 						</div>
+					</div>
+
+					<div
+						className="reveal"
+						style={{
+							display: "grid",
+							gridTemplateColumns: "1fr 1fr",
+							gap: 16,
+						}}>
+						{[
+							{
+								label: "Education",
+								value: "Universitas Airlangga",
+								sub: "Bachelor of Accounting",
+								color: "#7C6FFF",
+							},
+							{
+								label: "Certification",
+								value: "Brevet AB",
+								sub: "Tax Certification",
+								color: "#C084FC",
+							},
+							{
+								label: "Language",
+								value: "C2 Proficient",
+								sub: "EF SET Certified",
+								color: "#F0C96A",
+							},
+							{
+								label: "Location",
+								value: "Sidoarjo",
+								sub: "East Java, Indonesia",
+								color: "#7C6FFF",
+							},
+						].map(({ label, value, sub, color }) => (
+							<div key={label} className="glass" style={{ padding: 24 }}>
+								<div
+									style={{
+										fontSize: 10,
+										fontWeight: 700,
+										letterSpacing: "0.12em",
+										textTransform: "uppercase",
+										color: color,
+										marginBottom: 10,
+									}}>
+									{label}
+								</div>
+								<div
+									className="syne"
+									style={{
+										fontSize: 16,
+										fontWeight: 700,
+										color: "var(--text)",
+										marginBottom: 4,
+									}}>
+									{value}
+								</div>
+								<div style={{ fontSize: 12, color: "var(--text-muted)" }}>
+									{sub}
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
@@ -849,193 +1212,205 @@ function About() {
 	);
 }
 
-// ─── Experience ──────────────────────────────────────────────────────────
+// ─── Experience ───────────────────────────────────────────────────────────
 function Experience() {
 	const [open, setOpen] = useState<number | null>(0);
 
 	return (
 		<section
 			id="experience"
-			style={{ background: "var(--paper)", padding: "120px 0" }}>
-			<div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "flex-end",
-						justifyContent: "space-between",
-						marginBottom: 72,
-					}}>
-					<div className="reveal-left">
-						<div
-							style={{
-								width: 40,
-								height: 1,
-								background: "var(--gold)",
-								marginBottom: 24,
-							}}
-						/>
-						<p
-							style={{
-								fontSize: 11,
-								letterSpacing: "0.2em",
-								textTransform: "uppercase",
-								color: "var(--gold)",
-								fontWeight: 600,
-								marginBottom: 12,
-							}}>
-							Career
-						</p>
-						<h2
-							className="display"
-							style={{
-								fontSize: "clamp(32px,3.5vw,52px)",
-								lineHeight: 1.1,
-								color: "var(--ink)",
-							}}>
-							Professional
-							<br />
-							<em>Experience</em>
-						</h2>
-					</div>
-					<div className="reveal" style={{ textAlign: "right" }}>
-						<p
-							style={{
-								fontSize: 12,
-								color: "var(--muted)",
-								letterSpacing: "0.05em",
-							}}>
-							Click to expand
-						</p>
-					</div>
+			className="section"
+			style={{ background: "var(--bg)" }}>
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage:
+						"radial-gradient(circle at 20% 50%, rgba(192,132,252,0.06) 0%, transparent 60%)",
+					pointerEvents: "none",
+				}}
+			/>
+			<div
+				style={{
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					position: "relative",
+				}}>
+				<div className="reveal" style={{ marginBottom: 56 }}>
+					<div className="section-label">Career Path</div>
+					<h2
+						className="syne"
+						style={{
+							fontSize: "clamp(28px,3.5vw,48px)",
+							fontWeight: 800,
+							letterSpacing: "-0.02em",
+						}}>
+						Professional <span className="grad">Experience</span>
+					</h2>
 				</div>
 
-				<div className="reveal">
+				<div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
 					{EXPERIENCES.map((exp, i) => (
 						<div
 							key={i}
-							className={`exp-row ${open === i ? "open" : ""}`}
-							onClick={() => setOpen(open === i ? null : i)}
-							style={{ padding: open === i ? "32px 0 24px" : "28px 0" }}>
-							{/* Row header */}
-							<div
-								style={{
-									display: "grid",
-									gridTemplateColumns: "60px 1fr auto 120px auto",
-									alignItems: "center",
-									gap: 24,
-									padding: "0 4px",
-								}}>
-								<span
-									className="display"
-									style={{
-										fontSize: 13,
-										color: "var(--muted)",
-										fontStyle: "italic",
-									}}>
-									{exp.index}
-								</span>
-								<h3
-									style={{
-										fontSize: 18,
-										fontWeight: 600,
-										color: "var(--ink)",
-										letterSpacing: "-0.01em",
-									}}>
-									{exp.role}
-								</h3>
-								<span
-									style={{
-										fontSize: 13,
-										color: "var(--gold)",
-										fontWeight: 500,
-									}}>
-									{exp.company}
-								</span>
-								<span
-									style={{
-										fontSize: 11,
-										color: "var(--muted)",
-										letterSpacing: "0.05em",
-										textAlign: "right",
-									}}>
-									{exp.period}
-								</span>
+							className="reveal"
+							style={{ transitionDelay: `${i * 0.1}s` }}>
+							<div style={{ display: "flex", gap: 24 }}>
+								{/* Timeline */}
 								<div
 									style={{
-										width: 28,
-										height: 28,
-										border: "1px solid rgba(13,13,13,0.15)",
-										borderRadius: "50%",
 										display: "flex",
+										flexDirection: "column",
 										alignItems: "center",
-										justifyContent: "center",
-										transition:
-											"transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.2s",
-										transform: open === i ? "rotate(180deg)" : "rotate(0)",
-										borderColor: open === i ? "var(--gold)" : undefined,
-										flexShrink: 0,
-									}}>
-									<ChevronDown
-										size={12}
-										style={{
-											color: open === i ? "var(--gold)" : "var(--muted)",
-										}}
-									/>
-								</div>
-							</div>
-
-							{/* Expanded content */}
-							{open === i && (
-								<div
-									style={{
-										paddingTop: 24,
-										paddingLeft: 84,
-										paddingRight: 156,
+										paddingTop: 4,
 									}}>
 									<div
+										className="tl-dot"
 										style={{
-											display: "inline-block",
-											padding: "4px 12px",
-											border: "1px solid rgba(184,149,90,0.35)",
-											fontSize: 10,
-											letterSpacing: "0.15em",
-											textTransform: "uppercase",
-											color: "var(--gold)",
-											marginBottom: 20,
-										}}>
-										{exp.type}
-									</div>
-									<ul
+											background: `linear-gradient(135deg, ${exp.color}, ${i === 2 ? "#ff9f43" : "#C084FC"})`,
+											boxShadow: `0 0 12px ${exp.color}60`,
+										}}
+									/>
+									{i < EXPERIENCES.length - 1 && (
+										<div
+											className="tl-line"
+											style={{
+												background: `linear-gradient(to bottom, ${exp.color}60, transparent)`,
+											}}
+										/>
+									)}
+								</div>
+
+								{/* Card */}
+								<div
+									className="glass"
+									style={{
+										flex: 1,
+										marginBottom: 20,
+										padding: "24px 28px",
+										cursor: "pointer",
+										borderColor:
+											open === i ? `${exp.color}40` : "var(--border)",
+										background:
+											open === i ? `rgba(124,111,255,0.06)` : "var(--surface)",
+									}}
+									onClick={() => setOpen(open === i ? null : i)}>
+									<div
 										style={{
-											listStyle: "none",
 											display: "flex",
-											flexDirection: "column",
-											gap: 10,
+											justifyContent: "space-between",
+											alignItems: "flex-start",
+											gap: 12,
 										}}>
-										{exp.points.map((pt, j) => (
-											<li
-												key={j}
+										<div style={{ flex: 1 }}>
+											<div
 												style={{
 													display: "flex",
-													gap: 16,
-													fontSize: 14,
-													lineHeight: 1.7,
-													color: "var(--muted)",
+													flexWrap: "wrap",
+													gap: 8,
+													marginBottom: 10,
 												}}>
 												<span
+													className="pill"
 													style={{
-														color: "var(--gold)",
-														flexShrink: 0,
-														marginTop: 2,
+														borderColor: `${exp.color}50`,
+														background: `${exp.color}15`,
+														color: exp.color,
+														fontSize: 10,
 													}}>
-													—
+													{exp.type}
 												</span>
-												{pt}
-											</li>
-										))}
-									</ul>
+												<span
+													style={{
+														fontSize: 12,
+														color: "var(--text-muted)",
+														alignSelf: "center",
+													}}>
+													{exp.period}
+												</span>
+											</div>
+											<h3
+												className="syne"
+												style={{
+													fontSize: 18,
+													fontWeight: 700,
+													color: "var(--text)",
+													marginBottom: 4,
+												}}>
+												{exp.role}
+											</h3>
+											<p
+												style={{
+													fontSize: 14,
+													color: exp.color,
+													fontWeight: 500,
+												}}>
+												{exp.company}
+											</p>
+										</div>
+										<div
+											style={{
+												width: 32,
+												height: 32,
+												borderRadius: 8,
+												background: "var(--surface)",
+												border: "1px solid var(--border)",
+												display: "flex",
+												alignItems: "center",
+												justifyContent: "center",
+												transition: "transform 0.3s",
+												transform: open === i ? "rotate(180deg)" : "none",
+												flexShrink: 0,
+											}}>
+											<ChevronDown
+												size={14}
+												style={{ color: "var(--text-muted)" }}
+											/>
+										</div>
+									</div>
+
+									{open === i && (
+										<div
+											style={{
+												marginTop: 20,
+												paddingTop: 20,
+												borderTop: `1px solid ${exp.color}20`,
+											}}>
+											<ul
+												style={{
+													listStyle: "none",
+													display: "flex",
+													flexDirection: "column",
+													gap: 10,
+												}}>
+												{exp.points.map((pt, j) => (
+													<li
+														key={j}
+														style={{
+															display: "flex",
+															gap: 12,
+															fontSize: 14,
+															lineHeight: 1.7,
+															color: "var(--text-sub)",
+															animation: `revealUp 0.4s cubic-bezier(.22,1,.36,1) ${j * 0.06}s both`,
+														}}>
+														<span
+															style={{
+																color: exp.color,
+																flexShrink: 0,
+																marginTop: 3,
+															}}>
+															→
+														</span>
+														{pt}
+													</li>
+												))}
+											</ul>
+										</div>
+									)}
 								</div>
-							)}
+							</div>
 						</div>
 					))}
 				</div>
@@ -1044,132 +1419,147 @@ function Experience() {
 	);
 }
 
-// ─── Skills ──────────────────────────────────────────────────────────────
+// ─── Skills ───────────────────────────────────────────────────────────────
 function Skills() {
+	const [activeTab, setActiveTab] = useState(0);
+
 	return (
 		<section
 			id="skills"
-			style={{ background: "var(--ink)", padding: "120px 0" }}>
-			<div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
-				<div style={{ marginBottom: 72 }}>
-					<div className="reveal">
-						<div
-							style={{
-								width: 40,
-								height: 1,
-								background: "var(--gold)",
-								marginBottom: 24,
-							}}
-						/>
-						<p
-							style={{
-								fontSize: 11,
-								letterSpacing: "0.2em",
-								textTransform: "uppercase",
-								color: "var(--gold)",
-								fontWeight: 600,
-								marginBottom: 12,
-							}}>
-							Capabilities
-						</p>
-						<h2
-							className="display"
-							style={{
-								fontSize: "clamp(32px,3.5vw,52px)",
-								lineHeight: 1.1,
-								color: "var(--paper)",
-							}}>
-							Skills &amp; <em>Expertise</em>
-						</h2>
-					</div>
+			className="section"
+			style={{ background: "var(--bg2)" }}>
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage:
+						"radial-gradient(circle at 70% 30%, rgba(124,111,255,0.07) 0%, transparent 60%)",
+					pointerEvents: "none",
+				}}
+			/>
+			<div
+				style={{
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					position: "relative",
+				}}>
+				<div className="reveal" style={{ marginBottom: 48 }}>
+					<div className="section-label">Capabilities</div>
+					<h2
+						className="syne"
+						style={{
+							fontSize: "clamp(28px,3.5vw,48px)",
+							fontWeight: 800,
+							letterSpacing: "-0.02em",
+						}}>
+						Skills &amp; <span className="grad">Expertise</span>
+					</h2>
 				</div>
 
-				<div
-					style={{
-						display: "grid",
-						gridTemplateColumns: "repeat(3,1fr)",
-						gap: "1px",
-						background: "rgba(245,240,232,0.08)",
-					}}>
-					{Object.entries(SKILLS).map(([category, tags], ci) => (
-						<div
-							key={category}
-							className="reveal"
-							style={{
-								background: "var(--ink)",
-								padding: "48px 40px",
-								transitionDelay: `${ci * 0.1}s`,
-							}}>
-							<p
-								style={{
-									fontSize: 10,
-									letterSpacing: "0.2em",
-									textTransform: "uppercase",
-									color: "var(--gold)",
-									fontWeight: 600,
-									marginBottom: 28,
-								}}>
-								{category}
-							</p>
-							<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-								{tags.map((tag) => (
-									<span
-										key={tag}
-										className="skill-tag"
-										style={{
-											color: "rgba(245,240,232,0.7)",
-											borderColor: "rgba(245,240,232,0.12)",
-										}}>
-										{tag}
-									</span>
-								))}
-							</div>
-						</div>
-					))}
-				</div>
-
-				{/* Languages strip */}
+				{/* Tab switcher */}
 				<div
 					className="reveal"
 					style={{
-						marginTop: 1,
-						background: "rgba(245,240,232,0.04)",
-						borderTop: "1px solid rgba(245,240,232,0.08)",
+						display: "flex",
+						gap: 8,
+						marginBottom: 36,
+						flexWrap: "wrap",
+					}}>
+					{SKILLS_GROUPS.map((g, i) => (
+						<button
+							key={g.label}
+							onClick={() => setActiveTab(i)}
+							style={{
+								padding: "10px 20px",
+								borderRadius: 10,
+								border: "1px solid",
+								fontFamily: "'Syne',sans-serif",
+								fontSize: 13,
+								fontWeight: 600,
+								cursor: "pointer",
+								transition: "all 0.2s",
+								borderColor: activeTab === i ? g.color : "var(--border)",
+								background: activeTab === i ? `${g.color}18` : "transparent",
+								color: activeTab === i ? g.color : "var(--text-muted)",
+							}}>
+							{g.label}
+						</button>
+					))}
+				</div>
+
+				{/* Tags grid */}
+				<div
+					className="reveal"
+					style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+					{SKILLS_GROUPS[activeTab].tags.map((tag, i) => (
+						<span
+							key={tag}
+							className="stag"
+							style={{
+								animation: `revealUp 0.35s cubic-bezier(.22,1,.36,1) ${i * 0.05}s both`,
+								borderColor: `${SKILLS_GROUPS[activeTab].color}30`,
+							}}>
+							{tag}
+						</span>
+					))}
+				</div>
+
+				{/* Languages */}
+				<div
+					className="reveal"
+					style={{
+						marginTop: 48,
 						display: "grid",
-						gridTemplateColumns: "1fr 1fr",
-						gap: "1px",
+						gridTemplateColumns: "repeat(auto-fit, minmax(260px,1fr))",
+						gap: 16,
 					}}>
 					{[
-						{ lang: "Bahasa Indonesia", level: "Native" },
-						{ lang: "English", level: "C2 Proficient — EF SET Certified" },
-					].map(({ lang, level }) => (
+						{
+							lang: "Bahasa Indonesia",
+							level: "Native",
+							flag: "🇮🇩",
+							color: "#7C6FFF",
+						},
+						{
+							lang: "English",
+							level: "C2 Proficient",
+							flag: "🇬🇧",
+							color: "#F0C96A",
+						},
+					].map(({ lang, level, flag, color }) => (
 						<div
 							key={lang}
+							className="glass"
 							style={{
-								padding: "28px 40px",
+								padding: "20px 24px",
 								display: "flex",
 								alignItems: "center",
-								justifyContent: "space-between",
-								background: "var(--ink)",
+								gap: 16,
 							}}>
-							<span
-								style={{
-									fontSize: 14,
-									fontWeight: 500,
-									color: "var(--paper)",
-								}}>
-								{lang}
-							</span>
-							<span
-								style={{
-									fontSize: 11,
-									letterSpacing: "0.12em",
-									textTransform: "uppercase",
-									color: "var(--gold)",
-									fontWeight: 600,
-								}}>
-								{level}
-							</span>
+							<span style={{ fontSize: 28 }}>{flag}</span>
+							<div>
+								<div
+									className="syne"
+									style={{
+										fontSize: 16,
+										fontWeight: 700,
+										color: "var(--text)",
+										marginBottom: 3,
+									}}>
+									{lang}
+								</div>
+								<div
+									style={{
+										fontSize: 12,
+										color: color,
+										fontWeight: 600,
+										letterSpacing: "0.06em",
+										textTransform: "uppercase",
+									}}>
+									{level}
+								</div>
+							</div>
 						</div>
 					))}
 				</div>
@@ -1183,163 +1573,209 @@ function Education() {
 	return (
 		<section
 			id="education"
-			style={{ background: "var(--white)", padding: "120px 0" }}>
-			<div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
-				<div className="reveal-left" style={{ marginBottom: 72 }}>
-					<div
-						style={{
-							width: 40,
-							height: 1,
-							background: "var(--gold)",
-							marginBottom: 24,
-						}}
-					/>
-					<p
-						style={{
-							fontSize: 11,
-							letterSpacing: "0.2em",
-							textTransform: "uppercase",
-							color: "var(--gold)",
-							fontWeight: 600,
-							marginBottom: 12,
-						}}>
-						Academic
-					</p>
+			className="section"
+			style={{ background: "var(--bg)" }}>
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage:
+						"radial-gradient(circle at 30% 70%, rgba(240,201,106,0.05) 0%, transparent 60%)",
+					pointerEvents: "none",
+				}}
+			/>
+			<div
+				style={{
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					position: "relative",
+				}}>
+				<div className="reveal" style={{ marginBottom: 48 }}>
+					<div className="section-label">Academic</div>
 					<h2
-						className="display"
+						className="syne"
 						style={{
-							fontSize: "clamp(32px,3.5vw,52px)",
-							lineHeight: 1.1,
-							color: "var(--ink)",
+							fontSize: "clamp(28px,3.5vw,48px)",
+							fontWeight: 800,
+							letterSpacing: "-0.02em",
 						}}>
-						Education
+						<span className="grad">Education</span>
 					</h2>
 				</div>
 
 				<div
-					className="reveal"
 					style={{
 						display: "grid",
 						gridTemplateColumns: "1fr 1fr",
-						gap: "1px",
-						background: "rgba(13,13,13,0.08)",
+						gap: 24,
+						alignItems: "start",
 					}}>
-					{/* Main */}
-					<div style={{ background: "var(--white)", padding: "56px" }}>
-						<p
+					{/* Main card */}
+					<div className="reveal glass" style={{ padding: "36px" }}>
+						<div
 							style={{
-								fontSize: 11,
-								letterSpacing: "0.15em",
-								textTransform: "uppercase",
-								color: "var(--muted)",
-								marginBottom: 20,
+								display: "flex",
+								gap: 16,
+								alignItems: "flex-start",
+								marginBottom: 24,
 							}}>
-							2020 — 2024
-						</p>
-						<h3
-							className="display"
-							style={{
-								fontSize: 32,
-								fontWeight: 500,
-								color: "var(--ink)",
-								lineHeight: 1.2,
-								marginBottom: 8,
-							}}>
-							Bachelor of
-							<br />
-							Accounting
-						</h3>
+							<div
+								style={{
+									width: 52,
+									height: 52,
+									borderRadius: 14,
+									background: "linear-gradient(135deg,#7C6FFF,#C084FC)",
+									display: "flex",
+									alignItems: "center",
+									justifyContent: "center",
+									flexShrink: 0,
+									fontSize: 24,
+								}}>
+								🎓
+							</div>
+							<div>
+								<span
+									className="pill"
+									style={{
+										borderColor: "rgba(124,111,255,0.3)",
+										background: "rgba(124,111,255,0.1)",
+										color: "var(--accent)",
+										fontSize: 10,
+										marginBottom: 10,
+										display: "inline-flex",
+									}}>
+									2020 – 2024
+								</span>
+								<h3
+									className="syne"
+									style={{
+										fontSize: 22,
+										fontWeight: 800,
+										color: "var(--text)",
+										lineHeight: 1.2,
+									}}>
+									Bachelor of
+									<br />
+									Accounting
+								</h3>
+							</div>
+						</div>
 						<p
 							style={{
 								fontSize: 16,
-								color: "var(--gold)",
-								fontWeight: 500,
-								marginBottom: 24,
+								color: "var(--accent)",
+								fontWeight: 600,
+								marginBottom: 16,
 							}}>
 							Universitas Airlangga
 						</p>
 						<p
-							style={{ fontSize: 14, lineHeight: 1.85, color: "var(--muted)" }}>
+							style={{
+								fontSize: 14,
+								lineHeight: 1.85,
+								color: "var(--text-sub)",
+								marginBottom: 24,
+							}}>
 							Comprehensive accounting education from one of Indonesia&apos;s
 							leading universities. Built strong foundations in taxation,
-							financial analysis, auditing, and business reporting through
-							rigorous coursework and project-based learning.
+							financial analysis, auditing, and business reporting.
 						</p>
+						<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+							{[
+								"Taxation",
+								"Financial Analysis",
+								"Auditing",
+								"Business Reporting",
+								"Cost Accounting",
+							].map((t) => (
+								<span key={t} className="stag" style={{ fontSize: 12 }}>
+									{t}
+								</span>
+							))}
+						</div>
 					</div>
 
-					{/* Sidebar */}
+					{/* Achievement */}
 					<div
+						className="reveal"
 						style={{
-							background: "var(--paper)",
-							padding: "56px",
+							transitionDelay: "0.1s",
 							display: "flex",
 							flexDirection: "column",
-							gap: 32,
+							gap: 16,
 						}}>
-						<div>
-							<p
-								style={{
-									fontSize: 10,
-									letterSpacing: "0.18em",
-									textTransform: "uppercase",
-									color: "var(--gold)",
-									fontWeight: 600,
-									marginBottom: 16,
-								}}>
-								Core Subjects
-							</p>
-							<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-								{[
-									"Taxation",
-									"Financial Analysis",
-									"Auditing",
-									"Business Reporting",
-									"Cost Accounting",
-									"Business Law",
-								].map((t) => (
-									<span key={t} className="skill-tag">
-										{t}
-									</span>
-								))}
-							</div>
-						</div>
-
-						<div style={{ height: 1, background: "rgba(13,13,13,0.08)" }} />
-
 						<div
+							className="glass"
 							style={{
-								background: "var(--ink)",
 								padding: "28px",
-								borderRadius: 0,
+								borderColor: "rgba(240,201,106,0.2)",
+								background: "rgba(240,201,106,0.05)",
 							}}>
-							<p
+							<div
 								style={{
 									fontSize: 10,
-									letterSpacing: "0.18em",
+									fontWeight: 700,
+									letterSpacing: "0.12em",
 									textTransform: "uppercase",
 									color: "var(--gold)",
-									fontWeight: 600,
 									marginBottom: 12,
 								}}>
-								Achievement
-							</p>
-							<p
+								🏆 Achievement
+							</div>
+							<h4
+								className="syne"
 								style={{
-									fontSize: 15,
-									fontWeight: 600,
-									color: "var(--paper)",
-									marginBottom: 6,
+									fontSize: 17,
+									fontWeight: 700,
+									color: "var(--text)",
+									marginBottom: 8,
 								}}>
 								1st Place — Lomba Konten Medsos
-							</p>
+							</h4>
 							<p
 								style={{
-									fontSize: 12,
-									color: "rgba(245,240,232,0.45)",
-									lineHeight: 1.5,
+									fontSize: 13,
+									color: "var(--text-muted)",
+									lineHeight: 1.6,
 								}}>
 								APA Fest 2021 · Ikatan Akuntan Indonesia · November 2021
 							</p>
+						</div>
+
+						<div className="glass" style={{ padding: "28px" }}>
+							<div
+								style={{
+									fontSize: 10,
+									fontWeight: 700,
+									letterSpacing: "0.12em",
+									textTransform: "uppercase",
+									color: "var(--accent)",
+									marginBottom: 16,
+								}}>
+								Key Highlights
+							</div>
+							{[
+								"Strong foundation in tax law & compliance",
+								"Hands-on case studies & project learning",
+								"Active member of accounting student body",
+							].map((h, i) => (
+								<div
+									key={i}
+									style={{
+										display: "flex",
+										gap: 10,
+										fontSize: 14,
+										color: "var(--text-sub)",
+										marginBottom: 10,
+										lineHeight: 1.6,
+									}}>
+									<span style={{ color: "var(--accent)", flexShrink: 0 }}>
+										✓
+									</span>{" "}
+									{h}
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
@@ -1348,9 +1784,9 @@ function Education() {
 	);
 }
 
-// ─── Certifications ──────────────────────────────────────────────────────
+// ─── Certifications ───────────────────────────────────────────────────────
 function Certifications() {
-	const categories = [
+	const cats = [
 		"All",
 		"Tax",
 		"International",
@@ -1360,75 +1796,60 @@ function Certifications() {
 	];
 	const [active, setActive] = useState("All");
 	const filtered =
-		active === "All"
-			? CERTIFICATIONS
-			: CERTIFICATIONS.filter((c) => c.category === active);
+		active === "All" ? CERTS : CERTS.filter((c) => c.cat === active);
 
 	return (
 		<section
 			id="certifications"
-			style={{ background: "var(--paper)", padding: "120px 0" }}>
-			<div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "flex-end",
-						justifyContent: "space-between",
-						flexWrap: "wrap",
-						gap: 32,
-						marginBottom: 64,
-					}}>
-					<div className="reveal-left">
-						<div
-							style={{
-								width: 40,
-								height: 1,
-								background: "var(--gold)",
-								marginBottom: 24,
-							}}
-						/>
-						<p
-							style={{
-								fontSize: 11,
-								letterSpacing: "0.2em",
-								textTransform: "uppercase",
-								color: "var(--gold)",
-								fontWeight: 600,
-								marginBottom: 12,
-							}}>
-							Credentials
-						</p>
-						<h2
-							className="display"
-							style={{
-								fontSize: "clamp(32px,3.5vw,52px)",
-								lineHeight: 1.1,
-								color: "var(--ink)",
-							}}>
-							Certifications
-						</h2>
-					</div>
-
-					<div
-						className="reveal"
-						style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-						{categories.map((c) => (
+			className="section"
+			style={{ background: "var(--bg2)" }}>
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage:
+						"radial-gradient(circle at 60% 20%, rgba(124,111,255,0.07) 0%, transparent 60%)",
+					pointerEvents: "none",
+				}}
+			/>
+			<div
+				style={{
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					position: "relative",
+				}}>
+				<div className="reveal" style={{ marginBottom: 40 }}>
+					<div className="section-label">Credentials</div>
+					<h2
+						className="syne"
+						style={{
+							fontSize: "clamp(28px,3.5vw,48px)",
+							fontWeight: 800,
+							letterSpacing: "-0.02em",
+							marginBottom: 28,
+						}}>
+						Certifications &amp; <span className="grad">Training</span>
+					</h2>
+					<div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+						{cats.map((c) => (
 							<button
 								key={c}
 								onClick={() => setActive(c)}
 								style={{
-									padding: "8px 18px",
-									fontSize: 11,
-									letterSpacing: "0.12em",
-									textTransform: "uppercase",
-									fontWeight: 600,
-									background: active === c ? "var(--ink)" : "transparent",
-									color: active === c ? "var(--gold)" : "var(--muted)",
+									padding: "8px 16px",
+									borderRadius: 8,
 									border: "1px solid",
-									borderColor:
-										active === c ? "var(--ink)" : "rgba(13,13,13,0.15)",
+									fontFamily: "'Syne',sans-serif",
+									fontSize: 12,
+									fontWeight: 600,
 									cursor: "pointer",
 									transition: "all 0.2s",
+									letterSpacing: "0.04em",
+									borderColor: active === c ? "var(--accent)" : "var(--border)",
+									background:
+										active === c ? "rgba(124,111,255,0.15)" : "transparent",
+									color: active === c ? "var(--accent)" : "var(--text-muted)",
 								}}>
 								{c}
 							</button>
@@ -1436,48 +1857,40 @@ function Certifications() {
 					</div>
 				</div>
 
-				<div className="reveal">
+				<div
+					style={{
+						display: "grid",
+						gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))",
+						gap: 12,
+					}}>
 					{filtered.map((cert, i) => (
 						<div
 							key={cert.name}
-							className="cert-row"
-							style={{ transitionDelay: `${i * 0.04}s` }}>
+							className="cert-item reveal"
+							style={{ transitionDelay: `${(i % 6) * 0.06}s` }}>
+							<span style={{ fontSize: 22, flexShrink: 0 }}>{cert.icon}</span>
+							<div style={{ flex: 1 }}>
+								<div
+									style={{
+										fontSize: 14,
+										fontWeight: 500,
+										color: "var(--text)",
+										marginBottom: 4,
+										lineHeight: 1.4,
+									}}>
+									{cert.name}
+								</div>
+							</div>
 							<span
-								className="display"
+								className="pill"
 								style={{
-									fontSize: 12,
-									color: "var(--muted)",
-									fontStyle: "italic",
-									width: 28,
-									flexShrink: 0,
-								}}>
-								{String(i + 1).padStart(2, "0")}
-							</span>
-							<span
-								style={{
-									fontSize: 15,
-									fontWeight: 500,
-									color: "var(--ink)",
-									flex: 1,
-								}}>
-								{cert.name}
-							</span>
-							{cert.org && (
-								<span style={{ fontSize: 12, color: "var(--muted)" }}>
-									{cert.org}
-								</span>
-							)}
-							<span
-								style={{
-									padding: "3px 10px",
-									border: "1px solid rgba(184,149,90,0.35)",
+									borderColor: "rgba(124,111,255,0.3)",
+									background: "rgba(124,111,255,0.08)",
+									color: "var(--accent)",
 									fontSize: 10,
-									letterSpacing: "0.15em",
-									textTransform: "uppercase",
-									color: "var(--gold)",
 									flexShrink: 0,
 								}}>
-								{cert.category}
+								{cert.cat}
 							</span>
 						</div>
 					))}
@@ -1492,148 +1905,173 @@ function Contact() {
 	return (
 		<section
 			id="contact"
-			style={{ background: "var(--ink)", padding: "120px 0" }}>
-			<div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
+			className="section"
+			style={{ background: "var(--bg)" }}>
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage:
+						"radial-gradient(circle at 50% 50%, rgba(124,111,255,0.1) 0%, transparent 65%)",
+					pointerEvents: "none",
+				}}
+			/>
+			<div
+				style={{
+					maxWidth: 1160,
+					margin: "0 auto",
+					padding: "0 24px",
+					position: "relative",
+				}}>
 				<div
-					style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80 }}>
-					<div className="reveal-left">
-						<div
-							style={{
-								width: 40,
-								height: 1,
-								background: "var(--gold)",
-								marginBottom: 24,
-							}}
-						/>
-						<p
-							style={{
-								fontSize: 11,
-								letterSpacing: "0.2em",
-								textTransform: "uppercase",
-								color: "var(--gold)",
-								fontWeight: 600,
-								marginBottom: 16,
-							}}>
-							Contact
-						</p>
-						<h2
-							className="display"
-							style={{
-								fontSize: "clamp(32px,3.5vw,52px)",
-								lineHeight: 1.1,
-								color: "var(--paper)",
-								marginBottom: 40,
-							}}>
-							Let&apos;s build something
-							<br />
-							<em style={{ color: "var(--gold)" }}>great together</em>
-						</h2>
-						<p
-							style={{
-								fontSize: 15,
-								lineHeight: 1.85,
-								color: "rgba(245,240,232,0.5)",
-								maxWidth: 380,
-								marginBottom: 56,
-							}}>
-							Actively seeking opportunities in taxation, accounting, and
-							consulting. Whether full-time or internship — I&apos;d love to
-							connect.
-						</p>
+					style={{ textAlign: "center", marginBottom: 64 }}
+					className="reveal">
+					<div className="section-label" style={{ justifyContent: "center" }}>
+						Contact
+					</div>
+					<h2
+						className="syne"
+						style={{
+							fontSize: "clamp(28px,3.5vw,56px)",
+							fontWeight: 800,
+							letterSpacing: "-0.02em",
+							marginBottom: 16,
+						}}>
+						Let&apos;s build something
+						<br />
+						<span className="grad">great together</span>
+					</h2>
+					<p
+						style={{
+							fontSize: 15,
+							color: "var(--text-sub)",
+							maxWidth: 420,
+							margin: "0 auto",
+						}}>
+						Actively seeking opportunities in taxation, accounting, and
+						consulting. Full-time or internship — I&apos;d love to connect.
+					</p>
+				</div>
 
-						<div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-							{[
-								{
-									icon: <Mail size={14} />,
-									label: "Email",
-									value: "nadiamadarinasaid@gmail.com",
-									href: "mailto:nadiamadarinasaid@gmail.com",
-								},
-								{
-									icon: <Phone size={14} />,
-									label: "Phone",
-									value: "+62 888-3052-061",
-									href: "tel:+628883052061",
-								},
-								{
-									icon: <ExternalLink size={14} />,
-									label: "LinkedIn",
-									value: "linkedin.com/in/nadiamadarinas",
-									href: "https://linkedin.com/in/nadiamadarinas",
-								},
-								{
-									icon: <MapPin size={14} />,
-									label: "Location",
-									value: "Sidoarjo, East Java",
-									href: null,
-								},
-							].map(({ icon, label, value, href }) => (
+				<div
+					style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+					{/* Contact info */}
+					<div
+						className="reveal-left"
+						style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+						{[
+							{
+								icon: <Mail size={16} />,
+								label: "Email",
+								value: "nadiamadarinasaid@gmail.com",
+								href: "mailto:nadiamadarinasaid@gmail.com",
+							},
+							{
+								icon: <Phone size={16} />,
+								label: "Phone",
+								value: "+62 888-3052-061",
+								href: "tel:+628883052061",
+							},
+							{
+								icon: <ExternalLink size={16} />,
+								label: "LinkedIn",
+								value: "linkedin.com/in/nadiamadarinas",
+								href: "https://linkedin.com/in/nadiamadarinas",
+							},
+							{
+								icon: <MapPin size={16} />,
+								label: "Location",
+								value: "Sidoarjo, East Java, Indonesia",
+								href: null,
+							},
+						].map(({ icon, label, value, href }) => (
+							<div
+								key={label}
+								className="glass"
+								style={{
+									padding: "20px 24px",
+									display: "flex",
+									alignItems: "center",
+									gap: 16,
+								}}>
 								<div
-									key={label}
-									style={{ display: "flex", gap: 16, alignItems: "center" }}>
+									style={{
+										width: 40,
+										height: 40,
+										borderRadius: 10,
+										background: "rgba(124,111,255,0.12)",
+										border: "1px solid rgba(124,111,255,0.2)",
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+										color: "var(--accent)",
+										flexShrink: 0,
+									}}>
+									{icon}
+								</div>
+								<div>
 									<div
 										style={{
-											width: 36,
-											height: 36,
-											border: "1px solid rgba(245,240,232,0.12)",
-											display: "flex",
-											alignItems: "center",
-											justifyContent: "center",
-											color: "var(--gold)",
-											flexShrink: 0,
+											fontSize: 11,
+											fontWeight: 600,
+											letterSpacing: "0.1em",
+											textTransform: "uppercase",
+											color: "var(--text-muted)",
+											marginBottom: 3,
 										}}>
-										{icon}
+										{label}
 									</div>
-									<div>
-										<div
+									{href ? (
+										<a
+											href={href}
+											target={href.startsWith("http") ? "_blank" : undefined}
+											rel="noopener noreferrer"
 											style={{
-												fontSize: 10,
-												letterSpacing: "0.15em",
-												textTransform: "uppercase",
-												color: "rgba(245,240,232,0.3)",
-												marginBottom: 3,
+												fontSize: 14,
+												color: "var(--text)",
+												textDecoration: "none",
+												fontWeight: 400,
+												display: "flex",
+												alignItems: "center",
+												gap: 4,
+											}}
+											onMouseOver={(e) =>
+												(e.currentTarget.style.color = "var(--accent)")
+											}
+											onMouseOut={(e) =>
+												(e.currentTarget.style.color = "var(--text)")
+											}>
+											{value}{" "}
+											{href.startsWith("http") && <ArrowUpRight size={12} />}
+										</a>
+									) : (
+										<span
+											style={{
+												fontSize: 14,
+												color: "var(--text)",
+												fontWeight: 400,
 											}}>
-											{label}
-										</div>
-										{href ? (
-											<a
-												href={href}
-												target={href.startsWith("http") ? "_blank" : undefined}
-												rel="noopener noreferrer"
-												style={{
-													fontSize: 13,
-													color: "var(--paper)",
-													textDecoration: "none",
-													borderBottom: "1px solid rgba(245,240,232,0.15)",
-													paddingBottom: 1,
-													transition: "border-color 0.2s",
-												}}
-												onMouseOver={(e) =>
-													(e.currentTarget.style.borderColor = "var(--gold)")
-												}
-												onMouseOut={(e) =>
-													(e.currentTarget.style.borderColor =
-														"rgba(245,240,232,0.15)")
-												}>
-												{value}
-											</a>
-										) : (
-											<span style={{ fontSize: 13, color: "var(--paper)" }}>
-												{value}
-											</span>
-										)}
-									</div>
+											{value}
+										</span>
+									)}
 								</div>
-							))}
-						</div>
+							</div>
+						))}
 					</div>
 
-					<div className="reveal" style={{ paddingTop: 8 }}>
-						<div
+					{/* Form */}
+					<div className="reveal glass" style={{ padding: "32px 36px" }}>
+						<h3
+							className="syne"
 							style={{
-								borderTop: "1px solid rgba(245,240,232,0.08)",
-								paddingTop: 48,
+								fontSize: 18,
+								fontWeight: 700,
+								marginBottom: 24,
+								color: "var(--text)",
 							}}>
+							Send a Message
+						</h3>
+						<div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 							{[
 								{
 									id: "name",
@@ -1643,28 +2081,28 @@ function Contact() {
 								},
 								{
 									id: "email",
-									label: "Email Address",
+									label: "Email",
 									type: "email",
 									placeholder: "your@email.com",
 								},
 								{
 									id: "company",
-									label: "Company / Organization",
+									label: "Company",
 									type: "text",
 									placeholder: "Where you work",
 								},
 							].map(({ id, label, type, placeholder }) => (
-								<div key={id} style={{ marginBottom: 32 }}>
+								<div key={id}>
 									<label
 										htmlFor={id}
 										style={{
 											display: "block",
-											fontSize: 10,
-											letterSpacing: "0.18em",
-											textTransform: "uppercase",
-											color: "rgba(245,240,232,0.3)",
-											marginBottom: 10,
+											fontSize: 11,
 											fontWeight: 600,
+											letterSpacing: "0.1em",
+											textTransform: "uppercase",
+											color: "var(--text-muted)",
+											marginBottom: 8,
 										}}>
 										{label}
 									</label>
@@ -1672,51 +2110,37 @@ function Contact() {
 										type={type}
 										id={id}
 										placeholder={placeholder}
-										className="field"
+										className="inp"
 									/>
 								</div>
 							))}
-							<div style={{ marginBottom: 40 }}>
+							<div>
 								<label
-									htmlFor="message"
+									htmlFor="msg"
 									style={{
 										display: "block",
-										fontSize: 10,
-										letterSpacing: "0.18em",
-										textTransform: "uppercase",
-										color: "rgba(245,240,232,0.3)",
-										marginBottom: 10,
+										fontSize: 11,
 										fontWeight: 600,
+										letterSpacing: "0.1em",
+										textTransform: "uppercase",
+										color: "var(--text-muted)",
+										marginBottom: 8,
 									}}>
 									Message
 								</label>
 								<textarea
-									id="message"
-									rows={4}
+									id="msg"
+									rows={3}
 									placeholder="Tell me about the opportunity..."
-									className="field"
-									style={{ resize: "none", display: "block" }}
+									className="inp"
+									style={{ resize: "none" }}
 								/>
 							</div>
 							<a
 								href="mailto:nadiamadarinasaid@gmail.com"
-								style={{
-									display: "inline-flex",
-									alignItems: "center",
-									gap: 10,
-									padding: "16px 36px",
-									background: "var(--gold)",
-									color: "var(--ink)",
-									fontSize: 12,
-									letterSpacing: "0.12em",
-									textTransform: "uppercase",
-									fontWeight: 700,
-									textDecoration: "none",
-									transition: "opacity 0.2s",
-								}}
-								onMouseOver={(e) => (e.currentTarget.style.opacity = "0.85")}
-								onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}>
-								Send via Email <ArrowUpRight size={14} />
+								className="btn-primary"
+								style={{ justifyContent: "center", marginTop: 4 }}>
+								Send Message <ArrowUpRight size={14} />
 							</a>
 						</div>
 					</div>
@@ -1731,29 +2155,23 @@ function Footer() {
 	return (
 		<footer
 			style={{
-				background: "#080808",
-				borderTop: "1px solid rgba(245,240,232,0.06)",
-				padding: "28px 32px",
+				background: "#050709",
+				borderTop: "1px solid var(--border)",
+				padding: "28px 24px",
 				display: "flex",
+				flexWrap: "wrap",
+				gap: 12,
 				justifyContent: "space-between",
 				alignItems: "center",
 			}}>
-			<p
-				style={{
-					fontSize: 11,
-					letterSpacing: "0.1em",
-					color: "rgba(245,240,232,0.25)",
-				}}>
+			<p style={{ fontSize: 13, color: "var(--text-muted)" }}>
 				© 2025{" "}
-				<span style={{ color: "var(--gold)" }}>Nadia Madarina Sa&apos;id</span>
+				<span style={{ color: "var(--text)", fontWeight: 500 }}>
+					Nadia Madarina Sa&apos;id
+				</span>
 			</p>
-			<p
-				style={{
-					fontSize: 11,
-					letterSpacing: "0.08em",
-					color: "rgba(245,240,232,0.2)",
-				}}>
-				Sidoarjo, Indonesia
+			<p style={{ fontSize: 12, color: "var(--text-muted)" }}>
+				Sidoarjo, Indonesia · Tax Consultant
 			</p>
 		</footer>
 	);
@@ -1764,21 +2182,19 @@ export default function Page() {
 	useReveal();
 	return (
 		<>
-			<style dangerouslySetInnerHTML={{ __html: GLOBAL_STYLES }} />
-			<div className="grain">
-				<Navbar />
-				<main>
-					<Hero />
-					<Marquee />
-					<About />
-					<Experience />
-					<Skills />
-					<Education />
-					<Certifications />
-					<Contact />
-				</main>
-				<Footer />
-			</div>
+			<style dangerouslySetInnerHTML={{ __html: CSS }} />
+			<Navbar />
+			<main>
+				<Hero />
+				<Marquee />
+				<About />
+				<Experience />
+				<Skills />
+				<Education />
+				<Certifications />
+				<Contact />
+			</main>
+			<Footer />
 		</>
 	);
 }
