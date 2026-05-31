@@ -887,7 +887,7 @@ function Hero() {
 								marginBottom: 14,
 								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.15s both",
 							}}>
-							Tax Consultant · Brevet AB · C2 English
+							Junior Tax Consultant · Brevet AB · C2 English
 						</p>
 
 						<h1
@@ -945,7 +945,7 @@ function Hero() {
 								View Experience
 							</a>
 							<a
-								href="https://docs.google.com/document/d/1i7CJPFIWh5ntpQiJrJ6s_Kxo4LKjnmMX/edit?usp=sharing&ouid=112511912242432371380&rtpof=true&sd=true"
+								href="https://docs.google.com/document/d/1z_aALgt6O2QIE7YUk5XRmg5Ba00JfGZW/edit?usp=sharing&ouid=112511912242432371380&rtpof=true&sd=true"
 								className="btn-ghost">
 								Resume <ArrowUpRight size={14} />
 							</a>
@@ -2060,12 +2060,12 @@ function Contact() {
 								value: "nadiamadarinasaid@gmail.com",
 								href: "mailto:nadiamadarinasaid@gmail.com",
 							},
-							{
-								icon: <Phone size={16} />,
-								label: "Phone / WhatsApp",
-								value: "+62 888-3052-061",
-								href: "tel:+628883052061",
-							},
+							// {
+							// 	icon: <Phone size={16} />,
+							// 	label: "Phone / WhatsApp",
+							// 	value: "+62 888-3052-061",
+							// 	href: "tel:+628883052061",
+							// },
 							{
 								icon: <ExternalLink size={16} />,
 								label: "LinkedIn",
