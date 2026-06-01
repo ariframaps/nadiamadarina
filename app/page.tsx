@@ -992,7 +992,7 @@ function Hero() {
 								View Experience
 							</a>
 							<a
-								href="https://docs.google.com/document/d/1z_aALgt6O2QIE7YUk5XRmg5Ba00JfGZW/preview"
+								href="https://drive.google.com/file/d/1pWwaHQA49WvHCP0Ja6qpun5HFi7ev3KC/view"
 								className="btn-ghost">
 								Resume <ArrowUpRight size={14} />
 							</a>

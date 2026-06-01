@@ -2,6 +2,6 @@ import { redirect } from "next/navigation";
 
 export default function ResumePage() {
 	redirect(
-		"https://docs.google.com/document/d/1z_aALgt6O2QIE7YUk5XRmg5Ba00JfGZW/preview",
+		"https://drive.google.com/file/d/1pWwaHQA49WvHCP0Ja6qpun5HFi7ev3KC/view",
 	);
 }
