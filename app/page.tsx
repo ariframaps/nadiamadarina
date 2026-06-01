@@ -358,6 +358,10 @@ body {
   padding-left: 16px;
   margin-bottom: 8px;
 }
+
+.text-justify{
+  text-align: justify;
+}
 `;
 
 // ─── Data ─────────────────────────────────────────────────────────────────
@@ -1382,6 +1386,23 @@ function About() {
 					padding: "0 24px",
 					position: "relative",
 				}}>
+				<div className="section-label">Who I Am</div>
+				{/* CHANGED: H2 now anchors on the most credible specific domains. */}
+				<h2
+					className="syne"
+					style={{
+						fontSize: "clamp(28px,3.5vw,48px)",
+						fontWeight: 800,
+						lineHeight: 1.15,
+						letterSpacing: "-0.02em",
+						marginBottom: 24,
+					}}>
+					Tax dispute. Transfer pricing.
+					<br />
+					Fiscally precise,
+					<br />
+					<span className="grad">technically credible.</span>
+				</h2>
 				<div
 					style={{
 						display: "grid",
@@ -1389,10 +1410,10 @@ function About() {
 						gap: 64,
 						alignItems: "center",
 					}}>
-					<div className="reveal-left">
-						<div className="section-label">Who I Am</div>
+					<div className="reveal-left text-justify">
+						{/* <div className="section-label">Who I Am</div> */}
 						{/* CHANGED: H2 now anchors on the most credible specific domains. */}
-						<h2
+						{/* <h2
 							className="syne"
 							style={{
 								fontSize: "clamp(28px,3.5vw,48px)",
@@ -1406,7 +1427,7 @@ function About() {
 							Fiscally precise,
 							<br />
 							<span className="grad">technically credible.</span>
-						</h2>
+						</h2> */}
 
 						{/* CHANGED: Each paragraph covers a specific technical domain,
 						    not generic consulting language. This tells a story to a recruiter
