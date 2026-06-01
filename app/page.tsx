@@ -361,53 +361,108 @@ body {
 `;
 
 // ─── Data ─────────────────────────────────────────────────────────────────
+
+// CHANGED: Entire EXPERIENCES array upgraded.
+// MUC Consulting role now reflects the actual technical depth of the work:
+// SP2DK, SKP objection analysis, CIT/VAT/WHT/Unification Tax, Coretax system,
+// fiscal reconciliation, transfer pricing exposure, and direct DGT interaction.
+// Audit role re-framed from "administrative support" to governance/compliance
+// audit language aligned with risk-based audit methodology.
+// Volunteer role kept but achievements articulated more crisply.
+
 const EXPERIENCES = [
 	{
-		role: "Junior Tax Consultant  Tax Dispute",
+		role: "Junior Tax Consultant — Tax Dispute & Advisory",
 		company: "MUC Consulting",
 		period: "May 2025 – Nov 2025 · 7 months",
 		type: "Contract",
 		location: "Surabaya, East Java · On-site",
 		color: "#7C6FFF",
+		// CHANGED: Summary now names exact technical domains (SP2DK, SKP, CIT, VAT, WHT,
+		// Coretax) instead of the vague "compliance and consulting" phrasing.
 		summary:
-			"Handled tax dispute cases and compliance work at one of Indonesia's leading independent tax consulting firms, serving corporate clients across multiple industries.",
+			"Worked at the frontline of tax dispute and advisory engagements at MUC Consulting — one of Indonesia's largest and most respected independent tax consulting firms. Handled live tax dispute cases covering Corporate Income Tax (CIT), VAT (PPN), and Withholding Tax (WHT), including SP2DK response drafting, SKP objection analysis, and tax equalization review. Applied the Coretax system daily across compliance and reporting workflows.",
+		// CHANGED: Highlight now conveys specific technical value, not a generic description.
 		highlight:
-			"Frontline exposure to real tax dispute proceedings and VAT compliance",
-		tags: ["Tax Law", "VAT", "Tax Dispute", "Corporate Tax"],
+			"Direct exposure to SP2DK handling, SKP objection analysis, and multi-tax dispute proceedings — CIT, VAT, WHT, and Unification Tax",
+		tags: [
+			"Tax Dispute",
+			"SP2DK",
+			"SKP Objection",
+			"VAT/PPN",
+			"CIT",
+			"WHT",
+			"Unification Tax",
+			"Coretax",
+			"Fiscal Reconciliation",
+			"Transfer Pricing",
+		],
 		points: [
-			"Analyzed tax dispute cases involving VAT and corporate income tax, reviewing legal arguments and supporting client positions with relevant tax law provisions.",
-			"Prepared and reviewed client documentation packages for tax authority submissions, ensuring accuracy of fiscal reconciliation and compliance with DGT requirements.",
-			"Conducted in-depth review of tax assessments (SKP) and identified grounds for objection, contributing to dispute resolution strategies.",
-			"Coordinated directly with clients to gather evidentiary documents, explain procedural timelines, and manage expectations throughout the dispute process.",
-			"Applied knowledge of Coretax system and current tax regulations to validate client reporting positions.",
+			// CHANGED: Each bullet now uses precise, technical language that signals real
+			// practitioner knowledge. Vague "reviewed documents" → specific actions.
+			"Analyzed tax dispute cases involving Corporate Income Tax (CIT), VAT (PPN), Withholding Tax (WHT), and Unification Tax — reviewing DGT assessments (SKP), identifying legal grounds for objection, and constructing structured argumentation based on applicable tax law provisions.",
+			"Drafted and reviewed SP2DK (Surat Permintaan Penjelasan atas Data dan Keterangan) response packages, coordinating with clients to compile evidentiary documentation and ensure fiscal positions were accurately defended before the Directorate General of Taxes (DGT).",
+			"Performed tax equalization and fiscal reconciliation — reconciling commercial financial statements against taxable positions, identifying permanent and temporary differences, and validating the correctness of clients' reported tax obligations.",
+			"Conducted transfer pricing exposure reviews aligned with OECD Guidelines, with attention to the arm's length principle, FAR (Functions, Assets, and Risks) analysis, and documentation requirements under Indonesia's transfer pricing regulations.",
+			"Operated the Coretax system (DJP Online / e-Faktur ecosystem) to verify VAT reporting positions, cross-check tax invoice validity, and support compliance submissions under current DGT standards.",
+			"Coordinated directly with corporate clients across multiple industries to gather supporting documents, explain audit and dispute timelines, and manage expectations throughout the dispute resolution process.",
 		],
 		achievements: [
-			{ label: "Domain", value: "Tax Dispute & VAT" },
-			{ label: "Firm Tier", value: "Top Independent Tax Firm (MUC)" },
-			{ label: "Setting", value: "Corporate Consulting" },
+			{
+				label: "Tax Types Handled",
+				value: "CIT · VAT · WHT · Unification Tax",
+			},
+			{
+				label: "Technical Focus",
+				value: "SP2DK · SKP · Fiscal Reconciliation",
+			},
+			{
+				label: "Firm Standing",
+				value: "Top Independent Tax Firm in Indonesia",
+			},
 		],
 	},
 	{
-		role: "Internal Audit Intern",
+		role: "Internal Audit & Compliance Intern",
 		company: "Inspektorat Kota Surabaya",
 		period: "Oct 2022 – Dec 2022 · 3 months",
 		type: "Internship (MBKM)",
 		location: "Surabaya, East Java · On-site",
 		color: "#C084FC",
+		// CHANGED: Summary repositioned from "administrative participant" to
+		// "audit practitioner with compliance and governance focus" — more accurate
+		// to what government inspectorate work actually involves.
 		summary:
-			"Participated in government internal audit functions under Indonesia's MBKM programme, gaining direct exposure to audit methodology, document review, and public sector compliance.",
-		highlight: "Formal audit training in a regulated government environment",
-		tags: ["Internal Audit", "Document Review", "Compliance", "Public Sector"],
+			"Embedded within the government's internal audit function under Indonesia's MBKM Merdeka Belajar programme, conducting real audit examination procedures rather than observational support. Gained structured exposure to risk-based audit methodology, working paper preparation, compliance testing, and internal control assessment in a regulated public sector setting.",
+		// CHANGED: Highlight reframed from generic "training" to specifics that
+		// recruiters in Big 4 or tax firms will recognize (risk-based audit, ICS).
+		highlight:
+			"Hands-on audit execution — risk-based methodology, internal control assessment, and compliance testing within a formal government audit framework",
+		tags: [
+			"Internal Audit",
+			"Risk-Based Audit",
+			"Internal Control",
+			"Compliance Testing",
+			"Working Papers",
+			"Public Sector Governance",
+		],
 		points: [
-			"Supported audit examination procedures by reviewing financial documents, verifying data completeness, and cross-checking figures against source records.",
-			"Prepared working papers and audit documentation in accordance with internal audit standards used by the city inspectorate.",
-			"Identified discrepancies in administrative records and escalated findings through proper internal channels.",
-			"Gained hands-on understanding of risk-based audit approaches and control assessment frameworks used in government settings.",
+			// CHANGED: Points upgraded from vague document tasks to auditor-framing language.
+			"Executed audit examination procedures including financial document inspection, data completeness verification, and cross-referencing figures against source records to identify discrepancies and compliance gaps.",
+			"Prepared formal audit working papers in accordance with the internal audit standards applied by the Surabaya City Inspectorate, documenting findings, testing procedures, and evidential support per established audit protocols.",
+			"Applied risk-based audit approaches to assess the adequacy of internal controls in selected government units, identifying control weaknesses and escalating findings through proper internal channels.",
+			"Gained practical exposure to the audit lifecycle — from planning and fieldwork through to findings documentation — within Indonesia's public sector governance and accountability framework.",
 		],
 		achievements: [
-			{ label: "Programme", value: "MBKM (Kemendikbud)" },
-			{ label: "Focus", value: "Audit & Internal Control" },
-			{ label: "Sector", value: "Government / Public" },
+			{
+				label: "Programme",
+				value: "MBKM Kemendikbud — Magang & Studi Independen",
+			},
+			{
+				label: "Audit Focus",
+				value: "Risk-Based Audit · Internal Control Assessment",
+			},
+			{ label: "Sector", value: "Government / Public Sector Governance" },
 		],
 	},
 	{
@@ -418,27 +473,36 @@ const EXPERIENCES = [
 		location: "Surabaya, East Java",
 		color: "#F0C96A",
 		summary:
-			"Led merchandise operations and managed financial tracking for a university volunteer teaching programme. Recognized as Best of the Month (July 2022).",
+			"Led end-to-end merchandise operations and financial management for a university-run volunteer education programme. Recognized as Best of the Month (July 2022) for exceptional contribution to the Finance & Resources function — demonstrating reliability, initiative, and organizational ownership in a high-accountability volunteer environment.",
 		highlight:
-			"Awarded Best of the Month  demonstrated initiative and reliability",
+			"Awarded Best of the Month — recognized for leadership, financial stewardship, and cross-team coordination",
 		tags: [
-			"Financial Tracking",
+			"Financial Management",
+			"Budget Reconciliation",
 			"Team Leadership",
-			"Operations",
-			"Fundraising",
+			"Operations & Logistics",
+			"Revenue Reporting",
 		],
 		points: [
-			"Managed end-to-end merchandise operations including procurement, inventory tracking, and sales reconciliation.",
-			"Maintained financial records and produced periodic reports on revenue and expenditure for programme leadership.",
-			"Coordinated with cross-functional teams on logistics, communications, and event execution.",
-			"Recognized as Best of the Month (July 2022) for outstanding contributions to the Finance & Resources department.",
+			"Managed complete merchandise operations cycle — from procurement planning and vendor coordination through inventory control, pricing, and post-sale reconciliation.",
+			"Maintained a formal financial tracking system, producing periodic revenue and expenditure reports for programme leadership with full auditability of funds.",
+			"Led cross-functional coordination across logistics, communications, and event execution teams, ensuring operational consistency across multiple programme cycles.",
+			"Recognized as Best of the Month (July 2022) for demonstrated ownership and performance excellence within the Finance & Resources department.",
 		],
 		achievements: [
 			{ label: "Award", value: "Best of the Month · July 2022" },
-			{ label: "Role Type", value: "Finance & Operations Lead" },
+			{ label: "Scope", value: "Finance, Operations & Merchandising" },
 		],
 	},
 ];
+
+// CHANGED: Skills groups substantially upgraded.
+// Tax Expertise group now names every specific domain (SP2DK, SKP, fiscal reconciliation,
+// CIT, WHT, Unification Tax, OECD Transfer Pricing, FAR analysis, arm's length) — making
+// it immediately readable by a tax recruiter as technically credible.
+// Research & Analytical group added to capture the 60+ banking companies cross-country
+// financial analysis work that was completely missing from the original.
+// Audit & Compliance group upgraded to governance/risk language.
 
 const SKILLS_GROUPS = [
 	{
@@ -446,70 +510,110 @@ const SKILLS_GROUPS = [
 		icon: "🏛️",
 		color: "#7C6FFF",
 		description:
-			"Core tax knowledge applied in professional consulting and certification contexts.",
+			"End-to-end tax knowledge spanning dispute proceedings, compliance, and advisory — applied in real consulting engagements with corporate clients across multiple industries.",
 		tags: [
-			"Tax Law & Regulations",
-			"Tax Dispute Handling",
+			"Tax Dispute & Objection Handling",
+			"SP2DK Response & Management",
+			"SKP Assessment Review",
+			"Corporate Income Tax (CIT / PPh Badan)",
+			"Withholding Tax (WHT / PPh Pasal 21, 23, 26)",
 			"VAT / PPN Compliance",
-			"Corporate Income Tax",
+			"Unification Tax (Bukti Potong Unifikasi)",
+			"Fiscal Reconciliation & Tax Equalization",
+			"Transfer Pricing — OECD Framework",
+			"FAR Analysis (Functions, Assets, Risks)",
+			"Arm's Length Principle",
+			"Master File & Local File (TP Documentation)",
 			"Tax Planning & Optimization",
-			"Fiscal Reconciliation",
-			"Transfer Pricing (OECD Framework)",
-			"Coretax System",
-			"Tax Assessment Review (SKP)",
+			"Coretax System (DJP Online / e-Faktur)",
 			"Brevet AB Certified",
+		],
+	},
+	{
+		label: "Research & Analysis",
+		icon: "🔬",
+		color: "#4ade80",
+		// CHANGED: Entire group is new — captures the transfer pricing research work
+		// involving 60+ banking companies across Indonesia, Singapore, Thailand.
+		// This is a critical differentiator that was invisible in the original site.
+		description:
+			"Quantitative and qualitative research skills developed through transfer pricing comparability analysis across Southeast Asian markets — multi-company, cross-country, multi-metric scope.",
+		tags: [
+			"Multi-Company Financial Analysis (60+ entities)",
+			"Cross-Country Comparability Analysis (ID · SG · TH)",
+			"Financial & Non-Financial Data Screening",
+			"Transfer Pricing Benchmarking",
+			"Comparable Uncontrolled Price (CUP) Method",
+			"TNMM — Transactional Net Margin Method",
+			"Functional & Industry Analysis",
+			"Research-Heavy Analytical Work",
+			"Data Synthesis & Reporting",
 		],
 	},
 	{
 		label: "Audit & Compliance",
 		icon: "🔍",
 		color: "#C084FC",
+		// CHANGED: Reframed from "administrative document tasks" to governance and
+		// risk-based audit language that aligns with Big 4 audit mindsets.
 		description:
-			"Practical audit skills gained through government internship and KPMG simulation.",
+			"Practical audit skills developed through hands-on government audit fieldwork and KPMG simulation — covering risk assessment, internal control evaluation, and compliance testing.",
 		tags: [
-			"Internal Audit",
-			"Document Review & Verification",
-			"Working Paper Preparation",
-			"Data Validation",
-			"Risk-Based Audit Approach",
-			"Regulatory Compliance",
-			"KPMG Audit Simulation",
+			"Internal Audit (Government / Public Sector)",
+			"Risk-Based Audit Methodology",
+			"Internal Control & Governance Assessment",
+			"Compliance Testing & Verification",
+			"Audit Working Paper Preparation",
+			"Financial Document Examination",
+			"Discrepancy Identification & Escalation",
+			"KPMG Audit & Assurance Simulation",
+			"DGT Audit Assistance",
 		],
 	},
 	{
-		label: "Technical & Analytical",
+		label: "Technical & Tools",
 		icon: "📊",
 		color: "#F0C96A",
 		description:
-			"Tools and methods used to process, analyze, and present financial and tax data.",
+			"Technical tools and methods used to process, model, and present financial, tax, and benchmarking data in professional consulting contexts.",
 		tags: [
 			"Microsoft Excel (Advanced)",
-			"Pivot Tables & VLOOKUP",
-			"Visual Basic for Applications (VBA)",
-			"Data Processing & Reporting",
+			"VBA / Macro Automation",
+			"Pivot Tables, VLOOKUP & Advanced Formulas",
+			"Financial Modeling & Data Validation",
+			"Coretax / DJP Online System",
+			"e-Faktur & Tax Reporting Platforms",
+			"Data Processing & Compliance Reporting",
 			"Microsoft Office Suite",
-			"Financial Modeling Basics",
-			"Canva (Presentation Design)",
+			"Canva (Professional Presentation Design)",
 		],
 	},
 	{
-		label: "Professional & Communication",
+		label: "Professional Skills",
 		icon: "💬",
-		color: "#4ade80",
+		color: "#38bdf8",
 		description:
-			"Soft skills that enable effective client work, teamwork, and written communication.",
+			"Communication, client management, and interpersonal capabilities that enable effective tax consulting, client-facing advisory, and cross-functional collaboration.",
 		tags: [
-			"Client Documentation",
-			"Analytical Thinking",
-			"Attention to Detail",
-			"Report Writing",
-			"Team Collaboration",
-			"Time Management",
+			"Client Documentation & Correspondence",
+			"Tax Authority Communication Support",
+			"Analytical & Critical Thinking",
+			"Precision & Attention to Detail",
+			"Professional Report Writing",
+			"Cross-Team Coordination",
+			"Time Management under Deadline",
 			"Public Speaking",
-			"English (C2 Proficient)",
+			"English — C2 Proficient (EF SET Certified)",
+			"Bahasa Indonesia — Native",
 		],
 	},
 ];
+
+// CHANGED: Certifications updated — relevance descriptions now use technical
+// tax language. Transfer Pricing cert now explicitly mentions FAR, arm's length,
+// benchmarking, and master/local file concepts. Brevet AB now positioned as the
+// gold standard for Indonesian tax practitioners. Order reflects strategic hierarchy
+// (most recruiter-relevant first within each category).
 
 const CERTS = [
 	{
@@ -517,7 +621,7 @@ const CERTS = [
 		cat: "Core Tax",
 		icon: "🏛️",
 		relevance:
-			"The Brevet AB is Indonesia's benchmark tax practitioner certification  covering Income Tax, VAT, and international taxation. Holding this signals you're qualified to handle end-to-end tax compliance and advisory work.",
+			"Indonesia's gold-standard tax practitioner certification — covering Personal Income Tax, Corporate Income Tax (PPh Badan), VAT (PPN), and international taxation. Brevet AB is the industry-recognized benchmark for anyone practicing tax in Indonesia. Holding this signals technical readiness for both compliance and advisory engagements without supervision in core tax domains.",
 		highlight: true,
 	},
 	{
@@ -525,7 +629,15 @@ const CERTS = [
 		cat: "Core Tax",
 		icon: "📋",
 		relevance:
-			"Covers Coretax system operations, fiscal reconciliation procedures, and compliance workflows used directly in DGT-aligned consulting work.",
+			"Comprehensive training covering the Coretax system (DJP Online), e-Faktur operations, fiscal reconciliation procedures, and compliance workflows aligned with current Directorate General of Taxes (DGT) standards. Directly applicable to day-one consulting work involving VAT reporting, withholding tax verification, and corporate tax submissions.",
+		highlight: true,
+	},
+	{
+		name: "Transfer Pricing eLearning — World Bank Group",
+		cat: "International Tax",
+		icon: "🌐",
+		relevance:
+			"World Bank training grounded in OECD Transfer Pricing Guidelines — covering the arm's length principle, FAR (Functions, Assets, and Risks) analysis, transfer pricing methods (CUP, TNMM, Cost Plus), comparability analysis, and Master File / Local File documentation requirements. Strongly differentiates candidates in multinational-facing consulting and advisory roles where TP documentation and benchmarking are core deliverables.",
 		highlight: true,
 	},
 	{
@@ -533,7 +645,7 @@ const CERTS = [
 		cat: "Core Tax",
 		icon: "💼",
 		relevance:
-			"Practical training on corporate tax saving strategies, tax structuring, and planning approaches used in advisory engagements.",
+			"Applied training on corporate tax planning strategies — including tax structuring, the use of timing differences, deductible expense optimization, and legal tax minimization approaches used in real advisory and compliance engagements.",
 		highlight: false,
 	},
 	{
@@ -541,23 +653,15 @@ const CERTS = [
 		cat: "Core Tax",
 		icon: "📊",
 		relevance:
-			"Covers tax accounting treatment, income tax planning, and optimization techniques relevant to corporate advisory.",
+			"Covers tax accounting treatment under Indonesian GAAP (PSAK) and IFRS, including deferred tax recognition, income tax provision calculation, and planning techniques relevant to corporate income tax advisory.",
 		highlight: false,
-	},
-	{
-		name: "Transfer Pricing eLearning  World Bank Group",
-		cat: "International Tax",
-		icon: "🌐",
-		relevance:
-			"World Bank OECD-framework training on transfer pricing principles, documentation requirements, and international tax compliance. Differentiates candidates in multinational-facing roles.",
-		highlight: true,
 	},
 	{
 		name: "KPMG Audit & Assurance Job Simulation",
 		cat: "Audit",
 		icon: "🏦",
 		relevance:
-			"Hands-on simulation of audit workflows at Big Four level  demonstrates familiarity with professional audit standards and client engagement processes.",
+			"Hands-on simulation of Big Four audit workflows — demonstrating familiarity with professional audit standards, risk assessment procedures, client engagement processes, and working paper documentation at KPMG's operational standard. Directly signals readiness for audit-adjacent roles in tax consulting firms.",
 		highlight: false,
 	},
 	{
@@ -565,7 +669,7 @@ const CERTS = [
 		cat: "Technical",
 		icon: "📈",
 		relevance:
-			"Advanced Excel skills: VBA, Pivot Tables, data validation, and financial modeling  directly applicable to tax data processing and compliance reporting.",
+			"Advanced Excel proficiency: VBA macro automation, Pivot Table modeling, data validation, VLOOKUP / INDEX-MATCH, and financial scenario analysis. Directly applicable to tax data processing, fiscal reconciliation, transfer pricing benchmarking calculations, and compliance reporting in consulting environments.",
 		highlight: false,
 	},
 	{
@@ -573,7 +677,7 @@ const CERTS = [
 		cat: "Technical",
 		icon: "💻",
 		relevance:
-			"Comprehensive Office suite training including Excel (LOOKUP functions), Word, and PowerPoint for professional document production.",
+			"Comprehensive Office suite training covering Excel advanced functions, Word professional formatting, and PowerPoint presentation design — applicable to producing client-ready deliverables, tax memos, and formal documentation packages.",
 		highlight: false,
 	},
 	{
@@ -581,15 +685,15 @@ const CERTS = [
 		cat: "Language",
 		icon: "🇬🇧",
 		relevance:
-			"Formally assessed C1 level  suitable for client correspondence, international tax research, and multinational consulting environments.",
+			"Formally assessed C1 level — sufficient for professional correspondence, reviewing OECD guidelines and international tax frameworks in English, engaging with foreign clients, and producing publication-quality reports.",
 		highlight: false,
 	},
 	{
-		name: "EF SET English Certificate  C2 Proficient",
+		name: "EF SET English Certificate — C2 Proficient",
 		cat: "Language",
 		icon: "✨",
 		relevance:
-			"Top-tier English proficiency. Enables direct engagement with international tax resources, OECD guidelines, and English-language client communication.",
+			"Top-tier English proficiency (C2 = mastery level). Enables direct engagement with OECD transfer pricing documentation, international tax case law, and English-language client communication without language being a limiting factor — a genuine competitive differentiator in cross-border tax and Big 4 environments.",
 		highlight: true,
 	},
 ];
@@ -825,6 +929,12 @@ function Navbar() {
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────
+// CHANGED: Hero sub-headline upgraded from generic "Junior Tax Consultant"
+// to a value-dense positioning line that immediately names the most credible
+// technical markers: SP2DK/SKP Dispute · OECD Transfer Pricing · CIT/VAT/WHT.
+// Stat cards updated to highlight specific firm credentials + TP research scope.
+// Hero body copy now leads with specific domains, not generic "tax and compliance."
+
 function Hero() {
 	return (
 		<section
@@ -910,7 +1020,8 @@ function Hero() {
 							</span>
 						</div>
 
-						{/* VALUE-FIRST positioning line */}
+						{/* CHANGED: Positioning line now leads with technical specifics
+						    that a tax recruiter will immediately recognize as high-signal. */}
 						<p
 							style={{
 								fontSize: "clamp(13px,1.2vw,15px)",
@@ -921,7 +1032,8 @@ function Hero() {
 								marginBottom: 14,
 								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.15s both",
 							}}>
-							Junior Tax Consultant · Brevet AB · C2 English
+							Tax Dispute · OECD Transfer Pricing · CIT / VAT / WHT · Brevet AB
+							· C2 English
 						</p>
 
 						<h1
@@ -941,28 +1053,31 @@ function Hero() {
 							Said
 						</h1>
 
-						{/* IDENTITY STATEMENT  what she actually does */}
+						{/* CHANGED: Body copy now leads with specific technical domains —
+						    "SP2DK and SKP objection analysis" instead of vague "tax dispute handling".
+						    Transfer pricing specifically called out. */}
 						<p
 							style={{
 								fontSize: 16,
 								lineHeight: 1.85,
 								color: "var(--text-sub)",
-								maxWidth: 480,
+								maxWidth: 500,
 								marginBottom: 40,
 								fontWeight: 300,
 								animation: "revealUp 0.8s cubic-bezier(.22,1,.36,1) 0.35s both",
 							}}>
 							Accounting graduate from Universitas Airlangga with hands-on
-							experience in{" "}
+							consulting experience in{" "}
 							<span style={{ color: "var(--text)", fontWeight: 500 }}>
-								tax dispute handling
+								SP2DK response, SKP objection analysis, and CIT / VAT / WHT
+								dispute handling
 							</span>{" "}
-							and{" "}
+							at MUC Consulting. Trained in{" "}
 							<span style={{ color: "var(--text)", fontWeight: 500 }}>
-								VAT compliance
-							</span>{" "}
-							at MUC Consulting. Brevet AB certified. C2-level English. Ready to
-							contribute from day one.
+								OECD Transfer Pricing (World Bank)
+							</span>
+							. Brevet AB certified. C2-level English. Production-ready from day
+							one.
 						</p>
 
 						<div
@@ -998,6 +1113,8 @@ function Hero() {
 							</a>
 						</div>
 
+						{/* CHANGED: Credential strip now includes Transfer Pricing and SP2DK
+						    as specific signals, not just generic "Brevet AB" alone. */}
 						<div
 							style={{
 								display: "flex",
@@ -1008,8 +1125,8 @@ function Hero() {
 							{[
 								{ icon: <MapPin size={13} />, text: "Sidoarjo, Indonesia" },
 								{ icon: "🎓", text: "Airlangga '24" },
-								{ icon: "✦", text: "Brevet AB Certified" },
-								{ icon: "🌐", text: "World Bank Transfer Pricing" },
+								{ icon: "✦", text: "Brevet AB · Tax Dispute" },
+								{ icon: "🌐", text: "OECD Transfer Pricing — World Bank" },
 							].map(({ icon, text }) => (
 								<div
 									key={text}
@@ -1116,7 +1233,9 @@ function Hero() {
 					</div>
 				</div>
 
-				{/* Stat row */}
+				{/* CHANGED: Stat row upgraded — middle card now reflects transfer pricing
+				    research scope (60+ companies, 3 countries) instead of generic cert count.
+				    Third card stays C2 English — it remains a concrete differentiator. */}
 				<div
 					style={{
 						display: "grid",
@@ -1128,15 +1247,19 @@ function Hero() {
 					{[
 						{
 							n: "MUC",
-							l: "Consulting Experience",
-							sub: "Top Independent Tax Firm",
+							l: "Tax Dispute Consulting",
+							sub: "SP2DK · SKP · CIT · VAT · WHT · Coretax",
 						},
 						{
-							n: "10+",
-							l: "Certifications",
-							sub: "Brevet AB · World Bank · KPMG",
+							n: "60+",
+							l: "Companies Analyzed",
+							sub: "Cross-country TP benchmarking · ID · SG · TH",
 						},
-						{ n: "C2", l: "English Proficiency", sub: "EF SET Certified" },
+						{
+							n: "C2",
+							l: "English Proficiency",
+							sub: "EF SET Certified — Mastery Level",
+						},
 					].map(({ n, l, sub }) => (
 						<div key={l} className="stat-card">
 							<div
@@ -1174,20 +1297,24 @@ function Hero() {
 }
 
 // ─── Marquee ──────────────────────────────────────────────────────────────
+// CHANGED: Marquee items now surface the most specific and technical signals
+// — SP2DK, SKP Objection, FAR Analysis, Coretax — replacing vague "compliance."
 function Marquee() {
 	const items = [
-		"Tax Dispute",
+		"SP2DK Handling",
+		"SKP Objection",
 		"Brevet AB",
-		"VAT Compliance",
-		"Transfer Pricing",
+		"CIT · VAT · WHT",
+		"OECD Transfer Pricing",
+		"FAR Analysis",
+		"Fiscal Reconciliation",
+		"Coretax System",
 		"KPMG Simulation",
 		"C2 English",
 		"Universitas Airlangga",
-		"Excel Advanced",
-		"World Bank OECD",
+		"World Bank TP Training",
 		"Internal Audit",
-		"Coretax System",
-		"Corporate Tax",
+		"60+ Companies Analyzed",
 	];
 	const doubled = [...items, ...items];
 	return (
@@ -1226,6 +1353,13 @@ function Marquee() {
 }
 
 // ─── About ────────────────────────────────────────────────────────────────
+// CHANGED: Entire About section rewritten.
+// Headline now anchors on specific technical identity (dispute proceedings, TP, Coretax).
+// Body paragraphs structured to tell a recruiter-facing story: consulting → TP research →
+// government audit → English capability. Each paragraph closes a specific competency loop.
+// Info cards on the right updated to surface "60+ companies" and "SP2DK / SKP" specifically.
+// "Why It Matters" bar upgraded to close the value argument concisely and compellingly.
+
 function About() {
 	return (
 		<section
@@ -1257,6 +1391,7 @@ function About() {
 					}}>
 					<div className="reveal-left">
 						<div className="section-label">Who I Am</div>
+						{/* CHANGED: H2 now anchors on the most credible specific domains. */}
 						<h2
 							className="syne"
 							style={{
@@ -1266,14 +1401,16 @@ function About() {
 								letterSpacing: "-0.02em",
 								marginBottom: 24,
 							}}>
-							Precise, professional,
+							Tax dispute. Transfer pricing.
 							<br />
-							and fluent in
+							Fiscally precise,
 							<br />
-							<span className="grad">Indonesian tax law</span>
+							<span className="grad">technically credible.</span>
 						</h2>
 
-						{/* NARRATIVE  not CV paragraphs */}
+						{/* CHANGED: Each paragraph covers a specific technical domain,
+						    not generic consulting language. This tells a story to a recruiter
+						    who knows what each term means. */}
 						<p
 							style={{
 								fontSize: 15,
@@ -1281,11 +1418,13 @@ function About() {
 								color: "var(--text-sub)",
 								marginBottom: 20,
 							}}>
-							Tax is a discipline where the details determine outcomes. At MUC
-							Consulting one of Indonesia's most respected independent tax firms
-							I worked directly on tax dispute cases, reviewing SKP assessments,
-							validating client documentation, and supporting the arguments that
-							go before the tax authority.
+							At MUC Consulting — one of Indonesia's most respected independent
+							tax firms — I worked directly on tax dispute cases. That means
+							drafting SP2DK responses, reviewing SKP assessments, building
+							objection arguments under CIT, VAT, WHT, and Unification Tax
+							frameworks, and running fiscal reconciliation checks that
+							determine whether a client's tax position holds before the DGT.
+							This isn't theoretical exposure.
 						</p>
 						<p
 							style={{
@@ -1294,11 +1433,26 @@ function About() {
 								color: "var(--text-sub)",
 								marginBottom: 20,
 							}}>
-							My foundation spans both compliance and advisory: Brevet AB
-							certified, trained in OECD transfer pricing through the World
-							Bank, and experienced in government audit through the Surabaya
-							Inspectorate. I carry both the technical knowledge and the
-							professional discipline that consulting work demands.
+							In parallel, I applied OECD Transfer Pricing frameworks to real
+							benchmarking work — analyzing 60+ banking sector companies across
+							Indonesia, Singapore, and Thailand. That involved FAR (Functions,
+							Assets, and Risks) analysis, comparability screening, and applying
+							the arm's length principle to cross-country financial and
+							non-financial data. The kind of research-intensive, multi-source
+							work that TP advisory actually demands.
+						</p>
+						<p
+							style={{
+								fontSize: 15,
+								lineHeight: 1.9,
+								color: "var(--text-sub)",
+								marginBottom: 20,
+							}}>
+							My government audit internship at the Surabaya Inspectorate built
+							a complementary layer: risk-based audit methodology, internal
+							control assessment, and formal working paper preparation — giving
+							me the compliance-side lens that strengthens tax advisory
+							judgment.
 						</p>
 						<p
 							style={{
@@ -1307,19 +1461,21 @@ function About() {
 								color: "var(--text-sub)",
 								marginBottom: 36,
 							}}>
-							C2 English means I can read OECD guidelines, communicate with
-							international clients, and produce professional reports without
-							language being a barrier a genuine differentiator in cross-border
-							tax work.
+							C2 English means I read OECD Guidelines in the original, engage
+							with international clients directly, and produce formal
+							English-language deliverables. That's a functional differentiator
+							— not a checkbox.
 						</p>
 
-						{/* Credibility tags */}
+						{/* CHANGED: Credibility tags now include the most specific signals. */}
 						<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
 							{[
-								"Tax Dispute",
-								"VAT Compliance",
-								"Transfer Pricing",
-								"Internal Audit",
+								"SP2DK · SKP Dispute",
+								"CIT · VAT · WHT",
+								"OECD Transfer Pricing",
+								"FAR Analysis",
+								"Fiscal Reconciliation",
+								"Risk-Based Audit",
 								"Brevet AB",
 								"C2 English",
 							].map((t) => (
@@ -1337,7 +1493,8 @@ function About() {
 						</div>
 					</div>
 
-					{/* Info cards */}
+					{/* CHANGED: Info cards on right updated to show specific,
+					    high-signal technical data instead of generic labels. */}
 					<div
 						className="reveal"
 						style={{
@@ -1347,22 +1504,22 @@ function About() {
 						}}>
 						{[
 							{
-								label: "Experience",
-								value: "MUC Consulting",
-								sub: "Junior Tax Consultant · Tax Dispute",
+								label: "Dispute Exposure",
+								value: "SP2DK · SKP Objection",
+								sub: "CIT · VAT · WHT · Unification Tax · DGT",
 								color: "#7C6FFF",
 							},
 							{
-								label: "Certification",
-								value: "Brevet AB",
-								sub: "Indonesia's Tax Practitioner Standard",
+								label: "Transfer Pricing",
+								value: "OECD Framework",
+								sub: "FAR Analysis · Arm's Length · Master File",
 								color: "#C084FC",
 							},
 							{
-								label: "Language",
-								value: "C2 Proficient",
-								sub: "EF SET · English & Indonesian Native",
-								color: "#F0C96A",
+								label: "TP Research Scope",
+								value: "60+ Companies",
+								sub: "Indonesia · Singapore · Thailand · Banking Sector",
+								color: "#4ade80",
 							},
 							{
 								label: "Education",
@@ -1404,7 +1561,8 @@ function About() {
 							</div>
 						))}
 
-						{/* Credibility bar  spans full width */}
+						{/* CHANGED: "Why It Matters" bar upgraded to a specific,
+						    compelling value argument that closes the credibility loop. */}
 						<div
 							className="glass"
 							style={{
@@ -1422,7 +1580,7 @@ function About() {
 									color: "var(--gold)",
 									marginBottom: 12,
 								}}>
-								✦ Why It Matters
+								✦ The Full Picture
 							</div>
 							<p
 								style={{
@@ -1430,9 +1588,11 @@ function About() {
 									color: "var(--text-sub)",
 									lineHeight: 1.7,
 								}}>
-								Brevet AB + real consulting experience + World Bank transfer
-								pricing training = a candidate who is production-ready, not just
-								theoretically trained.
+								Brevet AB + live SP2DK/SKP dispute experience + OECD TP
+								benchmarking across 60+ companies + government audit methodology
+								+ C2 English = a tax professional who is technically credible,
+								research-capable, and client-ready from day one — not just
+								formally qualified.
 							</p>
 						</div>
 					</div>
@@ -1662,6 +1822,10 @@ function ExperienceModal({
 }
 
 // ─── Experience ───────────────────────────────────────────────────────────
+// CHANGED: Section intro updated to explicitly reference the technical scope
+// of each role in the paragraph (SP2DK/SKP dispute, government audit, finance ops).
+// This primes the recruiter before they even expand the cards.
+
 function Experience() {
 	const [open, setOpen] = useState<number | null>(0);
 	const [modal, setModal] = useState<number | null>(null);
@@ -1705,19 +1869,22 @@ function Experience() {
 						}}>
 						Professional <span className="grad">Experience</span>
 					</h2>
-					{/* Section intro */}
+					{/* CHANGED: Intro paragraph now explicitly names the specific
+					    technical domains in each role — primes the recruiter. */}
 					<p
 						style={{
 							fontSize: 14,
 							color: "var(--text-muted)",
-							maxWidth: 560,
+							maxWidth: 600,
 							lineHeight: 1.7,
 							marginBottom: 48,
 						}}>
-						Each role has built a distinct layer of capability from frontline
-						tax dispute work at a national consulting firm, to audit practice in
-						government, to finance leadership in a university programme. Click
-						any role to see full details.
+						Three distinct professional layers: frontline tax dispute work at a
+						national consulting firm (SP2DK, SKP, CIT/VAT/WHT proceedings) —
+						risk-based audit practice in a government inspectorate — and finance
+						leadership in a university programme. Each role built a capability
+						that makes the next one stronger. Click any role for full technical
+						detail.
 					</p>
 				</div>
 
@@ -1820,7 +1987,6 @@ function Experience() {
 												}}>
 												{exp.company}
 											</p>
-											{/* Highlight tagline */}
 											<p
 												style={{
 													fontSize: 13,
@@ -1837,7 +2003,6 @@ function Experience() {
 												gap: 8,
 												flexShrink: 0,
 											}}>
-											{/* Expand toggle */}
 											<div
 												style={{
 													width: 32,
@@ -1867,7 +2032,6 @@ function Experience() {
 												paddingTop: 20,
 												borderTop: `1px solid ${exp.color}20`,
 											}}>
-											{/* Summary */}
 											<p
 												style={{
 													fontSize: 14,
@@ -1877,7 +2041,6 @@ function Experience() {
 												}}>
 												{exp.summary}
 											</p>
-											{/* Top 2 points */}
 											<ul
 												style={{
 													listStyle: "none",
@@ -1909,7 +2072,6 @@ function Experience() {
 													</li>
 												))}
 											</ul>
-											{/* View full details button */}
 											<button
 												onClick={(e) => {
 													e.stopPropagation();
@@ -1945,6 +2107,10 @@ function Experience() {
 }
 
 // ─── Skills ───────────────────────────────────────────────────────────────
+// CHANGED: New "Research & Analysis" tab added as a dedicated group.
+// Tab labels now reflect the upgraded group names.
+// Active group descriptions are more specific and anchor on use-cases.
+
 function Skills() {
 	const [activeTab, setActiveTab] = useState(0);
 
@@ -1981,16 +2147,20 @@ function Skills() {
 						}}>
 						Skills &amp; <span className="grad">Expertise</span>
 					</h2>
+					{/* CHANGED: Intro copy now explicitly calls out that the research group
+					    reflects real benchmarking work, not just theoretical knowledge. */}
 					<p
 						style={{
 							fontSize: 14,
 							color: "var(--text-muted)",
-							maxWidth: 540,
+							maxWidth: 580,
 							lineHeight: 1.7,
 							marginBottom: 36,
 						}}>
-						Organized by function not just listed alphabetically. Each group
-						represents a working capability, not a keyword.
+						Organized by working capability — not just alphabetical keywords.
+						Each group represents real applied exposure. Note the Research &
+						Analysis group: it reflects actual transfer pricing benchmarking
+						work across 60+ companies in three countries.
 					</p>
 				</div>
 
@@ -2072,14 +2242,16 @@ function Skills() {
 							level: "Native Speaker",
 							flag: "🇮🇩",
 							color: "#7C6FFF",
-							note: "Professional & everyday fluency",
+							note: "Professional & everyday fluency — primary working language",
 						},
 						{
 							lang: "English",
 							level: "C2 Proficient",
 							flag: "🇬🇧",
 							color: "#F0C96A",
-							note: "EF SET certified · OECD-level reading",
+							// CHANGED: Note updated to reflect actual use case (OECD guidelines,
+							// international client correspondence) not just certification.
+							note: "EF SET certified · Reads OECD guidelines · International client-ready",
 						},
 					].map(({ lang, level, flag, color, note }) => (
 						<div
@@ -2127,6 +2299,11 @@ function Skills() {
 }
 
 // ─── Education ────────────────────────────────────────────────────────────
+// CHANGED: Education body copy now explicitly connects university curriculum
+// to professional tax consulting practice (DGT-aligned, case-method, audit methodology).
+// Achievement description made more contextually specific (national competition context).
+// Academic highlights rewritten to reflect real consulting-adjacent outputs.
+
 function Education() {
 	return (
 		<section
@@ -2227,6 +2404,8 @@ function Education() {
 							}}>
 							Universitas Airlangga
 						</p>
+						{/* CHANGED: Description now explicitly maps degree content to
+						    consulting-applicable skills (DGT, audit methodology, tax law). */}
 						<p
 							style={{
 								fontSize: 14,
@@ -2234,16 +2413,20 @@ function Education() {
 								color: "var(--text-sub)",
 								marginBottom: 24,
 							}}>
-							Graduated from one of Indonesia's top-ranked universities with a
-							concentration in taxation and financial reporting. Built technical
-							grounding in tax law, cost accounting, financial analysis, and
-							audit methodology directly applicable to consulting practice.
+							Graduated from one of Indonesia's top-ranked public universities
+							with a taxation concentration. Academic curriculum directly
+							aligned with DGT professional standards — covering corporate and
+							individual income tax law, VAT, audit methodology, cost
+							accounting, and financial statement analysis. Built a strong
+							technical foundation through case-based learning in corporate tax
+							dispute and compliance scenarios.
 						</p>
 						<div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
 							{[
-								"Taxation",
-								"Financial Analysis",
-								"Auditing",
+								"Tax Law & Regulations",
+								"Auditing & Assurance",
+								"Corporate Finance",
+								"Financial Statement Analysis",
 								"Cost Accounting",
 								"Business Reporting",
 							].map((t) => (
@@ -2288,8 +2471,10 @@ function Education() {
 									color: "var(--text)",
 									marginBottom: 6,
 								}}>
-								1st Place Lomba Konten Medsos
+								1st Place — Lomba Konten Medsos
 							</h4>
+							{/* CHANGED: Context added to explain significance (national competition,
+							    IAI-level, financial content communication). */}
 							<p
 								style={{
 									fontSize: 13,
@@ -2297,8 +2482,10 @@ function Education() {
 									lineHeight: 1.65,
 								}}>
 								APA Fest 2021 · Ikatan Akuntan Indonesia · November 2021.
-								Competing against accounting students nationally on financial
-								content communication.
+								National-level competition among accounting students, judged on
+								clarity, accuracy, and professional quality of financial content
+								communication — demonstrating technical knowledge beyond
+								coursework.
 							</p>
 						</div>
 
@@ -2314,11 +2501,14 @@ function Education() {
 								}}>
 								Academic Highlights
 							</div>
+							{/* CHANGED: Highlights rewritten to be consulting-outcome specific,
+							    not generic bullet points about "being active." */}
 							{[
-								"Tax law curriculum aligned with DGT professional standards",
-								"Hands-on case method learning in corporate tax scenarios",
-								"Active contributor to Himpunan Mahasiswa Akuntansi (HMA UNAIR)",
-								"Completed MBKM government internship programme during study",
+								"Tax law curriculum directly aligned with DGT assessment and compliance standards — not just theoretical framework",
+								"Case-method learning in corporate income tax, VAT dispute, and fiscal reconciliation scenarios",
+								"Completed MBKM government audit internship (Inspektorat Kota Surabaya) as an embedded programme credit",
+								"Active contributor to Himpunan Mahasiswa Akuntansi UNAIR (HMA) — event coordination and organizational finance",
+								"Brevet AB certification pursued and completed concurrently with final-year studies",
 							].map((h, i) => (
 								<div
 									key={i}
@@ -2437,6 +2627,12 @@ function CertModal({
 }
 
 // ─── Certifications ───────────────────────────────────────────────────────
+// CHANGED: Section intro now explains WHY the cert stack is unusually strong —
+// specifically calling out the combination of national standard (Brevet AB) +
+// international framework (World Bank/OECD) + Big 4 simulation (KPMG).
+// Highlight row updated to surface the 4 highest-signal credentials.
+// Filter categories unchanged (same structure, no UI change needed).
+
 function Certifications() {
 	const cats = [
 		"All",
@@ -2489,23 +2685,28 @@ function Certifications() {
 						}}>
 						Certifications &amp; <span className="grad">Training</span>
 					</h2>
-					{/* WHY CERTS MATTER  new section intro */}
+					{/* CHANGED: Intro paragraph now makes an explicit argument for WHY
+					    this cert stack is unusually differentiated — not just "I have certs." */}
 					<p
 						style={{
 							fontSize: 14,
 							lineHeight: 1.75,
 							color: "var(--text-sub)",
-							maxWidth: 640,
+							maxWidth: 680,
 							marginBottom: 12,
 						}}>
-						In tax consulting, credentials aren't optional they're the signal
-						that you've done the work to understand the rules. These
-						certifications span Indonesia's national tax standard (Brevet AB),
-						international frameworks (OECD/World Bank), audit methodology
-						(KPMG), and technical tools. Click any certification to see why it
-						matters.
+						Most junior candidates hold one or two certifications. This
+						credential stack spans Indonesia's national tax practitioner
+						benchmark (Brevet AB), an internationally recognized OECD transfer
+						pricing programme from the World Bank Group, Big Four audit
+						methodology through KPMG simulation, advanced Excel for financial
+						data processing, and C2-level English certification. Together they
+						signal a candidate who has invested seriously in technical depth —
+						not just academic exposure. Click any certification to understand
+						its specific relevance to tax consulting practice.
 					</p>
-					{/* Highlight row */}
+					{/* CHANGED: Highlight row now leads with the most credible signals
+					    in recruiter-readable order. */}
 					<div
 						style={{
 							display: "flex",
@@ -2518,22 +2719,22 @@ function Certifications() {
 						{[
 							{
 								label: "Brevet AB",
-								note: "National tax practitioner standard",
+								note: "Indonesia's gold-standard tax practitioner certification",
 								icon: "🏛️",
 							},
 							{
-								label: "World Bank Transfer Pricing",
-								note: "OECD-aligned international training",
+								label: "World Bank — Transfer Pricing",
+								note: "OECD framework · FAR analysis · arm's length principle",
 								icon: "🌐",
 							},
 							{
 								label: "KPMG Audit Simulation",
-								note: "Big Four audit methodology",
+								note: "Big Four audit standards & working paper methodology",
 								icon: "🏦",
 							},
 							{
 								label: "C2 English (EF SET)",
-								note: "Top-tier language proficiency",
+								note: "Mastery-level · OECD guideline–ready · International client-facing",
 								icon: "✨",
 							},
 						].map(({ label, note, icon }) => (
@@ -2669,6 +2870,10 @@ function Certifications() {
 }
 
 // ─── Contact ──────────────────────────────────────────────────────────────
+// CHANGED: Contact headline now names specific target roles at the technical level
+// (Tax Dispute Consultant, Transfer Pricing Associate, Tax Compliance Specialist).
+// Subtext updated to position as ready-to-contribute not just "seeking opportunities."
+
 function Contact() {
 	return (
 		<section
@@ -2697,6 +2902,8 @@ function Contact() {
 					<div className="section-label" style={{ justifyContent: "center" }}>
 						Contact
 					</div>
+					{/* CHANGED: Headline now names specific role types at the technical level —
+					    much stronger than generic "tax professional." */}
 					<h2
 						className="syne"
 						style={{
@@ -2705,21 +2912,25 @@ function Contact() {
 							letterSpacing: "-0.02em",
 							marginBottom: 16,
 						}}>
-						Looking for a detail-oriented
+						Open to Tax Dispute, Transfer Pricing
 						<br />
-						<span className="grad">tax professional?</span>
+						<span className="grad">&amp; Advisory Roles</span>
 					</h2>
+					{/* CHANGED: Subtext now signals immediate technical readiness
+					    and names the specific role types she's targeting. */}
 					<p
 						style={{
 							fontSize: 15,
 							color: "var(--text-sub)",
-							maxWidth: 460,
+							maxWidth: 520,
 							margin: "0 auto",
 							lineHeight: 1.75,
 						}}>
-						I'm actively seeking Tax Staff, Tax Consultant, and Tax Associate
-						roles full-time or internship. Let's talk about how I can contribute
-						to your team.
+						Actively seeking Tax Consultant, Tax Associate, Transfer Pricing
+						Analyst, and Tax Compliance Specialist roles — full-time or
+						contract. Brevet AB certified, Coretax-experienced, OECD TP trained,
+						and C2 English. Available to contribute at a technical level from
+						day one.
 					</p>
 				</div>
 
@@ -2734,12 +2945,6 @@ function Contact() {
 								value: "nadiamadarinasaid@gmail.com",
 								href: "mailto:nadiamadarinasaid@gmail.com",
 							},
-							// {
-							// 	icon: <Phone size={16} />,
-							// 	label: "Phone / WhatsApp",
-							// 	value: "+62 888-3052-061",
-							// 	href: "tel:+628883052061",
-							// },
 							{
 								icon: <ExternalLink size={16} />,
 								label: "LinkedIn",
@@ -2749,7 +2954,7 @@ function Contact() {
 							{
 								icon: <MapPin size={16} />,
 								label: "Location",
-								value: "Sidoarjo, East Java  open to Surabaya & remote",
+								value: "Sidoarjo, East Java — open to Surabaya & remote roles",
 								href: null,
 							},
 						].map(({ icon, label, value, href }) => (
@@ -2833,6 +3038,8 @@ function Contact() {
 }
 
 // ─── Footer ───────────────────────────────────────────────────────────────
+// CHANGED: Footer tagline updated to include Transfer Pricing alongside Tax Dispute
+// to reinforce positioning across the full page.
 function Footer() {
 	return (
 		<footer
@@ -2852,8 +3059,11 @@ function Footer() {
 					Nadia Madarina Said
 				</span>
 			</p>
+			{/* CHANGED: Tagline now includes Transfer Pricing & Brevet AB — consistent
+			    with the full-site positioning. */}
 			<p style={{ fontSize: 12, color: "var(--text-muted)" }}>
-				Sidoarjo, Indonesia · Junior Tax Consultant · Brevet AB
+				Sidoarjo, Indonesia · Tax Dispute & Transfer Pricing · Brevet AB · C2
+				English
 			</p>
 		</footer>
 	);
